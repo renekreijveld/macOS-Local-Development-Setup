@@ -1,6 +1,6 @@
 # Gebruikte bronnen:
 
-<a href="https://getgrav.org/blog/macos-sierra-apache-multiple-php-versions" target="_blank">Apache Setup: Multiple PHP Versions</a>
+<a href="https://getgrav.org/blog/macos-sierra-apache-multiple-php-versions" target="_blank">macOS 10.13 High Sierra Apache Setup: Multiple PHP Versions</a>
 
 <a href="https://coolestguidesontheplanet.com/get-apache-mysql-php-phpmyadmin-working-osx-10-10-yosemite/#phpmyadmin" target="_blank">Get Apache, MySQL, PHP and phpMyAdmin working on OSX 10.10 Yosemite</a>
 
@@ -256,7 +256,7 @@ $ sudo apachectl -k stop
 $ sudo apachectl start
 ```
 
-Maak een bestand index.php in je Sites map met deze inhoud:
+Maak een bestand index.php in je ~/Development/Sites map met deze inhoud:
 
 ```php
 <?php phpinfo();
@@ -300,7 +300,7 @@ Test het switcher script:
 $ sphp 70
 ```
 
-En ververs de pagina http://localhost/info.php in je browser.
+En ververs de pagina <a href="http://localhost/info.php" target="_blank">http://localhost/info.php</a> in je browser.
 
 # MySQL installeren:
 
@@ -475,5 +475,11 @@ $ brew install php70-xdebug --build-from-source
 $ sphp 71
 $ brew install php71-opcache php71-apcu --build-from-source
 $ brew install php71-xdebug --build-from-source
+```
+
+Herstart apache:
+
+```
+$ sudo apachectl -k restart
 ```
 
