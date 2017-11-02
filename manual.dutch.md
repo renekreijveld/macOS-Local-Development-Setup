@@ -28,4 +28,126 @@ Plaats daarna de website bestanden in de map ~/Development/Sites/testwebsite.
 
 Je hoeft dan verder niets meer aan te passen. De website is direct in je browser benaderbaar via http://testwebsite.dev
 
+# Development stoppen
 
+MySQL en Apache kunnen eenvoudig gestop worden met het terminal commando:
+
+```
+$ startdevelopment
+```
+
+# Handige commando's:
+
+## Apache
+
+Start apache bij elke (re)boot:
+
+```
+$ sudo brew services start httpd
+```
+
+Stop apache bij elke (re)boot:
+
+```
+$ sudo brew services stop httpd
+```
+
+Start apache:
+
+```
+$ sudo apachectl start
+```
+
+Stop apache:
+
+```
+$ sudo apachectl stop
+```
+
+Herstart apache:
+
+```
+$ sudo apachectl -k restart
+```
+
+Edit httpd.conf:
+
+```
+$ open -e /usr/local/etc/httpd/httpd.conf
+```
+
+Controleer of Apache actief is:
+
+```
+$ ps -aef | grep httpd
+```
+
+# PHP
+
+Edit php.ini 5.3:
+
+```
+$ open -e /usr/local/etc/php/5.3/php.ini
+```
+
+Edit php.ini 5.6:
+
+```
+$ open -e /usr/local/etc/php/5.6/php.ini
+```
+
+Edit php.ini 7.0:
+
+```
+$ open -e /usr/local/etc/php/7.0/php.ini
+```
+
+Edit php.ini 7.1:
+
+```
+$ open -e /usr/local/etc/php/7.1/php.ini
+```
+
+Wissel naar php 5.3:
+
+```
+$ sphp 53
+```
+
+Wissel naar php 5.6:
+
+```
+$ sphp 56
+```
+
+Wissel naar php 7.0:
+
+```
+$ sphp 70
+```
+
+Wissel naar php 7.1:
+
+```
+$ sphp 71
+```
+
+# MySQL
+
+Start mysql na elke (re)boot:
+
+```
+$ brew services start mysql
+```
+
+Stop mysql na elke (re)boot:
+
+```
+$ brew services stop mysql
+```
+
+Congtroleer of MySQL actief is:
+
+```
+$ ps -aef | grep mysql
+```
