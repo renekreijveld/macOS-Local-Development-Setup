@@ -1,3 +1,8 @@
+# Benodigdheden:
+
+- macOS 10.12 of hoger
+- <a href="https://developer.apple.com/xcode/" target="_blank">XCode</a> geïnstalleerd
+
 # Gebruikte bronnen:
 
 <a href="https://getgrav.org/blog/macos-sierra-apache-multiple-php-versions" target="_blank">macOS 10.13 High Sierra Apache Setup: Multiple PHP Versions</a>
