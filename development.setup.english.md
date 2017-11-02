@@ -4,8 +4,8 @@ This setup works fine on my macOS machines. I am certainly no Apache, PHP and My
 
 # Requirements
 
-- macOS 10.12 of hoger
-- <a href="https://developer.apple.com/xcode/" target="_blank">XCode</a> geïnstalleerd
+- macOS 10.12 or higher
+- <a href="https://developer.apple.com/xcode/" target="_blank">XCode</a> installed
 
 # Used sources
 
@@ -167,7 +167,7 @@ ServerName localhost
 
 Save the file /usr/local/etc/httpd/httpd.conf
 
-### Create standard index.html
+### Create a standard index.html
 
 ```
 $ mkdir -p ~/Development/Sites
@@ -180,7 +180,7 @@ $ echo "<h1>My User Web Root</h1>" > ~/Development/Sites/index.html
 $ sudo apachectl -k restart
 ```
 
-Ga in je browser naar http://localhost, daar moet dan My User Web Root verschijnen.
+In your browser go to http://localhost, there the My User Web Root should appear.
 
 # Install PHP
 
@@ -438,7 +438,7 @@ Remove all existing lines below the comments block and add the following lines:
 
 # Dnsmasq installation
 
-We can now very easy add a new virtual host.
+We can now very easily add a new virtual host.
 By creating a subfolder in ~/Development/Sites/, for example, 'testsite', this new website is immediately accessible through the domain name 'testsite.dev'.
 
 But we need to modify DNS so it resolves to this domain. Therefor we install Dnsmasq.
