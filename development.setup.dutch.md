@@ -337,13 +337,13 @@ Setup uitvoeren in de browser:
 
 http://localhost/phpmyadmin/setup/
 
-Klik op New Server
-Tabblad Basic settings: niets aanpassen
-Tabblad Authentication:
-- bij Authentication type kies: config
-- bij Password for config auth invullen: root
-- klik op Apply, je komt terug in Overview
-Klik op download en sla het bestand config.inc.php op in de map ~/Development/Sites/phpmyadmin
+- Klik op New Server
+- Tabblad Basic settings: niets aanpassen
+- Tabblad Authentication:
+    - bij Authentication type kies: config
+    - bij Password for config auth invullen: root
+    - klik op Apply, je komt terug in Overview
+- Klik op download en sla het bestand config.inc.php op in de map ~/Development/Sites/phpmyadmin
 
 Ga dan in je browser naar http://localhost/phpmyadmin en log in met gebruikersnaam root en wachtwoord root.
 Deze gegevens worden dan in een cookie opgeslagen op je computer zodat je bij een volgende keer niet opnieuw hoeft in te loggen.
