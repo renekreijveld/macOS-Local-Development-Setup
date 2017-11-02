@@ -1,7 +1,8 @@
 # Gebruikte bronnen:
 
-https://getgrav.org/blog/macos-sierra-apache-multiple-php-versions
-https://coolestguidesontheplanet.com/get-apache-mysql-php-phpmyadmin-working-osx-10-10-yosemite/#phpmyadmin
+<a href="https://getgrav.org/blog/macos-sierra-apache-multiple-php-versions" target="_blank">Apache Setup: Multiple PHP Versions</a>
+
+<a href="https://coolestguidesontheplanet.com/get-apache-mysql-php-phpmyadmin-working-osx-10-10-yosemite/#phpmyadmin" target="_blank">Get Apache, MySQL, PHP and phpMyAdmin working on OSX 10.10 Yosemite</a>
 
 # Installeren XCode Command Line Tools
 
@@ -202,7 +203,7 @@ $ brew unlink php71
 $ brew link php56
 ```
 
-Apache PHP Setup - Deel 1
+# Apache setup
 
 Apache configuratie aanpassen:
 
@@ -261,14 +262,12 @@ Maak een bestand index.php in je Sites map met deze inhoud:
 <?php phpinfo();
 ```
 
-PHP Switcher script installeren:
+# PHP Switcher script installeren:
 
 ```
 $ curl -L https://gist.github.com/w00fz/142b6b19750ea6979137b963df959d11/raw > /usr/local/bin/sphp
 $ chmod +x /usr/local/bin/sphp
 ```
-
-Apache PHP Setup - Deel 2:
 
 Apache configuratie aanpassen:
 
@@ -303,7 +302,7 @@ $ sphp 70
 
 En ververs de pagina http://localhost/info.php in je browser.
 
-MySQL installeren:
+# MySQL installeren:
 
 ```
 $ brew update
@@ -331,6 +330,7 @@ Reload privilege tables now? y
 # phpMyAdmin installeren
 
 Download de Engelse phpMyAdmin via http://www.phpmyadmin.net/home_page/downloads.php
+
 Unzip het bestand en verplaats de map naar de submap 'phpmyadmin' onder Sites, dus naar ~/Development/Sites/phpmyadmin
 
 Setup uitvoeren in de browser:
