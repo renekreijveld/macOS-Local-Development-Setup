@@ -207,10 +207,17 @@ $ brew unlink php70
 $ brew install php71 --with-httpd
 ```
 
-### Terug wisselen naar PHP 5.6
+### PHP 7.2 installeren
 
 ```
 $ brew unlink php71
+$ brew install php72 --with-httpd
+```
+
+### Terug wisselen naar PHP 5.6
+
+```
+$ brew unlink php72
 $ brew link php56
 ```
 
@@ -226,9 +233,10 @@ Vervang:
 
 ```
 LoadModule php5_module        /usr/local/Cellar/php53/5.3.29_8/libexec/apache2/libphp5.so
-LoadModule php5_module        /usr/local/Cellar/php56/5.6.31_7/libexec/apache2/libphp5.so
-LoadModule php7_module        /usr/local/Cellar/php70/7.0.24_16/libexec/apache2/libphp7.so
-LoadModule php7_module        /usr/local/Cellar/php71/7.1.10_21/libexec/apache2/libphp7.so
+LoadModule php5_module        /usr/local/Cellar/php56/5.6.32_8/libexec/apache2/libphp5.so
+LoadModule php7_module        /usr/local/Cellar/php70/7.0.25_17/libexec/apache2/libphp7.so
+LoadModule php7_module        /usr/local/Cellar/php71/7.1.11_22/libexec/apache2/libphp7.so
+LoadModule php7_module        /usr/local/Cellar/php72/7.2.0RC5_8/libexec/apache2/libphp7.so
 ```
 
 Door:
@@ -238,6 +246,7 @@ Door:
 LoadModule php5_module    /usr/local/opt/php56/libexec/apache2/libphp5.so
 #LoadModule php7_module    /usr/local/opt/php70/libexec/apache2/libphp7.so
 #LoadModule php7_module    /usr/local/opt/php71/libexec/apache2/libphp7.so
+#LoadModule php7_module    /usr/local/opt/php72/libexec/apache2/libphp7.so
 ```
 
 Vervang:
@@ -488,6 +497,13 @@ $ sphp 71
 $ brew install php71-opcache php71-apcu --build-from-source
 $ brew install php71-xdebug --build-from-source
 ```
+
+```
+$ sphp 72
+$ brew install php72-opcache php72-apcu --build-from-source
+```
+
+XDebug is nog niet beschikbaar voor PHP 7.2.
 
 Herstart apache:
 
