@@ -1,3 +1,7 @@
+# Disclaimer
+
+This setup works fine on my macOS machines. I am certainly no Apache, PHP and MySQL expert so should something go wrong in your setup, check the sources I used.
+
 # Requirements
 
 - macOS 10.12 of hoger
