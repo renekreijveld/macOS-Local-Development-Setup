@@ -10,13 +10,13 @@
 $ xcode-select --install
 ```
 
-# Homebrew installatie:
+# Homebrew installatie
 
 ```
 $ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
 
-Controle installatie Homebrew:
+### Controle installatie Homebrew
 
 ```
 $ brew --version
@@ -24,13 +24,13 @@ Homebrew 1.3.6
 Homebrew/homebrew-core (git revision 94caa; last commit 2017-10-22)
 ```
 
-Extra Brew Taps toevoegen:
+### Extra Brew Taps toevoegen
 
 ```
 $ brew tap homebrew/php
 ```
 
-# Bestaande apache stoppen en nieuwe installeren:
+### Bestaande apache stoppen en nieuwe installeren:
 
 ```
 $ sudo apachectl stop
@@ -38,13 +38,13 @@ $ sudo launchctl unload -w /System/Library/LaunchDaemons/org.apache.httpd.plist 
 $ brew install httpd
 ```
 
-Je kunt Apache instellen zodat die elke start bij reboot van je machine:
+Je kunt Apache instellen zodat die elke start bij reboot van je machine.
 
 ```
 $ sudo brew services start httpd
 ```
 
-Je Apache ook handmatig starten:
+Je Apache ook handmatig starten.
 
 ```
 $ sudo apachectl start
@@ -52,7 +52,7 @@ $ sudo apachectl start
 
 Test apache door in browser te gaan naar: http://localhost:8080
 
-Configuratie aanpassen:
+### Apache configuratie aanpassen
 
 ```
 $ open -e /usr/local/etc/httpd/httpd.conf
@@ -124,7 +124,7 @@ En vervang door:
 LoadModule rewrite_module lib/httpd/modules/mod_rewrite.so (dus # weghalen)
 ```
 
-User & Group aanpassen
+### User & Group aanpassen
 
 Vervang:
 
@@ -142,7 +142,7 @@ Group staff
 
 (vul bij 'your_user' jouw eigen gebruikernaam in)
 
-Servername instellen:
+### Servername instellen
 
 Vervang:
 
@@ -158,14 +158,14 @@ ServerName localhost
 
 Sla het bestand /usr/local/etc/httpd/httpd.conf op.
 
-Standaard index.html aanmaken:
+### Standaard index.html aanmaken
 
 ```
 $ mkdir -p ~/Development/Sites
 $ echo "<h1>My User Web Root</h1>" > ~/Development/Sites/index.html
 ```
 
-Apache herstarten:
+### Apache herstarten
 
 ```
 $ sudo apachectl -k restart
@@ -175,49 +175,49 @@ Ga in je browser naar http://localhost, daar moet dan My User Web Root verschijn
 
 # PHP installeren
 
-PHP 5.3 installeren:
+### PHP 5.3 installeren
 
 ```
 $ brew install php53 --with-httpd
 ```
 
-PHP 5.6 installeren:
+### PHP 5.6 installeren
 
 ```
 $ brew unlink php53
 $ brew install php56 --with-httpd
 ```
 
-PHP 7.0 installeren:
+### PHP 7.0 installeren
 
 ```
 $ brew unlink php56
 $ brew install php70 --with-httpd
 ```
 
-PHP 7.1 installeren:
+### PHP 7.1 installeren
 
 ```
 $ brew unlink php70
 $ brew install php71 --with-httpd
 ```
 
-Terug wisselen naar PHP 5.6:
+### Terug wisselen naar PHP 5.6
 
 ```
 $ brew unlink php71
 $ brew link php56
 ```
 
-# Apache setup
+# PHP in Apache setup
 
-Apache configuratie aanpassen:
+### Apache configuratie aanpassen
 
 ```
 $ open -e /usr/local/etc/httpd/httpd.conf
 ```
 
-Vervang deze regels:
+Vervang:
 
 ```
 LoadModule php5_module        /usr/local/Cellar/php53/5.3.29_8/libexec/apache2/libphp5.so
@@ -268,20 +268,24 @@ Maak een bestand index.php in je ~/Development/Sites map met deze inhoud:
 <?php phpinfo();
 ```
 
+Test de werking van PHP door in je browser te gaan naar http://localhost/info.php
+
 # PHP Switcher script installeren:
+
+Om gemakkelijk tussen PHP versies te kunnen wisselen installeren we een PHP switch script.
 
 ```
 $ curl -L https://gist.github.com/w00fz/142b6b19750ea6979137b963df959d11/raw > /usr/local/bin/sphp
 $ chmod +x /usr/local/bin/sphp
 ```
 
-Apache configuratie aanpassen:
+### Apache configuratie aanpassen
 
 ```
 $ open -e /usr/local/etc/httpd/httpd.conf
 ```
 
-Vervang deze regels:
+Vervang:
 
 ```
 #LoadModule php5_module    /usr/local/opt/php53/libexec/apache2/libphp5.so
@@ -290,7 +294,7 @@ LoadModule php5_module    /usr/local/opt/php56/libexec/apache2/libphp5.so
 #LoadModule php7_module    /usr/local/opt/php71/libexec/apache2/libphp7.so
 ```
 
-Door dit:
+Door:
 
 ```
 #Brew PHP LoadModule for `sphp` switcher23.1605
@@ -298,15 +302,13 @@ LoadModule php5_module /usr/local/lib/libphp5.so
 #LoadModule php7_module /usr/local/lib/libphp7.so
 ```
 
-Sla het bestand op.
-
-Test het switcher script:
+Sla het bestand op. Test het switcher script:
 
 ```
 $ sphp 70
 ```
 
-En ververs de pagina <a href="http://localhost/info.php" target="_blank">http://localhost/info.php</a> in je browser.
+Ververs de pagina <a href="http://localhost/info.php" target="_blank">http://localhost/info.php</a> in je browser.
 
 # MySQL installeren:
 
@@ -315,7 +317,7 @@ $ brew update
 $ brew install mysql
 ```
 
-MySQL beveiligen
+### MySQL beveiligen
 
 ```
 $ /usr/local/bin/mysql_secure_installation
@@ -339,9 +341,9 @@ Download de Engelse phpMyAdmin via http://www.phpmyadmin.net/home_page/downloads
 
 Unzip het bestand en verplaats de map naar de submap 'phpmyadmin' onder Sites, dus naar ~/Development/Sites/phpmyadmin
 
-Setup uitvoeren in de browser:
+### Setup uitvoeren in de browser
 
-http://localhost/phpmyadmin/setup/
+Open in je browser http://localhost/phpmyadmin/setup/
 
 - Klik op New Server
 - Tabblad Basic settings: niets aanpassen
@@ -355,31 +357,31 @@ Ga dan in je browser naar http://localhost/phpmyadmin. Je moet nu phpMyAdmin zie
 
 # Apache Virtual Hosts
 
-Aanpassen Apache configuratie:
+### Aanpassen Apache configuratie
 
 ```
 $ open -e /usr/local/etc/httpd/httpd.conf
 ```
 
-Vervang deze regel:
+Vervang:
 
 ```
 #LoadModule vhost_alias_module lib/httpd/modules/mod_vhost_alias.so
 ```
 
-Door deze:
+Door:
 
 ```
 LoadModule vhost_alias_module lib/httpd/modules/mod_vhost_alias.so
 ```
 
-Vervang deze regel:
+Vervang:
 
 ```
 #Include /usr/local/etc/httpd/extra/httpd-vhosts.conf
 ```
 
-Door deze:
+Door:
 
 ```
 Include /usr/local/etc/httpd/extra/httpd-vhosts.conf
@@ -612,3 +614,4 @@ Rechten aanpassen:
 ```
 $ chmod +x /usr/local/bin/startdevelopment /usr/local/bin/stopdevelopment
 ```
+
