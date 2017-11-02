@@ -290,7 +290,7 @@ Check if it is working by going in your browser to http://localhost/info.php
 
 # Install PHP Switcher script
 
-To easy switch between PHP versions we install a PHP switcher script.
+To easily switch between PHP versions we install a PHP switcher script.
 
 ```
 $ curl -L https://gist.github.com/w00fz/142b6b19750ea6979137b963df959d11/raw > /usr/local/bin/sphp
@@ -581,7 +581,7 @@ Restart Apache:
 $ sudo apachectl -k restart
 ```
 
-You can now easy switch XDebug on or off.
+You can now easily switch XDebug on or off.
 Switch XDebug on for the active PHP version:
 
 ```
