@@ -132,6 +132,12 @@ Wissel naar php 7.1:
 $ sphp 71
 ```
 
+Wissel naar php 7.2:
+
+```
+$ sphp 72
+```
+
 # MySQL
 
 Start mysql na elke (re)boot:

@@ -306,6 +306,7 @@ Vervang:
 LoadModule php5_module    /usr/local/opt/php56/libexec/apache2/libphp5.so
 #LoadModule php7_module    /usr/local/opt/php70/libexec/apache2/libphp7.so
 #LoadModule php7_module    /usr/local/opt/php71/libexec/apache2/libphp7.so
+#LoadModule php7_module    /usr/local/opt/php72/libexec/apache2/libphp7.so
 ```
 
 Door:
