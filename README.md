@@ -4,7 +4,7 @@
 
 Nadat mijn MAMP PRO installatie erg instabiel werd besloot ik op basis van diverse tips van collega ontwikkelaars mijn macOS ontwikkelomgeving anders in te richten.
 
-Ik draai nu lokaal op macOS Apache, PHP (meerdere versie, 5.3, 5.6, 7.0 en 7.1) en MySQL aangevuld met phpMyAdmin, Zend OPcache, APCu Cache en XDebug.
+Ik draai nu lokaal op macOS Apache, PHP (meerdere versie, 5.3, 5.6, 7.0, 7.1 en 7.2.) en MySQL aangevuld met phpMyAdmin, Zend OPcache, APCu Cache en XDebug.
 
 Dit is de setup die ik heb gebruikt.
 
