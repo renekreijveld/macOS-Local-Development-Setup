@@ -152,7 +152,7 @@ Stop mysql na elke (re)boot:
 $ brew services stop mysql
 ```
 
-Congtroleer of MySQL actief is:
+Controleer of MySQL actief is:
 
 ```
 $ ps -aef | grep mysql

@@ -1,27 +1,27 @@
-# Benodigdheden
+# Requirements
 
 - macOS 10.12 of hoger
 - <a href="https://developer.apple.com/xcode/" target="_blank">XCode</a> geïnstalleerd
 
-# Gebruikte bronnen
+# Used sources
 
 <a href="https://getgrav.org/blog/macos-sierra-apache-multiple-php-versions" target="_blank">macOS 10.13 High Sierra Apache Setup: Multiple PHP Versions</a>
 
 <a href="https://coolestguidesontheplanet.com/get-apache-mysql-php-phpmyadmin-working-osx-10-10-yosemite/#phpmyadmin" target="_blank">Get Apache, MySQL, PHP and phpMyAdmin working on OSX 10.10 Yosemite</a>
 
-# Installeren XCode Command Line Tools
+# Install XCode Command Line Tools
 
 ```
 $ xcode-select --install
 ```
 
-# Homebrew installatie
+# Homebrew installation
 
 ```
 $ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
 
-### Controle installatie Homebrew
+### Chedck Homebrew installation
 
 ```
 $ brew --version
@@ -29,13 +29,13 @@ Homebrew 1.3.6
 Homebrew/homebrew-core (git revision 94caa; last commit 2017-10-22)
 ```
 
-### Extra Brew Taps toevoegen
+### Add extra Brew Taps
 
 ```
 $ brew tap homebrew/php
 ```
 
-### Bestaande Apache stoppen en Homebrew versie installaren
+### Stop existing Apache and install Homebrew version
 
 ```
 $ sudo apachectl stop
@@ -43,19 +43,19 @@ $ sudo launchctl unload -w /System/Library/LaunchDaemons/org.apache.httpd.plist 
 $ brew install httpd
 ```
 
-Je kunt Apache instellen zodat die elke start bij reboot van je machine.
+You can setup Apache so it starts at every (re)boot of your machine.
 
 ```
 $ sudo brew services start httpd
 ```
 
-Je Apache ook handmatig starten.
+You can also start Apache manually
 
 ```
 $ sudo apachectl start
 ```
 
-Test Apache door in browser te gaan naar: http://localhost:8080
+Test Apache by going in your browser to: http://localhost:8080
 
 ### Apache configuratie aanpassen
 
@@ -63,114 +63,114 @@ Test Apache door in browser te gaan naar: http://localhost:8080
 $ open -e /usr/local/etc/httpd/httpd.conf
 ```
 
-Vervang:
+Reclace:
 
 ```
 Listen 8080
 ```
 
-Door:
+With:
 
 ```
 Listen 80
 ```
 
-Vervang:
+Reclace:
 
 ```
 DocumentRoot "/usr/local/var/www"
 ```
 
-Door:
+With:
 
 ```
-DocumentRoot /Users/your_user/Development/Sites (dus ZONDER quotes)
+DocumentRoot /Users/your_user/Development/Sites (so WITHOUT quotes)
 ```
 
-(vul bij 'your_user' jouw eigen gebruikernaam in)
+(input your user name at 'your_user')
 
-Vervang:
+Reclace:
 
 ```
 <Directory "/usr/local/var/www">
 ```
 
-Door:
+With:
 
 ```
-<Directory /Users/your_user/Development/Sites> (dus ZONDER quotes)
+<Directory /Users/your_user/Development/Sites> (so WITHOUT quotes)
 ```
 
-(vul bij 'your_user' jouw eigen gebruikernaam in)
+(input your user name at 'your_user')
 
-In hetzelfde <Directory blok:
+In the same <Directory block:
 
-Vervang:
+Reclace:
 
 ```
 AllowOverride None
 ```
 
-Door:
+With:
 
 ```
 AllowOverride All
 ```
 
-Zoek naar:
+Search for:
 
 ```
 #LoadModule rewrite_module lib/httpd/modules/mod_rewrite.so
 ```
 
-En vervang door:
+And replace with:
 
 ```
 LoadModule rewrite_module lib/httpd/modules/mod_rewrite.so (dus # weghalen)
 ```
 
-### User & Group aanpassen
+### Modify User & Group
 
-Vervang:
+Reclace:
 
 ```
 User _www
 Group _www
 ```
 
-Door:
+With:
 
 ```
 User your_user
 Group staff
 ```
 
-(vul bij 'your_user' jouw eigen gebruikernaam in)
+(input your user name at 'your_user')
 
-### Servername instellen
+### Setup servername
 
-Vervang:
+Reclace:
 
 ```
 #ServerName www.example.com:8080
 ```
 
-Door:
+With:
 
 ```
 ServerName localhost
 ```
 
-Sla het bestand /usr/local/etc/httpd/httpd.conf op.
+Save the file /usr/local/etc/httpd/httpd.conf
 
-### Standaard index.html aanmaken
+### Create standard index.html
 
 ```
 $ mkdir -p ~/Development/Sites
 $ echo "<h1>My User Web Root</h1>" > ~/Development/Sites/index.html
 ```
 
-### Apache herstarten
+### Restart Apache
 
 ```
 $ sudo apachectl -k restart
@@ -178,58 +178,58 @@ $ sudo apachectl -k restart
 
 Ga in je browser naar http://localhost, daar moet dan My User Web Root verschijnen.
 
-# PHP installeren
+# Install PHP
 
-### PHP 5.3 installeren
+### Install PHP 5.3
 
 ```
 $ brew install php53 --with-httpd
 ```
 
-### PHP 5.6 installeren
+### Install PHP 5.6
 
 ```
 $ brew unlink php53
 $ brew install php56 --with-httpd
 ```
 
-### PHP 7.0 installeren
+### Install PHP 7.0
 
 ```
 $ brew unlink php56
 $ brew install php70 --with-httpd
 ```
 
-### PHP 7.1 installeren
+### Install PHP 7.1
 
 ```
 $ brew unlink php70
 $ brew install php71 --with-httpd
 ```
 
-### PHP 7.2 installeren
+### Install PHP 7.2
 
 ```
 $ brew unlink php71
 $ brew install php72 --with-httpd
 ```
 
-### Terug wisselen naar PHP 5.6
+### Switch back to PHP 5.6
 
 ```
 $ brew unlink php72
 $ brew link php56
 ```
 
-# PHP in Apache setup
+# Setup PHP in Apache
 
-### Apache configuratie aanpassen
+### Modify Apache configuration
 
 ```
 $ open -e /usr/local/etc/httpd/httpd.conf
 ```
 
-Vervang:
+Reclace:
 
 ```
 LoadModule php5_module        /usr/local/Cellar/php53/5.3.29_8/libexec/apache2/libphp5.so
@@ -239,7 +239,7 @@ LoadModule php7_module        /usr/local/Cellar/php71/7.1.11_22/libexec/apache2/
 LoadModule php7_module        /usr/local/Cellar/php72/7.2.0RC5_8/libexec/apache2/libphp7.so
 ```
 
-Door:
+With:
 
 ```
 #LoadModule php5_module    /usr/local/opt/php53/libexec/apache2/libphp5.so
@@ -249,7 +249,7 @@ LoadModule php5_module    /usr/local/opt/php56/libexec/apache2/libphp5.so
 #LoadModule php7_module    /usr/local/opt/php72/libexec/apache2/libphp7.so
 ```
 
-Vervang:
+Reclace:
 
 ```
 <IfModule dir_module>
@@ -257,7 +257,7 @@ Vervang:
 </IfModule>
 ```
 
-Door:
+With:
 
 ```
 <IfModule dir_module>
@@ -269,37 +269,37 @@ Door:
 </FilesMatch>
 ```
 
-Sla het bestand op en herstart apache:
+Save the file and restart Apache:
 
 ```
 $ sudo apachectl -k stop
 $ sudo apachectl start
 ```
 
-Maak een bestand index.php in je ~/Development/Sites map met deze inhoud:
+Create a file index.php in your ~/Development/Sites folder with these contents:
 
 ```php
 <?php phpinfo();
 ```
 
-Test de werking van PHP door in je browser te gaan naar http://localhost/info.php
+Check if it is working by going in your browser to http://localhost/info.php
 
-# PHP Switcher script installeren
+# Install PHP Switcher script
 
-Om gemakkelijk tussen PHP versies te kunnen wisselen installeren we een PHP switch script.
+To easy switch between PHP versions we install a PHP switcher script.
 
 ```
 $ curl -L https://gist.github.com/w00fz/142b6b19750ea6979137b963df959d11/raw > /usr/local/bin/sphp
 $ chmod +x /usr/local/bin/sphp
 ```
 
-### Apache configuratie aanpassen
+### Modify Apache configuration
 
 ```
 $ open -e /usr/local/etc/httpd/httpd.conf
 ```
 
-Vervang:
+Reclace:
 
 ```
 #LoadModule php5_module    /usr/local/opt/php53/libexec/apache2/libphp5.so
@@ -309,7 +309,7 @@ LoadModule php5_module    /usr/local/opt/php56/libexec/apache2/libphp5.so
 #LoadModule php7_module    /usr/local/opt/php72/libexec/apache2/libphp7.so
 ```
 
-Door:
+With:
 
 ```
 #Brew PHP LoadModule for `sphp` switcher23.1605
@@ -317,28 +317,28 @@ LoadModule php5_module /usr/local/lib/libphp5.so
 #LoadModule php7_module /usr/local/lib/libphp7.so
 ```
 
-Sla het bestand op. Test het switcher script:
+Save the file. Test the switcher script:
 
 ```
 $ sphp 70
 ```
 
-Ververs de pagina <a href="http://localhost/info.php" target="_blank">http://localhost/info.php</a> in je browser.
+Refresh the page <a href="http://localhost/info.php" target="_blank">http://localhost/info.php</a> in your browser.
 
-# MySQL installeren
+# MySQL installation
 
 ```
 $ brew update
 $ brew install mysql
 ```
 
-### MySQL beveiligen
+### Secure MySQL
 
 ```
 $ /usr/local/bin/mysql_secure_installation
 ```
 
-Antwoorden:
+Answers:
 
 ```
 Would you like to setup VALIDATE PASSWORD plugin? Press y|Y for Yes, any other key for No: Enter (= no)
@@ -350,65 +350,65 @@ Remove test database and access to it? y
 Reload privilege tables now? y
 ```
 
-# phpMyAdmin installeren
+# phpMyAdmin installation
 
-Download de Engelse phpMyAdmin via http://www.phpmyadmin.net/home_page/downloads.php
+Download the Engelse phpMyAdmin via http://www.phpmyadmin.net/home_page/downloads.php
 
-Unzip het bestand en verplaats de map naar de submap 'phpmyadmin' onder Sites, dus naar ~/Development/Sites/phpmyadmin
+Unzip the file and move the folder to the subfolder 'phpmyadmin' below Sites, so to: ~/Development/Sites/phpmyadmin
 
-### Setup uitvoeren in de browser
+### Run Setup in the browser
 
-Open in je browser http://localhost/phpmyadmin/setup/
+In your browser go to http://localhost/phpmyadmin/setup/
 
-- Klik op New Server
-- Tabblad Basic settings: niets aanpassen
-- Tabblad Authentication:
-    - bij Authentication type kies: config
-    - bij Password for config auth invullen: root
-    - klik op Apply, je komt terug in Overview
-- Klik op download en sla het bestand config.inc.php op in de map ~/Development/Sites/phpmyadmin
+- Click on New Server
+- Tab Basic settings: change nothing
+- Tab Authentication:
+    - at Authentication type choose: config
+    - at Password for config auth enter: root
+    - click Apply, you go back to Overview
+- Click download and save config.inc.php in the folder ~/Development/Sites/phpmyadmin
 
-Ga dan in je browser naar http://localhost/phpmyadmin. Je moet nu phpMyAdmin zien met in de linker kolom de databases.
+Go in your browser to http://localhost/phpmyadmin. You should now see phpMyAdmin with the databases in the left column.
 
 # Apache Virtual Hosts
 
-### Aanpassen Apache configuratie
+### Modify Apache configuration
 
 ```
 $ open -e /usr/local/etc/httpd/httpd.conf
 ```
 
-Vervang:
+Reclace:
 
 ```
 #LoadModule vhost_alias_module lib/httpd/modules/mod_vhost_alias.so
 ```
 
-Door:
+With:
 
 ```
 LoadModule vhost_alias_module lib/httpd/modules/mod_vhost_alias.so
 ```
 
-Vervang:
+Reclace:
 
 ```
 #Include /usr/local/etc/httpd/extra/httpd-vhosts.conf
 ```
 
-Door:
+With:
 
 ```
 Include /usr/local/etc/httpd/extra/httpd-vhosts.conf
 ```
 
-Aanpassen httpd-vhosts.conf:
+Modify httpd-vhosts.conf:
 
 ```
 $ open -e /usr/local/etc/httpd/extra/httpd-vhosts.conf
 ```
 
-Verwijder alle bestaande regels onder het commentaar blok en plaats alleen de volgende regels onder het commentaarblok:
+Remove all existing lines below the comments block and add the following lines:
 
 ```
 <VirtualHost *:80>
@@ -430,54 +430,54 @@ Verwijder alle bestaande regels onder het commentaar blok en plaats alleen de vo
 </Virtualhost>
 ```
 
-(vul bij 'your_user' jouw eigen gebruikernaam in)
+(input your user name at 'your_user')
 
-# Dnsmasq installeren
+# Dnsmasq installation
 
-Via bovenstaande setup hebben we het nu heel eenvoudig gemaakt om een nieuwe virtuele host toe te voegen.
-Door een submap te maken in de map ~/Development/Sites/ bijvoorbeeld 'testsite', zal de direct als virtuele host te benaderen zijn via de domeinnaam 'testsite.dev'.
+We can now very easy add a new virtual host.
+By creating a subfolder in ~/Development/Sites/, for example, 'testsite', this new website is immediately accessible through the domain name 'testsite.dev'.
 
-Deze domeinnaam wordt niet automatisch geresolved op je computer en daarvoor installeren we de tool Dnsmasq.
+But we need to modify DNS so it resolves to this domain. Therefor we install Dnsmasq.
 
 ```
 $ brew install dnsmasq
 ```
 
-Instellen *.dev hosts:
+Setup *.dev hosts:
 
 ```
 $ echo 'address=/.dev/127.0.0.1' > /usr/local/etc/dnsmasq.conf
 ```
 
-Dnsmasq starten en instellen dat bij elke reboot dnsmasq wordt gestart:
+Start Dnsmasq and make sure it starts at every reboot:
 
 ```
 $ sudo brew services start dnsmasq
 ```
 
-Toevoegen aan resolvers:
+Add to resolvers:
 
 ```
 $ sudo mkdir -v /etc/resolver
 $ sudo bash -c 'echo "nameserver 127.0.0.1" > /etc/resolver/dev'
 ```
 
-Testen door het pingen naar een onbekende .dev naam. Er moet een reply komen van 127.0.0.1:
+Test this by pinging to an unknown .dev name. There should come a reply from 127.0.0.1:
 
 ```
-$ ping nieuwewebsite.dev
+$ ping newwebsite.dev
 ```
 
-Herstart apache:
+Restart apache:
 
 ```
 $ sudo apachectl -k restart
 ```
 
-# APC Cache en XDebug installeren
+# APC Cache and XDebug installation:
 
-Om PHP sneller te laten werken installeren we Zend OPcache en APCu Cache.
-We installeren dit aleen in PHP 5.6, 7.0, 7.1 and 7.2.
+To have PHP run faster we install Zend OPcache and APCu Cache.
+We only install this in PHP 5.6, 7.0, 7.1 and 7.2.
 
 ```
 $ sphp 56
@@ -485,7 +485,7 @@ $ brew install php56-opcache php56-apcu --build-from-source
 $ brew install php56-xdebug --build-from-source
 ```
 
-Herhaal dit proces voor de andere PHP versies (behalve voor PHP 5.3).
+Repeat this process for the other PHP versions (except for PHP 5.3).
 
 ```
 $ sphp 70
@@ -504,21 +504,21 @@ $ sphp 72
 $ brew install php72-opcache php72-apcu --build-from-source
 ```
 
-XDebug is nog niet beschikbaar voor PHP 7.2.
+XDebug is not yet available for PHP 7.2.
 
-Herstart apache:
+Restart apache:
 
 ```
 $ sudo apachectl -k restart
 ```
 
-XDebug enable/disable script installeren:
+Install XDebug enable/disable script:
 
 ```
 $ brew install xdebug-osx
 ```
 
-De standaard configuraties werken wellicht niet goed genoeg. We passen daarom de configuraties aan.
+The standard configurations might not be good enough. We modify the configurations.
 
 PHP 5.6:
 
@@ -526,7 +526,7 @@ PHP 5.6:
 $ open -e /usr/local/etc/php/5.6/conf.d/ext-xdebug.ini
 ```
 
-Vervang de inhoud door deze inhoud:
+Replace the contents with these contents:
 
 ```
 [xdebug]
@@ -543,7 +543,7 @@ PHP 7.0:
 $ open -e /usr/local/etc/php/7.0/conf.d/ext-xdebug.ini
 ```
 
-Vervang de inhoud door deze inhoud:
+Replace the contents with these contents:
 
 ```
 [xdebug]
@@ -560,7 +560,7 @@ PHP 7.1:
 $ open -e /usr/local/etc/php/7.1/conf.d/ext-xdebug.ini
 ```
 
-Vervang de inhoud door deze inhoud:
+Replace the contents with these contents:
 
 ```
 [xdebug]
@@ -571,36 +571,36 @@ xdebug.remote_handler=dbgp
 xdebug.remote_port=9000
 ```
 
-Herstart Apache:
+Restart Apache:
 
 ```
 $ sudo apachectl -k restart
 ```
 
-Je kunt nu eenvoudig XDebug aan- of uitzetten.
-XDebug aanzetten voor de actieve PHP versie:
+You can now easy switch XDebug on or off.
+Switch XDebug on for the active PHP version:
 
 ```
 $ xdebug-toggle on
 ```
 
-XDebug uitzetten voor de actieve PHP versie:
+Switch XDebug off for the active PHP version:
 
 ```
 $ xdebug-toggle off
 ```
 
-# Startdevelopment en Stopdevelopment
+# Startdevelopment and Stopdevelopment
 
-Persoonlijk wil ik niet dat bij elke reboot Apache en MySQL automatisch worden gestart.
-Ik gebruik voor het starten en stoppen van Apache en MySQL twee eenvoudige scripts:
+Personally I don't want Apache and MySQL te start at every (re)boot automatically.
+For starting en stopping Apache and MySQL I use these two simple scripts:
 
 ```
 $ touch /usr/local/bin/startdevelopment
 $ open -e /usr/local/bin/startdevelopment
 ```
 
-Plaats daarin de volgende code:
+Add the following code:
 
 ```
 #!/bin/bash
@@ -612,14 +612,14 @@ sudo apachectl start
 brew services start mysql
 ```
 
-Sla dit bestand op.
+Save the file.
 
 ```
 $ touch /usr/local/bin/stopdevelopment
 $ open -e /usr/local/bin/stopdevelopment
 ```
 
-Plaats daarin de volgende code:
+Add the following code:
 
 ```
 #!/bin/bash
@@ -631,9 +631,9 @@ brew services stop mysql
 sudo apachectl stop
 ```
 
-Sla dit bestand op.
+Save the file.
 
-Rechten aanpassen:
+Modify file rights:
 
 ```
 $ chmod +x /usr/local/bin/startdevelopment /usr/local/bin/stopdevelopment

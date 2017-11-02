@@ -11,3 +11,14 @@ Dit is de setup die ik heb gebruikt.
 - <a href="https://github.com/renekreijveld/macOS-Local-Development-Setup/blob/master/development.setup.dutch.md" target="_blank">Installatie</a>
 - <a href="https://github.com/renekreijveld/macOS-Local-Development-Setup/blob/master/manual.dutch.md" target="_blank">Handleiding</a>
 
+## English
+
+After my MAMP PRO setup became very unstable I decided to setup my local development environment different. I used various tips and recources from developer colleauges.
+
+I now run Apache, PHP (meerdere versie, 5.3, 5.6, 7.0, 7.1 en 7.2.) and MySQL locally on macOS extended with phpMyAdmin, Zend OPcache, APCu Cache and XDebug.
+
+This is the setup I used.
+
+- <a href="https://github.com/renekreijveld/macOS-Local-Development-Setup/blob/master/development.setup.english.md" target="_blank">Installation</a>
+- <a href="https://github.com/renekreijveld/macOS-Local-Development-Setup/blob/master/manual.english.md" target="_blank">Manual</a>
+
