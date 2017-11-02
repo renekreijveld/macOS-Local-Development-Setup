@@ -13,7 +13,9 @@ Dit is de setup die ik heb gebruikt.
 
 ## English
 
-After my MAMP PRO setup became very unstable I decided to setup my local development environment different. I used various tips and recources from developer colleauges.
+After my MAMP PRO setup became very unstable I decided to setup my local development environment different.
+
+I used various tips and recources from developer colleaugues.
 
 I now run Apache, PHP (meerdere versie, 5.3, 5.6, 7.0, 7.1 en 7.2.) and MySQL locally on macOS extended with phpMyAdmin, Zend OPcache, APCu Cache and XDebug.
 
