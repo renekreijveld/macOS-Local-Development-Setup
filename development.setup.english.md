@@ -21,7 +21,7 @@ $ xcode-select --install
 $ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
 
-### Chedck Homebrew installation
+### Check Homebrew installation
 
 ```
 $ brew --version
@@ -57,13 +57,13 @@ $ sudo apachectl start
 
 Test Apache by going in your browser to: http://localhost:8080
 
-### Apache configuratie aanpassen
+### Modify Apache configuration
 
 ```
 $ open -e /usr/local/etc/httpd/httpd.conf
 ```
 
-Reclace:
+Replace:
 
 ```
 Listen 8080
@@ -75,7 +75,7 @@ With:
 Listen 80
 ```
 
-Reclace:
+Replace:
 
 ```
 DocumentRoot "/usr/local/var/www"
@@ -89,7 +89,7 @@ DocumentRoot /Users/your_user/Development/Sites (so WITHOUT quotes)
 
 (input your user name at 'your_user')
 
-Reclace:
+Replace:
 
 ```
 <Directory "/usr/local/var/www">
@@ -105,7 +105,7 @@ With:
 
 In the same <Directory block:
 
-Reclace:
+Replace:
 
 ```
 AllowOverride None
@@ -131,7 +131,7 @@ LoadModule rewrite_module lib/httpd/modules/mod_rewrite.so (dus # weghalen)
 
 ### Modify User & Group
 
-Reclace:
+Replace:
 
 ```
 User _www
@@ -149,7 +149,7 @@ Group staff
 
 ### Setup servername
 
-Reclace:
+Replace:
 
 ```
 #ServerName www.example.com:8080
@@ -229,7 +229,7 @@ $ brew link php56
 $ open -e /usr/local/etc/httpd/httpd.conf
 ```
 
-Reclace:
+Replace:
 
 ```
 LoadModule php5_module        /usr/local/Cellar/php53/5.3.29_8/libexec/apache2/libphp5.so
@@ -249,7 +249,7 @@ LoadModule php5_module    /usr/local/opt/php56/libexec/apache2/libphp5.so
 #LoadModule php7_module    /usr/local/opt/php72/libexec/apache2/libphp7.so
 ```
 
-Reclace:
+Replace:
 
 ```
 <IfModule dir_module>
@@ -299,7 +299,7 @@ $ chmod +x /usr/local/bin/sphp
 $ open -e /usr/local/etc/httpd/httpd.conf
 ```
 
-Reclace:
+Replace:
 
 ```
 #LoadModule php5_module    /usr/local/opt/php53/libexec/apache2/libphp5.so
@@ -352,7 +352,7 @@ Reload privilege tables now? y
 
 # phpMyAdmin installation
 
-Download the Engelse phpMyAdmin via http://www.phpmyadmin.net/home_page/downloads.php
+Download the English phpMyAdmin at http://www.phpmyadmin.net/home_page/downloads.php
 
 Unzip the file and move the folder to the subfolder 'phpmyadmin' below Sites, so to: ~/Development/Sites/phpmyadmin
 
@@ -378,7 +378,7 @@ Go in your browser to http://localhost/phpmyadmin. You should now see phpMyAdmin
 $ open -e /usr/local/etc/httpd/httpd.conf
 ```
 
-Reclace:
+Replace:
 
 ```
 #LoadModule vhost_alias_module lib/httpd/modules/mod_vhost_alias.so
@@ -390,7 +390,7 @@ With:
 LoadModule vhost_alias_module lib/httpd/modules/mod_vhost_alias.so
 ```
 
-Reclace:
+Replace:
 
 ```
 #Include /usr/local/etc/httpd/extra/httpd-vhosts.conf

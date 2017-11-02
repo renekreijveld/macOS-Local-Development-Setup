@@ -19,7 +19,7 @@ Apache and MySQL are now ready for use.
 
 Creating a new website is very simple. In the Sites folder create a new subfolder for your website.
 
-As an example create a fodler **testwebsite**.
+As an example create a folder **testwebsite**.
 
 ```
 $ mkdir ~/Development/Sites/testwebsite
