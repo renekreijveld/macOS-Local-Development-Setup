@@ -38,10 +38,16 @@ $ sudo launchctl unload -w /System/Library/LaunchDaemons/org.apache.httpd.plist 
 $ brew install httpd
 ```
 
-Apache autostart instellen:
+Je kunt Apache instellen zodat die elke start bij reboot van je machine:
 
 ```
 $ sudo brew services start httpd
+```
+
+Je Apache ook handmatig starten:
+
+```
+$ sudo apachectl start
 ```
 
 Test apache door in browser te gaan naar: http://localhost:8080
@@ -345,8 +351,7 @@ http://localhost/phpmyadmin/setup/
     - klik op Apply, je komt terug in Overview
 - Klik op download en sla het bestand config.inc.php op in de map ~/Development/Sites/phpmyadmin
 
-Ga dan in je browser naar http://localhost/phpmyadmin en log in met gebruikersnaam root en wachtwoord root.
-Deze gegevens worden dan in een cookie opgeslagen op je computer zodat je bij een volgende keer niet opnieuw hoeft in te loggen.
+Ga dan in je browser naar http://localhost/phpmyadmin. Je moet nu phpMyAdmin zien met in de linker kolom de databases.
 
 # Apache Virtual Hosts
 
@@ -483,3 +488,127 @@ Herstart apache:
 $ sudo apachectl -k restart
 ```
 
+XDebug enable/disable script installeren:
+
+```
+$ brew install xdebug-osx
+```
+
+De standaard configuraties werken wellicht niet goed genoeg. We passen daarom de configuraties aan.
+
+PHP 5.6:
+
+```
+$ open -e /usr/local/etc/php/5.6/conf.d/ext-xdebug.ini
+```
+
+Vervang de inhoud door deze inhoud:
+
+```
+[xdebug]
+zend_extension="/usr/local/opt/php56-xdebug/xdebug.so"
+xdebug.remote_enable=1
+xdebug.remote_host=localhost
+xdebug.remote_handler=dbgp
+xdebug.remote_port=9000
+```
+
+PHP 7.0:
+
+```
+$ open -e /usr/local/etc/php/7.0/conf.d/ext-xdebug.ini
+```
+
+Vervang de inhoud door deze inhoud:
+
+```
+[xdebug]
+zend_extension="/usr/local/opt/php70-xdebug/xdebug.so"
+xdebug.remote_enable=1
+xdebug.remote_host=localhost
+xdebug.remote_handler=dbgp
+xdebug.remote_port=9000
+```
+
+PHP 7.1:
+
+```
+$ open -e /usr/local/etc/php/7.1/conf.d/ext-xdebug.ini
+```
+
+Vervang de inhoud door deze inhoud:
+
+```
+[xdebug]
+zend_extension="/usr/local/opt/php71-xdebug/xdebug.so"
+xdebug.remote_enable=1
+xdebug.remote_host=localhost
+xdebug.remote_handler=dbgp
+xdebug.remote_port=9000
+```
+
+Herstart apache:
+
+```
+$ sudo apachectl -k restart
+```
+
+Je kunt nu eenvoudig XDebug aan- of uitzetten.
+XDebug aanzetten voor de actieve PHP versie:
+
+```
+$ xdebug-toggle on
+```
+
+XDebug uitzetten voor de actieve PHP versie:
+
+```
+$ xdebug-toggle off
+```
+
+# Startdevelopment en Stopdevelopment
+
+Persoonlijk wil ik niet dat bij elke reboot Apache en MySQL automatisch worden gestart.
+Ik gebruik voor het starten en stoppen van Apache en MySQL twee eenvoudige scripts:
+
+```
+$ touch /usr/local/bin/startdevelopment
+$ open -e /usr/local/bin/startdevelopment
+```
+
+Plaats daarin de volgende code:
+
+```
+#!/bin/bash
+
+# Start apache
+sudo apachectl start
+
+# Start mysql
+brew services start mysql
+```
+
+Sla dit bestand op.
+
+```
+$ touch /usr/local/bin/stopdevelopment
+$ open -e /usr/local/bin/stopdevelopment
+```
+
+Plaats daarin de volgende code:
+
+```
+#!/bin/bash
+
+# Start mysql
+brew services stop mysql
+
+# Start apache
+sudo apachectl stop
+```
+
+Rechten aanpassen:
+
+```
+$ chmod +x /usr/local/bin/startdevelopment /usr/local/bin/stopdevelopment
+```
