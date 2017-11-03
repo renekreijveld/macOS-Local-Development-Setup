@@ -332,7 +332,7 @@ Ververs de pagina <a href="http://localhost/info.php" target="_blank">http://loc
 # PHP.ini aanpassen
 
 Om webapplicaties goed te laten werken passen we een aantal zaken aan in de php.ini's.
-De volgende aanpassingen moeten worden doorgevoerd. Zoek daarvoor de originele instelling op, bewaar die door de regel te kopieren en to voorzien van een ; aan het begin van de regel en plaats dan de nieuwe waarde:
+De volgende aanpassingen moeten worden doorgevoerd. Zoek daarvoor de originele instelling op, bewaar die door de regel te kopieren en te voorzien van een ; aan het begin van de regel en plaats dan de nieuwe waarde:
 
 ```
 output_buffering = Off
