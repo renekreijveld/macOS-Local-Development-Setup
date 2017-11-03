@@ -481,15 +481,20 @@ $ sudo apachectl -k restart
 # APC Cache en XDebug installeren
 
 Om PHP sneller te laten werken installeren we Zend OPcache en APCu Cache.
-We installeren dit aleen in PHP 5.6, 7.0, 7.1 and 7.2.
+
+```
+$ sphp 53
+$ brew install php53-opcache php53-apcu --build-from-source
+$ brew install php53-xdebug --build-from-source
+```
+
+Herhaal dit proces voor de andere PHP versies.
 
 ```
 $ sphp 56
 $ brew install php56-opcache php56-apcu --build-from-source
 $ brew install php56-xdebug --build-from-source
 ```
-
-Herhaal dit proces voor de andere PHP versies (behalve voor PHP 5.3).
 
 ```
 $ sphp 70
@@ -523,6 +528,23 @@ $ brew install xdebug-osx
 ```
 
 De standaard configuraties werken wellicht niet goed genoeg. We passen daarom de configuraties aan.
+
+PHP 5.3:
+
+```
+$ open -e /usr/local/etc/php/5.3/conf.d/ext-xdebug.ini
+```
+
+Vervang de inhoud door deze inhoud:
+
+```
+[xdebug]
+zend_extension="/usr/local/opt/php53-xdebug/xdebug.so"
+xdebug.remote_enable=1
+xdebug.remote_host=localhost
+xdebug.remote_handler=dbgp
+xdebug.remote_port=9000
+```
 
 PHP 5.6:
 
