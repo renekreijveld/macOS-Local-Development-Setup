@@ -390,6 +390,12 @@ $ brew update
 $ brew install mysql
 ```
 
+### Start MySQL
+
+```
+$ brew services start mysql
+```
+
 ### MySQL beveiligen
 
 ```
