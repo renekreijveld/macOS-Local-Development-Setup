@@ -344,7 +344,6 @@ memory_limit = 256M
 display_errors = Off
 post_max_size = 50M
 upload_max_filesize = 50M
-max_file_uploads = 20
 date.timezone = Europe/Amsterdam
 ```
 
