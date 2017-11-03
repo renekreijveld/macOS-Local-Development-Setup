@@ -601,6 +601,7 @@ Replace the contents with these contents:
 [xdebug]
 zend_extension="/usr/local/opt/php53-xdebug/xdebug.so"
 xdebug.remote_enable=1
+xdebug.remote_autostart=1
 xdebug.remote_host=localhost
 xdebug.remote_handler=dbgp
 xdebug.remote_port=9000
@@ -618,6 +619,7 @@ Replace the contents with these contents:
 [xdebug]
 zend_extension="/usr/local/opt/php56-xdebug/xdebug.so"
 xdebug.remote_enable=1
+xdebug.remote_autostart=1
 xdebug.remote_host=localhost
 xdebug.remote_handler=dbgp
 xdebug.remote_port=9000
@@ -635,6 +637,7 @@ Replace the contents with these contents:
 [xdebug]
 zend_extension="/usr/local/opt/php70-xdebug/xdebug.so"
 xdebug.remote_enable=1
+xdebug.remote_autostart=1
 xdebug.remote_host=localhost
 xdebug.remote_handler=dbgp
 xdebug.remote_port=9000
@@ -652,6 +655,7 @@ Replace the contents with these contents:
 [xdebug]
 zend_extension="/usr/local/opt/php71-xdebug/xdebug.so"
 xdebug.remote_enable=1
+xdebug.remote_autostart=1
 xdebug.remote_host=localhost
 xdebug.remote_handler=dbgp
 xdebug.remote_port=9000
