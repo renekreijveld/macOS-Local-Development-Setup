@@ -12,9 +12,9 @@ Dit is de setup die ik heb gebruikt.
 - <a href="https://github.com/renekreijveld/macOS-Local-Development-Setup/blob/master/manual.dutch.md" target="_blank">Handleiding</a>
 
 ### Update geschiedenis
-2017-11-03 Aanpassingen php.ini's toegevoegd
-2017-11-03 Zend OPcache, APCu Cache en XDebug toegevoegd voor PHP 5.3
-2017-11-02 Eerste opzet
+- 2017-11-03 Aanpassingen php.ini's toegevoegd
+- 2017-11-03 Zend OPcache, APCu Cache en XDebug toegevoegd voor PHP 5.3
+- 2017-11-02 Eerste opzet
 
 ## English
 
@@ -30,6 +30,6 @@ This is the setup I used.
 - <a href="https://github.com/renekreijveld/macOS-Local-Development-Setup/blob/master/manual.english.md" target="_blank">Manual</a>
 
 ### Update history
-2017-11-03 Added php.ini modifications
-2017-11-03 Zend OPcache, APCu Cache and XDebug added for PHP 5.3
-2017-11-02 Initial setup
+- 2017-11-03 Added php.ini modifications
+- 2017-11-03 Zend OPcache, APCu Cache and XDebug added for PHP 5.3
+- 2017-11-02 Initial setup
