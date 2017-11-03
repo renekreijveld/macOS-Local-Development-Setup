@@ -329,6 +329,53 @@ $ sphp 70
 
 Refresh the page <a href="http://localhost/info.php" target="_blank">http://localhost/info.php</a> in your browser.
 
+# Modify PHP.ini
+
+To have webapplications work good we need to modify a number of php.ini settings.
+The following values need to be modified. Search the setting in php.ini, copy the line and add a ; at the beginning of the line. Then enter the new value:
+
+```
+output_buffering = Off
+max_execution_time = 180
+max_input_time = 180
+memory_limit = 256M
+display_errors = Off
+post_max_size = 50M
+upload_max_filesize = 50M
+max_file_uploads = 20
+date.timezone = Europe/Amsterdam
+```
+
+Modify php.ini PHP 5.3:
+
+```
+$ open -e /usr/local/etc/php/5.3/php.ini
+```
+
+Modify php.ini PHP 5.6:
+
+```
+$ open -e /usr/local/etc/php/5.6/php.ini
+```
+
+Modify php.ini PHP 7.0:
+
+```
+$ open -e /usr/local/etc/php/7.0/php.ini
+```
+
+Modify php.ini PHP 7.1:
+
+```
+$ open -e /usr/local/etc/php/7.1/php.ini
+```
+
+Modify php.ini PHP 7.2:
+
+```
+$ open -e /usr/local/etc/php/7.2/php.ini
+```
+
 # MySQL installation
 
 ```

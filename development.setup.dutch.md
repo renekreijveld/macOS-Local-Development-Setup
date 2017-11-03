@@ -329,6 +329,53 @@ $ sphp 70
 
 Ververs de pagina <a href="http://localhost/info.php" target="_blank">http://localhost/info.php</a> in je browser.
 
+# PHP.ini aanpassen
+
+Om webapplicaties goed te laten werken passen we een aantal zaken aan in de php.ini's.
+De volgende aanpassingen moeten worden doorgevoerd. Zoek daarvoor de originele instelling op, bewaar die door de regel te kopieren en to voorzien van een ; aan het begin van de regel en plaats dan de nieuwe waarde:
+
+```
+output_buffering = Off
+max_execution_time = 180
+max_input_time = 180
+memory_limit = 256M
+display_errors = Off
+post_max_size = 50M
+upload_max_filesize = 50M
+max_file_uploads = 20
+date.timezone = Europe/Amsterdam
+```
+
+Aanpassen php.ini PHP 5.3:
+
+```
+$ open -e /usr/local/etc/php/5.3/php.ini
+```
+
+Aanpassen php.ini PHP 5.6:
+
+```
+$ open -e /usr/local/etc/php/5.6/php.ini
+```
+
+Aanpassen php.ini PHP 7.0:
+
+```
+$ open -e /usr/local/etc/php/7.0/php.ini
+```
+
+Aanpassen php.ini PHP 7.1:
+
+```
+$ open -e /usr/local/etc/php/7.1/php.ini
+```
+
+Aanpassen php.ini PHP 7.2:
+
+```
+$ open -e /usr/local/etc/php/7.2/php.ini
+```
+
 # MySQL installeren
 
 ```
