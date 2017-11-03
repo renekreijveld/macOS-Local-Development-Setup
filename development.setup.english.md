@@ -332,7 +332,9 @@ Refresh the page <a href="http://localhost/info.php" target="_blank">http://loca
 # Modify PHP.ini
 
 To have webapplications work good we need to modify a number of php.ini settings.
-The following values need to be modified. Search the setting in php.ini, copy the line and add a ; at the beginning of the line. Then enter the new value:
+The following values need to be modified. Search the setting in php.ini, copy the line and add a ; at the beginning of the line. Then enter the new value.
+
+For display_errors you might want make an exception and leave that to 'On'.
 
 ```
 output_buffering = Off
