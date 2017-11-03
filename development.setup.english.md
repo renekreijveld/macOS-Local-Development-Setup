@@ -280,7 +280,7 @@ $ sudo apachectl -k stop
 $ sudo apachectl start
 ```
 
-Create a file index.php in your ~/Development/Sites folder with these contents:
+Create a file info.php in your ~/Development/Sites folder with these contents:
 
 ```php
 <?php phpinfo();

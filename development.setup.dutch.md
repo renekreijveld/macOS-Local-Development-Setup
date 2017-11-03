@@ -280,7 +280,7 @@ $ sudo apachectl -k stop
 $ sudo apachectl start
 ```
 
-Maak een bestand index.php in je ~/Development/Sites map met deze inhoud:
+Maak een bestand info.php in je ~/Development/Sites map met deze inhoud:
 
 ```php
 <?php phpinfo();
