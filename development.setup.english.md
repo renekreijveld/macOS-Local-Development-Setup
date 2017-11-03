@@ -376,6 +376,12 @@ Modify php.ini PHP 7.2:
 $ open -e /usr/local/etc/php/7.2/php.ini
 ```
 
+Restart Apache after the php.ini modifications:
+
+```
+$ sudo apachectl -k restart
+```
+
 # MySQL installation
 
 ```
