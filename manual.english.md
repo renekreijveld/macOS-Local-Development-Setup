@@ -41,13 +41,13 @@ $ stopdevelopment
 
 ## Apache
 
-Start apache at every (re)boot:
+Install Apache as service so it automatically starts at every (re)boot
 
 ```
 $ sudo brew services start httpd
 ```
 
-Stop apache at every (re)boot:
+Remove Apache service so it is no longer automatically startet at every (re)boot
 
 ```
 $ sudo brew services stop httpd
