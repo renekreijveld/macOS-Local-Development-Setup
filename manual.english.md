@@ -37,6 +37,14 @@ MySQL and Apache can be stopped with the terminal command:
 $ stopdevelopment
 ```
 
+# Development herstarten
+
+MySQL and Apache can be restarted with the terminal command:
+
+```
+$ restartdevelopment
+```
+
 # Reference
 
 ## Apache

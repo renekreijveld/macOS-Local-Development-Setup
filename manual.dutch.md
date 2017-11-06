@@ -30,10 +30,18 @@ Je hoeft dan verder niets meer aan te passen. De website is direct in je browser
 
 # Development stoppen
 
-MySQL en Apache kunnen eenvoudig gestop worden met het terminal commando:
+MySQL en Apache kunnen gestopt worden met het terminal commando:
 
 ```
 $ stopdevelopment
+```
+
+# Development herstarten
+
+MySQL en Apache kunnen herstart worden met het terminal commando:
+
+```
+$ restartdevelopment
 ```
 
 # Handige commando's:

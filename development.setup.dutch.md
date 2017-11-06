@@ -680,10 +680,10 @@ XDebug uitzetten voor de actieve PHP versie:
 $ xdebug-toggle off
 ```
 
-# Startdevelopment en Stopdevelopment
+# Startdevelopment, Stopdevelopment en Restartdevelopment
 
 Persoonlijk wil ik niet dat bij elke reboot Apache en MySQL automatisch worden gestart.
-Ik gebruik voor het starten en stoppen van Apache en MySQL twee eenvoudige scripts:
+Ik gebruik voor het starten, stoppen en herstarten van Apache en MySQL drie eenvoudige scripts:
 
 ```
 $ touch /usr/local/bin/startdevelopment
@@ -723,9 +723,27 @@ sudo apachectl stop
 
 Sla dit bestand op.
 
+```
+$ touch /usr/local/bin/restartdevelopment
+$ open -e /usr/local/bin/restartdevelopment
+```
+
+Plaats daarin de volgende code:
+
+```
+#!/bin/bash
+
+# Restart apache
+sudo apachectl -k restart
+
+# Restart mysql
+brew services restart mysql
+```
+
+Sla dit bestand op.
+
 Rechten aanpassen:
 
 ```
-$ chmod +x /usr/local/bin/startdevelopment /usr/local/bin/stopdevelopment
+$ chmod +x /usr/local/bin/startdevelopment /usr/local/bin/stopdevelopment /usr/local/bin/restartdevelopment
 ```
-
