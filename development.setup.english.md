@@ -699,7 +699,11 @@ Add the following code:
 sudo apachectl start
 
 # Start mysql
-brew services start mysql
+/usr/local/bin/mysql.server start
+
+# Check running processes
+ps -aef | grep httpd
+ps -aef | grep mysql
 ```
 
 Save the file.
@@ -715,10 +719,14 @@ Add the following code:
 #!/bin/bash
 
 # Start mysql
-brew services stop mysql
+/usr/local/bin/mysql.server stop
 
 # Start apache
 sudo apachectl stop
+
+# Check running processes
+ps -aef | grep httpd
+ps -aef | grep mysql
 ```
 
 Save the file.
@@ -737,7 +745,11 @@ Add the following code:
 sudo apachectl -k restart
 
 # Restart mysql
-brew services restart mysql
+/usr/local/bin/mysql.server restart
+
+# Check running processes
+ps -aef | grep httpd
+ps -aef | grep mysql
 ```
 
 Save the file.
