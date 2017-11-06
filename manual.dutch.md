@@ -33,7 +33,7 @@ Je hoeft dan verder niets meer aan te passen. De website is direct in je browser
 MySQL en Apache kunnen eenvoudig gestop worden met het terminal commando:
 
 ```
-$ startdevelopment
+$ stopdevelopment
 ```
 
 # Handige commando's:

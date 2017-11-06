@@ -34,7 +34,7 @@ There is nothing else to configure. The website is immediately ready in your bro
 MySQL and Apache can be stopped with the terminal command:
 
 ```
-$ startdevelopment
+$ stopdevelopment
 ```
 
 # Reference
