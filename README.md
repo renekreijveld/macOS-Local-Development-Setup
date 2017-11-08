@@ -12,6 +12,10 @@ Dit is de setup die ik heb gebruikt.
 - <a href="https://github.com/renekreijveld/macOS-Local-Development-Setup/blob/master/manual.dutch.md" target="_blank">Handleiding</a>
 
 ### Update geschiedenis
+- 2017-11-08 Regel toegevoegd in XDebug.ini zodat debug links in phpstorm geopend kunnen worden (dank aan https://github.com/roland-d)
+- 2017-11-08 Installatie wget toegevoegd
+- 2017-11-06 Restartdevelopment script toegevoegd
+- 2017-11-03 Xdebug.ini toegevoegd
 - 2017-11-03 Aanpassingen php.ini's toegevoegd
 - 2017-11-03 Zend OPcache, APCu Cache en XDebug toegevoegd voor PHP 5.3
 - 2017-11-02 Eerste opzet
@@ -30,6 +34,10 @@ This is the setup I used.
 - <a href="https://github.com/renekreijveld/macOS-Local-Development-Setup/blob/master/manual.english.md" target="_blank">Manual</a>
 
 ### Update history
+- 2017-11-08 Added line to XDebug.ini to allow debug links to be opened in phpstorm (thanks https://github.com/roland-d)
+- 2017-11-08 Added installation of wget
+- 2017-11-06 Added restartdevelopment script
+- 2017-11-03 Added Xdebug.ini
 - 2017-11-03 Added php.ini modifications
 - 2017-11-03 Zend OPcache, APCu Cache and XDebug added for PHP 5.3
 - 2017-11-02 Initial setup
