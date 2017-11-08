@@ -39,6 +39,12 @@ Homebrew/homebrew-core (git revision 94caa; last commit 2017-10-22)
 $ brew tap homebrew/php
 ```
 
+### Install wget
+
+```
+$ brew install wget
+```
+
 ### Stop existing Apache and install Homebrew version
 
 ```
