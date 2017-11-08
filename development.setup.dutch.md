@@ -607,6 +607,12 @@ xdebug.remote_handler=dbgp
 xdebug.remote_port=9000
 ```
 
+Als je met PhpStorm werkt is het ook handig om de volgende regel nog toe te voegen:
+
+```
+xdebug.file_link_format="phpstorm://open?file=%f&line=%l"
+```
+
 PHP 5.6:
 
 ```
@@ -623,6 +629,12 @@ xdebug.remote_autostart=1
 xdebug.remote_host=localhost
 xdebug.remote_handler=dbgp
 xdebug.remote_port=9000
+```
+
+Als je met PhpStorm werkt is het ook handig om de volgende regel nog toe te voegen:
+
+```
+xdebug.file_link_format="phpstorm://open?file=%f&line=%l"
 ```
 
 PHP 7.0:
@@ -643,6 +655,12 @@ xdebug.remote_handler=dbgp
 xdebug.remote_port=9000
 ```
 
+Als je met PhpStorm werkt is het ook handig om de volgende regel nog toe te voegen:
+
+```
+xdebug.file_link_format="phpstorm://open?file=%f&line=%l"
+```
+
 PHP 7.1:
 
 ```
@@ -659,6 +677,12 @@ xdebug.remote_autostart=1
 xdebug.remote_host=localhost
 xdebug.remote_handler=dbgp
 xdebug.remote_port=9000
+```
+
+Als je met PhpStorm werkt is het ook handig om de volgende regel nog toe te voegen:
+
+```
+xdebug.file_link_format="phpstorm://open?file=%f&line=%l"
 ```
 
 Herstart Apache:
