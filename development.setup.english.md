@@ -950,7 +950,8 @@ With:
 
 Set the permission on the mail folder. This is needed because otherwise Dovecot can't delete the messages and the log
 shows the error imap(YOURUSERNAME): Error: setegid(privileged) failed: Operation not permitted. This means the 
-/var/mail folder cannot be accessed by you because it is owned my root
+/var/mail folder cannot be accessed by you because it is owned my root. We may need to setup LMTP as described here:
+https://wiki2.dovecot.org/HowTo/PostfixDovecotLMTP
 
 ```
 $ sudo chown YOURUSERNAME:mail /var/mail
