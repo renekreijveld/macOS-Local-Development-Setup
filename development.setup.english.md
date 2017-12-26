@@ -976,8 +976,8 @@ With:
 ```
 
 Set the permission on the mail folder. This is needed because otherwise Dovecot can't delete the messages and the log
-shows the error Error: setegid(privileged) failed: Operation not permitted This is some kind of permission issue but
-I don't know what.
+shows the error Error: setegid(privileged) failed: Operation not permitted This is some kind of permission issue
+related to the groups.
 
 ```
 $ sudo chmod 777 /var/mail
