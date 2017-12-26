@@ -13,6 +13,8 @@ This setup works fine on my macOS machines. I am certainly no Apache, PHP and My
 
 <a href="https://coolestguidesontheplanet.com/get-apache-mysql-php-phpmyadmin-working-osx-10-10-yosemite/#phpmyadmin" target="_blank">Get Apache, MySQL, PHP and phpMyAdmin working on OSX 10.10 Yosemite</a>
 
+<a href="http://www.hatsaplenty.com/2016/07/access-mail-spool-osx-postfix-dovecot/" target="_blank">Access the Mail Spool on OSX with Postfix and Dovecot</a>
+
 # Install XCode Command Line Tools
 
 ```
@@ -790,3 +792,184 @@ Modify file rights:
 $ chmod +x /usr/local/bin/startdevelopment /usr/local/bin/stopdevelopment /usr/local/bin/restartdevelopment
 ```
 
+### Local mailserver
+
+Redirect all mail to one address that you can control.
+
+```
+$ sudo vi /etc/postfix/main.cf
+```
+
+Add the following to the end of the file 
+
+```
+virtual_maps=regexp:/etc/postfix/virtual-redirect
+```
+
+Create the redirect file
+
+```
+$ sudo vi /etc/postfix/virtual-redirect
+```
+
+Add the following into the file
+
+```
+/.+@.+/ username
+```
+
+Replace `username` with your OSX username. You can find this username by running
+
+```
+$ whoami
+```
+
+Map this file to Postfix
+
+```
+$ sudo postmap /etc/postfix/virtual-redirect
+```
+
+Start Postfix
+
+```
+$ sudo postfix start
+```
+
+Install Dovecot
+
+```
+$ brew install dovecot
+```
+
+Copy the configuration files
+
+```
+$ cp -pr /usr/local/Cellar/dovecot/2.2.33.2/share/doc/dovecot/example-config/ /usr/local/etc/dovecot/
+```
+
+The version number `2.2.33.2` may be different. Check the Dovecot version number
+
+```
+$ brew info dovecot
+```
+
+Create the Dovecot local configuration file
+
+```
+touch /usr/local/etc/dovecot/local.conf
+```
+
+Open the local configuration
+
+```
+$ sudo open -e /usr/local/etc/dovecot/local.conf
+```
+Add the following configuration
+
+```
+# Listen for localhost
+listen = 127.0.0.1
+ 
+# Use IMAP
+protocols = imap
+ 
+# Set a password
+# This is fine for local development, not a proper server.
+passdb {
+    driver = static
+    args = password=YOURPASSWORD
+}
+ 
+# Set the mail location. %u will be substituted with your username.
+# The first path is where your other IMAP folders will go,
+# the second is where your mail spool is.
+# See dovecot/conf.d/10-mail.conf for more information.
+mail_location = mbox:/Users/%u/mail:INBOX=/var/mail/%u
+ 
+# Set the user and group for accessing mail.
+mail_uid = YOURUSERNAME
+mail_gid = staff
+ 
+# Login user is internally used by login processes. This is the most 
+# untrusted user in Dovecot system. It shouldn't have access to anything 
+# at all.
+default_login_user = _dovenull
+ 
+# Internal user is used by unprivileged processes. It should be separate 
+# from login user, so that login processes can't disturb other processes.
+default_internal_user = _dovecot
+ 
+# Group to enable temporarily for privileged operations. Currently this is
+# used only with INBOX when either its initial creation or dotlocking 
+# fails. Typically this is set to "mail" to give access to /var/mail.
+mail_privileged_group = mail
+```
+
+Replace the following settings
+
+```
+YOURPASSWORD with the password you will use to login to the IMAP server
+YOURUSERNAME with the OSX username
+
+```
+
+Turn off SSL
+
+```
+$ sudo open -e /usr/local/etc/dovecot/conf.d/10-ssl.conf
+```
+
+Replace:
+
+```
+# ssl = yes
+```
+
+With:
+
+```
+ssl = no
+```
+
+Replace:
+
+```
+ssl_cert = </etc/ssl/certs/dovecot.pem
+ssl_key = </etc/ssl/private/dovecot.pem
+```
+
+With:
+
+```
+#ssl_cert = </etc/ssl/certs/dovecot.pem
+#ssl_key = </etc/ssl/private/dovecot.pem
+```
+
+Update the permissions on your mail spool with
+
+```
+$ chmod +t /var/mail/YOURUSERNAME
+```
+
+### Configure the mail client
+
+Incoming mail
+
+```
+Server Name: localhost
+Port: 143
+User Name: The OSX username as set in the mail_uid
+Connection security: None
+Authentication method: Password, transmitted insecurely
+```
+
+Outgoing mail
+
+```
+Server Name: localhost
+Port: 25
+User Name: The OSX username as set in the mail_uid
+Connection security: None
+Authentication method: Password, transmitted insecurely
+```
