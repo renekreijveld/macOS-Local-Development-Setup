@@ -946,10 +946,63 @@ With:
 #ssl_key = </etc/ssl/private/dovecot.pem
 ```
 
+Turn off PAM Authentication
+
+```
+$ sudo open -e /usr/local/etc/dovecot/conf.d/auth-system.conf.ext
+```
+
+Replace:
+```
+passdb {
+  driver = pam
+  # [session=yes] [setcred=yes] [failure_show_msg=yes] [max_requests=<n>]
+  # [cache_key=<key>] [<service name>]
+  #args = dovecot
+}
+
+```
+
+With:
+
+```
+#passdb {
+#  driver = pam
+#  # [session=yes] [setcred=yes] [failure_show_msg=yes] [max_requests=<n>]
+#  # [cache_key=<key>] [<service name>]
+#  #args = dovecot
+#}
+
+```
+
+Set the permission on the mail folder. This is needed because otherwise Dovecot can't delete the messages and the log
+shows the error Error: setegid(privileged) failed: Operation not permitted This is some kind of permission issue but
+I don't know what.
+
+```
+$ sudo chmod 777 /var/mail
+```
+
+
+Set the persmissions
+
+```
+$ chmod 0600 /var/mail/*
+```
+
 Update the permissions on your mail spool with
 
 ```
 $ chmod +t /var/mail/YOURUSERNAME
+```
+
+Start or Restart Dovecot
+```
+$ sudo brew services start dovecot
+
+or
+
+$ sudo brew services restart dovecot
 ```
 
 ### Configure the mail client
