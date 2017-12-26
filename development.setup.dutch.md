@@ -29,8 +29,8 @@ $ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/maste
 
 ```
 $ brew --version
-Homebrew 1.3.6
-Homebrew/homebrew-core (git revision 94caa; last commit 2017-10-22)
+Homebrew 1.4.1
+Homebrew/homebrew-core (git revision 859b; last commit 2017-12-25)
 ```
 
 ### Extra Brew Taps toevoegen
@@ -495,7 +495,7 @@ Verwijder alle bestaande regels onder het commentaar blok en plaats alleen de vo
 
 <Virtualhost *:80>
     VirtualDocumentRoot "/Users/your_user/Development/Sites/%1"
-    ServerAlias *.dev
+    ServerAlias *.test
     UseCanonicalName Off
 </Virtualhost>
 ```
@@ -505,7 +505,7 @@ Verwijder alle bestaande regels onder het commentaar blok en plaats alleen de vo
 # Dnsmasq installeren
 
 Via bovenstaande setup hebben we het nu heel eenvoudig gemaakt om een nieuwe virtuele host toe te voegen.
-Door een submap te maken in de map ~/Development/Sites/ bijvoorbeeld 'testsite', zal de direct als virtuele host te benaderen zijn via de domeinnaam 'testsite.dev'.
+Door een submap te maken in de map ~/Development/Sites/ bijvoorbeeld 'testsite', zal de direct als virtuele host te benaderen zijn via de domeinnaam 'testsite.test'.
 
 Deze domeinnaam wordt niet automatisch geresolved op je computer en daarvoor installeren we de tool Dnsmasq.
 
@@ -513,10 +513,10 @@ Deze domeinnaam wordt niet automatisch geresolved op je computer en daarvoor ins
 $ brew install dnsmasq
 ```
 
-Instellen *.dev hosts:
+Instellen *.test hosts:
 
 ```
-$ echo 'address=/.dev/127.0.0.1' > /usr/local/etc/dnsmasq.conf
+$ echo 'address=/.test/127.0.0.1' > /usr/local/etc/dnsmasq.conf
 ```
 
 Dnsmasq starten en instellen dat bij elke reboot dnsmasq wordt gestart:
@@ -529,13 +529,13 @@ Toevoegen aan resolvers:
 
 ```
 $ sudo mkdir -v /etc/resolver
-$ sudo bash -c 'echo "nameserver 127.0.0.1" > /etc/resolver/dev'
+$ sudo bash -c 'echo "nameserver 127.0.0.1" > /etc/resolver/test'
 ```
 
-Testen door het pingen naar een onbekende .dev naam. Er moet een reply komen van 127.0.0.1:
+Testen door het pingen naar een onbekende .test naam. Er moet een reply komen van 127.0.0.1:
 
 ```
-$ ping nieuwewebsite.dev
+$ ping nieuwewebsite.test
 ```
 
 Herstart apache:
@@ -577,9 +577,8 @@ $ brew install php71-xdebug --build-from-source
 ```
 $ sphp 72
 $ brew install php72-opcache php72-apcu --build-from-source
+$ brew install php72-xdebug --build-from-source
 ```
-
-XDebug is nog niet beschikbaar voor PHP 7.2.
 
 Herstart apache:
 
@@ -678,6 +677,30 @@ Vervang de inhoud door deze inhoud:
 ```
 [xdebug]
 zend_extension="/usr/local/opt/php71-xdebug/xdebug.so"
+xdebug.remote_enable=1
+xdebug.remote_autostart=1
+xdebug.remote_host=localhost
+xdebug.remote_handler=dbgp
+xdebug.remote_port=9000
+```
+
+Als je met PhpStorm werkt is het ook handig om de volgende regel nog toe te voegen:
+
+```
+xdebug.file_link_format="phpstorm://open?file=%f&line=%l"
+```
+
+PHP 7.2:
+
+```
+$ open -e /usr/local/etc/php/7.2/conf.d/ext-xdebug.ini
+```
+
+Vervang de inhoud door deze inhoud:
+
+```
+[xdebug]
+zend_extension="/usr/local/opt/php72-xdebug/xdebug.so"
 xdebug.remote_enable=1
 xdebug.remote_autostart=1
 xdebug.remote_host=localhost
