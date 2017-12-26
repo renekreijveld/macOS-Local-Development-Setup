@@ -873,14 +873,13 @@ listen = 127.0.0.1
  
 # Use IMAP
 protocols = imap
- 
-# Set a password
-# This is fine for local development, not a proper server.
+
+# Set the authentication
 passdb {
-    driver = static
-    args = password=YOURPASSWORD
+  args = login
+  driver = pam
 }
- 
+
 # Set the mail location. %u will be substituted with your username.
 # The first path is where your other IMAP folders will go,
 # the second is where your mail spool is.
@@ -904,12 +903,14 @@ default_internal_user = _dovecot
 # used only with INBOX when either its initial creation or dotlocking 
 # fails. Typically this is set to "mail" to give access to /var/mail.
 mail_privileged_group = mail
+
+# Add a log
+log_path = /var/log/dovecot.log
 ```
 
 Replace the following settings
 
 ```
-YOURPASSWORD with the password you will use to login to the IMAP server
 YOURUSERNAME with the OSX username
 
 ```
@@ -946,45 +947,17 @@ With:
 #ssl_key = </etc/ssl/private/dovecot.pem
 ```
 
-Turn off PAM Authentication
-
-```
-$ sudo open -e /usr/local/etc/dovecot/conf.d/auth-system.conf.ext
-```
-
-Replace:
-```
-passdb {
-  driver = pam
-  # [session=yes] [setcred=yes] [failure_show_msg=yes] [max_requests=<n>]
-  # [cache_key=<key>] [<service name>]
-  #args = dovecot
-}
-
-```
-
-With:
-
-```
-#passdb {
-#  driver = pam
-#  # [session=yes] [setcred=yes] [failure_show_msg=yes] [max_requests=<n>]
-#  # [cache_key=<key>] [<service name>]
-#  #args = dovecot
-#}
-
-```
 
 Set the permission on the mail folder. This is needed because otherwise Dovecot can't delete the messages and the log
-shows the error Error: setegid(privileged) failed: Operation not permitted This is some kind of permission issue
-related to the groups.
+shows the error imap(YOURUSERNAME): Error: setegid(privileged) failed: Operation not permitted. This means the 
+/var/mail folder cannot be accessed by you because it is owned my root
 
 ```
-$ sudo chmod 777 /var/mail
+$ sudo chown YOURUSERNAME:mail /var/mail
 ```
 
 
-Set the persmissions
+Set the permissions
 
 ```
 $ chmod 0600 /var/mail/*
@@ -1012,9 +985,10 @@ Incoming mail
 ```
 Server Name: localhost
 Port: 143
-User Name: The OSX username as set in the mail_uid
+User Name: The OSX username
 Connection security: None
 Authentication method: Password, transmitted insecurely
+User Name: YOURUSERNAME
 ```
 
 Outgoing mail
@@ -1022,7 +996,8 @@ Outgoing mail
 ```
 Server Name: localhost
 Port: 25
-User Name: The OSX username as set in the mail_uid
+User Name: The OSX username
 Connection security: None
 Authentication method: Password, transmitted insecurely
+User Name: YOURUSERNAME
 ```
