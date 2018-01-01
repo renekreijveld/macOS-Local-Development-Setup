@@ -31,8 +31,8 @@ $ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/maste
 
 ```
 $ brew --version
-Homebrew 1.3.6
-Homebrew/homebrew-core (git revision 94caa; last commit 2017-10-22)
+Homebrew 1.4.1
+Homebrew/homebrew-core (git revision 859b; last commit 2017-12-25)
 ```
 
 ### Add extra Brew Taps
@@ -497,7 +497,7 @@ Remove all existing lines below the comments block and add the following lines:
 
 <Virtualhost *:80>
     VirtualDocumentRoot "/Users/your_user/Development/Sites/%1"
-    ServerAlias *.dev
+    ServerAlias *.test
     UseCanonicalName Off
 </Virtualhost>
 ```
@@ -507,7 +507,7 @@ Remove all existing lines below the comments block and add the following lines:
 # Dnsmasq installation
 
 We can now very easily add a new virtual host.
-By creating a subfolder in ~/Development/Sites/, for example, 'testsite', this new website is immediately accessible through the domain name 'testsite.dev'.
+By creating a subfolder in ~/Development/Sites/, for example, 'testsite', this new website is immediately accessible through the domain name 'testsite.test'.
 
 But we need to modify DNS so it resolves to this domain. Therefor we install Dnsmasq.
 
@@ -515,10 +515,10 @@ But we need to modify DNS so it resolves to this domain. Therefor we install Dns
 $ brew install dnsmasq
 ```
 
-Setup *.dev hosts:
+Setup *.test hosts:
 
 ```
-$ echo 'address=/.dev/127.0.0.1' > /usr/local/etc/dnsmasq.conf
+$ echo 'address=/.test/127.0.0.1' > /usr/local/etc/dnsmasq.conf
 ```
 
 Start Dnsmasq and make sure it starts at every reboot:
@@ -531,13 +531,13 @@ Add to resolvers:
 
 ```
 $ sudo mkdir -v /etc/resolver
-$ sudo bash -c 'echo "nameserver 127.0.0.1" > /etc/resolver/dev'
+$ sudo bash -c 'echo "nameserver 127.0.0.1" > /etc/resolver/test'
 ```
 
-Test this by pinging to an unknown .dev name. There should come a reply from 127.0.0.1:
+Test this by pinging to an unknown .test name. There should come a reply from 127.0.0.1:
 
 ```
-$ ping newwebsite.dev
+$ ping newwebsite.test
 ```
 
 Restart apache:
@@ -579,9 +579,8 @@ $ brew install php71-xdebug --build-from-source
 ```
 $ sphp 72
 $ brew install php72-opcache php72-apcu --build-from-source
+$ brew install php72-xdebug --build-from-source
 ```
-
-XDebug is not yet available for PHP 7.2.
 
 Restart apache:
 
@@ -680,6 +679,30 @@ Replace the contents with these contents:
 ```
 [xdebug]
 zend_extension="/usr/local/opt/php71-xdebug/xdebug.so"
+xdebug.remote_enable=1
+xdebug.remote_autostart=1
+xdebug.remote_host=localhost
+xdebug.remote_handler=dbgp
+xdebug.remote_port=9000
+```
+
+If you work with PhpStorm it is also a good idea to add the following line:
+
+```
+xdebug.file_link_format="phpstorm://open?file=%f&line=%l"
+```
+
+PHP 7.2:
+
+```
+$ open -e /usr/local/etc/php/7.2/conf.d/ext-xdebug.ini
+```
+
+Replace the contents with these contents:
+
+```
+[xdebug]
+zend_extension="/usr/local/opt/php72-xdebug/xdebug.so"
 xdebug.remote_enable=1
 xdebug.remote_autostart=1
 xdebug.remote_host=localhost
