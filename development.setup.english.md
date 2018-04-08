@@ -970,6 +970,17 @@ With:
 #ssl_key = </etc/ssl/private/dovecot.pem
 ```
 
+In case you are using or upgrading to Dovecot 2.3.1 it is necessary to add the following line as well:
+
+```
+default_internal_group = mail
+```
+
+To find out which Dovecot version you are running, run this command:
+
+```
+dovecot --version
+```
 
 Set the permission on the mail folder. This is needed because otherwise Dovecot can't delete the messages and the log
 shows the error imap(YOURUSERNAME): Error: setegid(privileged) failed: Operation not permitted. This means the 
