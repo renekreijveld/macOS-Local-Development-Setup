@@ -192,16 +192,9 @@ In your browser go to http://localhost, there the My User Web Root should appear
 
 # Install PHP
 
-### Install PHP 5.3
-
-```
-$ brew install php53 --with-httpd
-```
-
 ### Install PHP 5.6
 
 ```
-$ brew unlink php53
 $ brew install php56 --with-httpd
 ```
 
