@@ -192,12 +192,6 @@ In your browser go to http://localhost, there the My User Web Root should appear
 
 # Install PHP
 
-### Install PHP 5.3
-
-```
-$ brew install php53 --with-httpd
-```
-
 ### Install PHP 5.6
 
 ```
@@ -244,7 +238,6 @@ $ open -e /usr/local/etc/httpd/httpd.conf
 Replace:
 
 ```
-LoadModule php5_module        /usr/local/Cellar/php53/5.3.29_8/libexec/apache2/libphp5.so
 LoadModule php5_module        /usr/local/Cellar/php56/5.6.32_8/libexec/apache2/libphp5.so
 LoadModule php7_module        /usr/local/Cellar/php70/7.0.25_17/libexec/apache2/libphp7.so
 LoadModule php7_module        /usr/local/Cellar/php71/7.1.11_22/libexec/apache2/libphp7.so
@@ -254,11 +247,10 @@ LoadModule php7_module        /usr/local/Cellar/php72/7.2.0RC5_8/libexec/apache2
 With:
 
 ```
-#LoadModule php5_module    /usr/local/opt/php53/libexec/apache2/libphp5.so
-LoadModule php5_module    /usr/local/opt/php56/libexec/apache2/libphp5.so
-#LoadModule php7_module    /usr/local/opt/php70/libexec/apache2/libphp7.so
-#LoadModule php7_module    /usr/local/opt/php71/libexec/apache2/libphp7.so
-#LoadModule php7_module    /usr/local/opt/php72/libexec/apache2/libphp7.so
+LoadModule php5_module /usr/local/opt/php@5.6/lib/httpd/modules/libphp5.so
+#LoadModule php7_module /usr/local/opt/php@7.0/lib/httpd/modules/libphp7.so
+#LoadModule php7_module /usr/local/opt/php@7.1/lib/httpd/modules/libphp7.so
+#LoadModule php7_module /usr/local/opt/php/lib/httpd/modules/libphp7.so
 ```
 
 Replace:
@@ -314,7 +306,6 @@ $ open -e /usr/local/etc/httpd/httpd.conf
 Replace:
 
 ```
-#LoadModule php5_module    /usr/local/opt/php53/libexec/apache2/libphp5.so
 LoadModule php5_module    /usr/local/opt/php56/libexec/apache2/libphp5.so
 #LoadModule php7_module    /usr/local/opt/php70/libexec/apache2/libphp7.so
 #LoadModule php7_module    /usr/local/opt/php71/libexec/apache2/libphp7.so
@@ -355,11 +346,6 @@ upload_max_filesize = 50M
 date.timezone = Europe/Amsterdam
 ```
 
-Modify php.ini PHP 5.3:
-
-```
-$ open -e /usr/local/etc/php/5.3/php.ini
-```
 
 Modify php.ini PHP 5.6:
 
@@ -551,18 +537,12 @@ $ sudo apachectl -k restart
 To have PHP run faster we install Zend OPcache and APCu Cache.
 
 ```
-$ sphp 53
-$ brew install php53-opcache php53-apcu --build-from-source
-$ brew install php53-xdebug --build-from-source
-```
-
-Repeat this process for the other PHP versions.
-
-```
 $ sphp 56
 $ brew install php56-opcache php56-apcu --build-from-source
 $ brew install php56-xdebug --build-from-source
 ```
+
+Repeat this process for the other PHP versions.
 
 ```
 $ sphp 70
@@ -595,30 +575,6 @@ $ brew install xdebug-osx
 ```
 
 The standard configurations might not be good enough. We modify the configurations.
-
-PHP 5.3:
-
-```
-$ open -e /usr/local/etc/php/5.3/conf.d/ext-xdebug.ini
-```
-
-Replace the contents with these contents:
-
-```
-[xdebug]
-zend_extension="/usr/local/opt/php53-xdebug/xdebug.so"
-xdebug.remote_enable=1
-xdebug.remote_autostart=1
-xdebug.remote_host=localhost
-xdebug.remote_handler=dbgp
-xdebug.remote_port=9000
-```
-
-If you work with PhpStorm it is also a good idea to add the following line:
-
-```
-xdebug.file_link_format="phpstorm://open?file=%f&line=%l"
-```
 
 PHP 5.6:
 
