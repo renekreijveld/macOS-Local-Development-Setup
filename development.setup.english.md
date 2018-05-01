@@ -31,14 +31,8 @@ $ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/maste
 
 ```
 $ brew --version
-Homebrew 1.4.1
-Homebrew/homebrew-core (git revision 859b; last commit 2017-12-25)
-```
-
-### Add extra Brew Taps
-
-```
-$ brew tap homebrew/php
+Homebrew 1.6.2
+Homebrew/homebrew-core (git revision 15ab; last commit 2018-04-30)
 ```
 
 ### Install wget
@@ -61,10 +55,12 @@ You can setup Apache so it starts at every (re)boot of your machine.
 $ sudo brew services start httpd
 ```
 
-You can also start Apache manually
+You can also start, stop or restart Apache manually
 
 ```
 $ sudo apachectl start
+$ sudo apachectl stop
+$ sudo apachectl -k restart
 ```
 
 Test Apache by going in your browser to: http://localhost:8080
@@ -138,7 +134,7 @@ Search for:
 And replace with:
 
 ```
-LoadModule rewrite_module lib/httpd/modules/mod_rewrite.so (dus # weghalen)
+LoadModule rewrite_module lib/httpd/modules/mod_rewrite.so (so remove #)
 ```
 
 ### Modify User & Group
@@ -192,48 +188,97 @@ In your browser go to http://localhost, there the My User Web Root should appear
 
 # Install PHP
 
-### Install PHP 5.3
-
-```
-$ brew install php53 --with-httpd
-```
-
 ### Install PHP 5.6
 
 ```
-$ brew unlink php53
-$ brew install php56 --with-httpd
+$ brew install php@5.6
 ```
 
 ### Install PHP 7.0
 
 ```
-$ brew unlink php56
-$ brew install php70 --with-httpd
+$ brew install php@7.0
 ```
 
 ### Install PHP 7.1
 
 ```
-$ brew unlink php70
-$ brew install php71 --with-httpd
+$ brew install php@7.1
 ```
 
 ### Install PHP 7.2
 
 ```
-$ brew unlink php71
-$ brew install php72 --with-httpd
+$ brew install php@7.2
 ```
 
-### Switch back to PHP 5.6
+# Modify PHP.ini
+
+To have webapplications work good we need to modify a number of php.ini settings.
+The following values need to be modified. Search the setting in php.ini, copy the line and add a ; at the beginning of the line. Then enter the new value.
+
+For display_errors you might want make an exception and leave that to 'On', but that is however you prefer.
 
 ```
-$ brew unlink php72
-$ brew link php56
+output_buffering = Off
+max_execution_time = 180
+max_input_time = 180
+memory_limit = 256M
+display_errors = Off
+post_max_size = 50M
+upload_max_filesize = 50M
+date.timezone = Europe/Amsterdam
 ```
 
-# Setup PHP in Apache
+Modify php.ini PHP 5.6:
+
+```
+$ open -e /usr/local/etc/php/5.6/php.ini
+```
+
+Modify php.ini PHP 7.0:
+
+```
+$ open -e /usr/local/etc/php/7.0/php.ini
+```
+
+Modify php.ini PHP 7.1:
+
+```
+$ open -e /usr/local/etc/php/7.1/php.ini
+```
+
+Modify php.ini PHP 7.2:
+
+```
+$ open -e /usr/local/etc/php/7.2/php.ini
+```
+
+Restart Apache after the php.ini modifications:
+
+```
+$ sudo apachectl -k restart
+```
+
+Switch back yo the first PHP version
+
+```
+$ brew unlink php@7.2 && brew link --force --overwrite php@5.6
+```
+
+At this point, I strongly recommend closing ALL your terminal tabs and windows. This will mean opening a new terminal to continue with the next step. This is strongly recommended because some really strange path issues can arise with existing terminals.
+
+Quick test that we're in the correct version:
+
+```
+$ php -v
+PHP 5.6.36 (cli) (built: Apr 26 2018 22:02:57) 
+Copyright (c) 1997-2016 The PHP Group
+Zend Engine v2.6.0, Copyright (c) 1998-2016 Zend Technologies
+    with Zend OPcache v7.0.6-dev, Copyright (c) 1999-2016, by Zend Technologies
+```
+
+# Apache PHP Setup - Part 1
 
 ### Modify Apache configuration
 
@@ -241,24 +286,17 @@ $ brew link php56
 $ open -e /usr/local/etc/httpd/httpd.conf
 ```
 
-Replace:
+Find the line that loads the mod_rewrite module:
+
+LoadModule rewrite_module lib/httpd/modules/mod_rewrite.so
+
+Below this add the following libphp modules:
 
 ```
-LoadModule php5_module        /usr/local/Cellar/php53/5.3.29_8/libexec/apache2/libphp5.so
-LoadModule php5_module        /usr/local/Cellar/php56/5.6.32_8/libexec/apache2/libphp5.so
-LoadModule php7_module        /usr/local/Cellar/php70/7.0.25_17/libexec/apache2/libphp7.so
-LoadModule php7_module        /usr/local/Cellar/php71/7.1.11_22/libexec/apache2/libphp7.so
-LoadModule php7_module        /usr/local/Cellar/php72/7.2.0RC5_8/libexec/apache2/libphp7.so
-```
-
-With:
-
-```
-#LoadModule php5_module    /usr/local/opt/php53/libexec/apache2/libphp5.so
-LoadModule php5_module    /usr/local/opt/php56/libexec/apache2/libphp5.so
-#LoadModule php7_module    /usr/local/opt/php70/libexec/apache2/libphp7.so
-#LoadModule php7_module    /usr/local/opt/php71/libexec/apache2/libphp7.so
-#LoadModule php7_module    /usr/local/opt/php72/libexec/apache2/libphp7.so
+LoadModule php5_module /usr/local/opt/php@5.6/lib/httpd/modules/libphp5.so
+#LoadModule php7_module /usr/local/opt/php@7.0/lib/httpd/modules/libphp7.so
+#LoadModule php7_module /usr/local/opt/php@7.1/lib/httpd/modules/libphp7.so
+#LoadModule php7_module /usr/local/opt/php@7.2/lib/httpd/modules/libphp7.so
 ```
 
 Replace:
@@ -301,95 +339,80 @@ Check if it is working by going in your browser to http://localhost/info.php
 To easily switch between PHP versions we install a PHP switcher script.
 
 ```
-$ curl -L https://gist.github.com/w00fz/142b6b19750ea6979137b963df959d11/raw > /usr/local/bin/sphp
+$ curl -L https://gist.githubusercontent.com/rhukster/f4c04f1bf59e0b74e335ee5d186a98e2/raw > /usr/local/bin/sphp
 $ chmod +x /usr/local/bin/sphp
 ```
 
-### Modify Apache configuration
+# Check your local path
 
 ```
-$ open -e /usr/local/etc/httpd/httpd.conf
+$ echo $PATH
+/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 ```
 
-Replace:
+If you don't see this, you might need to add these manually to your path. Depending on your shell your using, you may need to add this line to ~/.profile, ~/.bash_profile, or ~/.zshrc. We will assume you are using the default bash shell, so add this line to a your .profile (create it if it doesn't exist) file at the root of your user directory:
 
 ```
-#LoadModule php5_module    /usr/local/opt/php53/libexec/apache2/libphp5.so
-LoadModule php5_module    /usr/local/opt/php56/libexec/apache2/libphp5.so
-#LoadModule php7_module    /usr/local/opt/php70/libexec/apache2/libphp7.so
-#LoadModule php7_module    /usr/local/opt/php71/libexec/apache2/libphp7.so
-#LoadModule php7_module    /usr/local/opt/php72/libexec/apache2/libphp7.so
+$ open -e ~/.profile
+export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 ```
 
-With:
+Then stop and restart the Terminal application.
+
+### Testing the PHP Switching
+
+Test the switcher script:
 
 ```
-#Brew PHP LoadModule for `sphp` switcher23.1605
-LoadModule php5_module /usr/local/lib/libphp5.so
-#LoadModule php7_module /usr/local/lib/libphp7.so
-```
-
-Save the file. Test the switcher script:
-
-```
-$ sphp 70
+$ sphp 7.0
 ```
 
 Refresh the page <a href="http://localhost/info.php" target="_blank">http://localhost/info.php</a> in your browser.
 
-# Modify PHP.ini
+# Updating software
 
-To have webapplications work good we need to modify a number of php.ini settings.
-The following values need to be modified. Search the setting in php.ini, copy the line and add a ; at the beginning of the line. Then enter the new value.
-
-For display_errors you might want make an exception and leave that to 'On', but that is however you prefer.
+Brew makes it super easy to update PHP and the other packages you install. The first step is to update Brew so that it gets a list of available updates:
 
 ```
-output_buffering = Off
-max_execution_time = 180
-max_input_time = 180
-memory_limit = 256M
-display_errors = Off
-post_max_size = 50M
-upload_max_filesize = 50M
-date.timezone = Europe/Amsterdam
+$ brew update
 ```
 
-Modify php.ini PHP 5.3:
+This will spit out a list of available updates, and any deleted formulas. To upgrade the packages simply type:
 
 ```
-$ open -e /usr/local/etc/php/5.3/php.ini
+$ brew upgrade
 ```
 
-Modify php.ini PHP 5.6:
+To update all of your PHP versions you have to switch to them, and then run brew update.
 
 ```
-$ open -e /usr/local/etc/php/5.6/php.ini
+$ sphp 5.6
+Switching to php@5.6
+Switching your shell
+Unlinking /usr/local/Cellar/php@5.6/5.6.36... 0 symlinks removed
+Unlinking /usr/local/Cellar/php@7.0/7.0.30... 0 symlinks removed
+Unlinking /usr/local/Cellar/php@7.1/7.1.17... 0 symlinks removed
+Unlinking /usr/local/Cellar/php/7.2.5... 24 symlinks removed
+Linking /usr/local/Cellar/php@5.6/5.6.36... 25 symlinks created
+
+If you need to have this software first in your PATH instead consider running:
+  echo 'export PATH="/usr/local/opt/php@5.6/bin:$PATH"' >> ~/.bash_profile
+  echo 'export PATH="/usr/local/opt/php@5.6/sbin:$PATH"' >> ~/.bash_profile
+You will need sudo power from now on
+Switching your apache conf
+Restarting apache
+
+PHP 5.6.36 (cli) (built: Apr 26 2018 22:02:57) 
+Copyright (c) 1997-2016 The PHP Group
+Zend Engine v2.6.0, Copyright (c) 1998-2016 Zend Technologies
+    with Zend OPcache v7.0.6-dev, Copyright (c) 1999-2016, by Zend Technologies
+
+All done!
+$ brew update
+Already up-to-date.
 ```
 
-Modify php.ini PHP 7.0:
-
-```
-$ open -e /usr/local/etc/php/7.0/php.ini
-```
-
-Modify php.ini PHP 7.1:
-
-```
-$ open -e /usr/local/etc/php/7.1/php.ini
-```
-
-Modify php.ini PHP 7.2:
-
-```
-$ open -e /usr/local/etc/php/7.2/php.ini
-```
-
-Restart Apache after the php.ini modifications:
-
-```
-$ sudo apachectl -k restart
-```
+Repeat these steps for PHP 7.0, 7.1 and 7.2.
 
 # MySQL installation
 
@@ -416,10 +439,10 @@ Answers:
 Would you like to setup VALIDATE PASSWORD plugin? Press y|Y for Yes, any other key for No: Enter (= no)
 Please set the password for root here. New password: root
 Re-enter new password: root
-Remove anonymous users? y
-Disallow root login remotely? y
-Remove test database and access to it? y
-Reload privilege tables now? y
+Remove anonymous users? (Press y|Y for Yes, any other key for No) : Y
+Disallow root login remotely? (Press y|Y for Yes, any other key for No) : Y
+Remove test database and access to it? (Press y|Y for Yes, any other key for No) : Y
+Reload privilege tables now? (Press y|Y for Yes, any other key for No) : Y
 ```
 
 # phpMyAdmin installation
@@ -546,40 +569,76 @@ Restart apache:
 $ sudo apachectl -k restart
 ```
 
-# APC Cache and XDebug installation:
+# APC Cache installation:
 
 To have PHP run faster we install Zend OPcache and APCu Cache.
 
 ```
-$ sphp 53
-$ brew install php53-opcache php53-apcu --build-from-source
-$ brew install php53-xdebug --build-from-source
+$ pecl channel-update pecl.php.net
+$ pecl install apcu-4.0.11
 ```
 
-Repeat this process for the other PHP versions.
+Answer any question by simply pressing Return to accept the default values.
 
 ```
-$ sphp 56
-$ brew install php56-opcache php56-apcu --build-from-source
-$ brew install php56-xdebug --build-from-source
+$ sphp 7.0
+$ pecl uninstall -r apcu
+$ pecl install apcu
 ```
 
-```
-$ sphp 70
-$ brew install php70-opcache php70-apcu --build-from-source
-$ brew install php70-xdebug --build-from-source
-```
+Answer any question by simply pressing Return to accept the default values.
 
 ```
-$ sphp 71
-$ brew install php71-opcache php71-apcu --build-from-source
-$ brew install php71-xdebug --build-from-source
+$ sphp 7.1
+$ pecl uninstall -r apcu
+$ pecl install apcu
 ```
 
+Answer any question by simply pressing Return to accept the default values.
+
 ```
-$ sphp 72
-$ brew install php72-opcache php72-apcu --build-from-source
-$ brew install php72-xdebug --build-from-source
+$ sphp 7.2
+$ pecl uninstall -r apcu
+$ pecl install apcu
+```
+
+Answer any question by simply pressing Return to accept the default values.
+
+# XDebug installation:
+
+```
+$ sphp 5.6
+$ pecl install xdebug-2.5.5
+```
+
+You will now need to remove the zend_extension="xdebug.so"" entry that PECL adds to the top of your php.ini. So edit this file and remove the top line:
+
+```
+$ open -e /usr/local/etc/php/5.6/php.ini
+```
+
+Create a new config file for XDebug:
+
+```
+$ open -e /usr/local/etc/php/5.6/conf.d/ext-xdebug.ini
+```
+
+And add the following to it:
+
+```
+[xdebug]
+zend_extension="xdebug.so"
+xdebug.remote_enable=1
+xdebug.remote_autostart=1
+xdebug.remote_host=localhost
+xdebug.remote_handler=dbgp
+xdebug.remote_port=9000
+```
+
+If you work with PhpStorm it is also a good idea to add the following line:
+
+```
+xdebug.file_link_format="phpstorm://open?file=%f&line=%l"
 ```
 
 Restart apache:
@@ -588,73 +647,56 @@ Restart apache:
 $ sudo apachectl -k restart
 ```
 
+In your browser go to http://localhost/info.php to ensure that XDebug is installed.
+
+
 Install XDebug enable/disable script:
 
 ```
-$ brew install xdebug-osx
+$ curl -L https://gist.githubusercontent.com/rhukster/073a2c1270ccb2c6868e7aced92001cf/raw > /usr/local/bin/xdebug
+$ chmod +x /usr/local/bin/xdebug
 ```
 
-The standard configurations might not be good enough. We modify the configurations.
-
-PHP 5.3:
+Using it is simple, you can get the current state with:
 
 ```
-$ open -e /usr/local/etc/php/5.3/conf.d/ext-xdebug.ini
+$ xdebug
 ```
 
-Replace the contents with these contents:
+And then turn it on or off with:
 
 ```
-[xdebug]
-zend_extension="/usr/local/opt/php53-xdebug/xdebug.so"
-xdebug.remote_enable=1
-xdebug.remote_autostart=1
-xdebug.remote_host=localhost
-xdebug.remote_handler=dbgp
-xdebug.remote_port=9000
+$ xdebug on
+$ xdebug off
 ```
 
-If you work with PhpStorm it is also a good idea to add the following line:
+### Xdebug for other PHP versions
+
+### PHP 7.0
 
 ```
-xdebug.file_link_format="phpstorm://open?file=%f&line=%l"
+$ sphp 7.0
+$ pecl uninstall -r xdebug
+$ pecl install xdebug
 ```
 
-PHP 5.6:
+You will now need to remove the zend_extension="xdebug.so"" entry that PECL adds to the top of your php.ini. So edit this file and remove the top line:
 
 ```
-$ open -e /usr/local/etc/php/5.6/conf.d/ext-xdebug.ini
+$ open -e /usr/local/etc/php/7.0/php.ini
 ```
 
-Replace the contents with these contents:
-
-```
-[xdebug]
-zend_extension="/usr/local/opt/php56-xdebug/xdebug.so"
-xdebug.remote_enable=1
-xdebug.remote_autostart=1
-xdebug.remote_host=localhost
-xdebug.remote_handler=dbgp
-xdebug.remote_port=9000
-```
-
-If you work with PhpStorm it is also a good idea to add the following line:
-
-```
-xdebug.file_link_format="phpstorm://open?file=%f&line=%l"
-```
-
-PHP 7.0:
+Create a new config file for XDebug:
 
 ```
 $ open -e /usr/local/etc/php/7.0/conf.d/ext-xdebug.ini
 ```
 
-Replace the contents with these contents:
+And add the following to it:
 
 ```
 [xdebug]
-zend_extension="/usr/local/opt/php70-xdebug/xdebug.so"
+zend_extension="xdebug.so"
 xdebug.remote_enable=1
 xdebug.remote_autostart=1
 xdebug.remote_host=localhost
@@ -668,71 +710,98 @@ If you work with PhpStorm it is also a good idea to add the following line:
 xdebug.file_link_format="phpstorm://open?file=%f&line=%l"
 ```
 
-PHP 7.1:
-
-```
-$ open -e /usr/local/etc/php/7.1/conf.d/ext-xdebug.ini
-```
-
-Replace the contents with these contents:
-
-```
-[xdebug]
-zend_extension="/usr/local/opt/php71-xdebug/xdebug.so"
-xdebug.remote_enable=1
-xdebug.remote_autostart=1
-xdebug.remote_host=localhost
-xdebug.remote_handler=dbgp
-xdebug.remote_port=9000
-```
-
-If you work with PhpStorm it is also a good idea to add the following line:
-
-```
-xdebug.file_link_format="phpstorm://open?file=%f&line=%l"
-```
-
-PHP 7.2:
-
-```
-$ open -e /usr/local/etc/php/7.2/conf.d/ext-xdebug.ini
-```
-
-Replace the contents with these contents:
-
-```
-[xdebug]
-zend_extension="/usr/local/opt/php72-xdebug/xdebug.so"
-xdebug.remote_enable=1
-xdebug.remote_autostart=1
-xdebug.remote_host=localhost
-xdebug.remote_handler=dbgp
-xdebug.remote_port=9000
-```
-
-If you work with PhpStorm it is also a good idea to add the following line:
-
-```
-xdebug.file_link_format="phpstorm://open?file=%f&line=%l"
-```
-
-Restart Apache:
+Restart apache:
 
 ```
 $ sudo apachectl -k restart
 ```
 
-You can now easily switch XDebug on or off.
-Switch XDebug on for the active PHP version:
+### PHP 7.1
 
 ```
-$ xdebug-toggle on
+$ sphp 7.1
+$ pecl uninstall -r xdebug
+$ pecl install xdebug
 ```
 
-Switch XDebug off for the active PHP version:
+You will now need to remove the zend_extension="xdebug.so"" entry that PECL adds to the top of your php.ini. So edit this file and remove the top line:
 
 ```
-$ xdebug-toggle off
+$ open -e /usr/local/etc/php/7.1/php.ini
+```
+
+Create a new config file for XDebug:
+
+```
+$ open -e /usr/local/etc/php/7.1/conf.d/ext-xdebug.ini
+```
+
+And add the following to it:
+
+```
+[xdebug]
+zend_extension="xdebug.so"
+xdebug.remote_enable=1
+xdebug.remote_autostart=1
+xdebug.remote_host=localhost
+xdebug.remote_handler=dbgp
+xdebug.remote_port=9000
+```
+
+If you work with PhpStorm it is also a good idea to add the following line:
+
+```
+xdebug.file_link_format="phpstorm://open?file=%f&line=%l"
+```
+
+Restart apache:
+
+```
+$ sudo apachectl -k restart
+```
+
+### PHP 7.2
+
+```
+$ sphp 7.2
+$ pecl uninstall -r xdebug
+$ pecl install xdebug
+```
+
+You will now need to remove the zend_extension="xdebug.so"" entry that PECL adds to the top of your php.ini. So edit this file and remove the top line:
+
+```
+$ open -e /usr/local/etc/php/7.2/php.ini
+```
+
+Create a new config file for XDebug:
+
+```
+$ open -e /usr/local/etc/php/7.2/conf.d/ext-xdebug.ini
+```
+
+And add the following to it:
+
+```
+[xdebug]
+zend_extension="xdebug.so"
+xdebug.remote_enable=1
+xdebug.remote_autostart=1
+xdebug.remote_host=localhost
+xdebug.remote_handler=dbgp
+xdebug.remote_port=9000
+```
+
+If you work with PhpStorm it is also a good idea to add the following line:
+
+```
+xdebug.file_link_format="phpstorm://open?file=%f&line=%l"
+```
+
+Restart apache:
+
+```
+$ sudo apachectl -k restart
 ```
 
 # Startdevelopment, Stopdevelopment and Restartdevelopment
