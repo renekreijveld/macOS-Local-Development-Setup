@@ -25,20 +25,6 @@ $ xcode-select --install
 $ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
 
-### Controle installatie Homebrew
-
-```
-$ brew --version
-Homebrew 1.4.1
-Homebrew/homebrew-core (git revision 859b; last commit 2017-12-25)
-```
-
-### Extra Brew Taps toevoegen
-
-```
-$ brew tap homebrew/php
-```
-
 ### Wget installeren
 
 ```
@@ -59,10 +45,12 @@ Je kunt Apache instellen zodat die elke start bij reboot van je machine.
 $ sudo brew services start httpd
 ```
 
-Je Apache ook handmatig starten.
+Je Apache ook handmatig starten, stoppen en herstarten
 
 ```
 $ sudo apachectl start
+$ sudo apachectl stop
+$ sudo apachectl -k restart
 ```
 
 Test Apache door in browser te gaan naar: http://localhost:8080
@@ -190,45 +178,94 @@ Ga in je browser naar http://localhost, daar moet dan My User Web Root verschijn
 
 # PHP installeren
 
-### PHP 5.3 installeren
-
-```
-$ brew install php53 --with-httpd
-```
-
 ### PHP 5.6 installeren
 
 ```
-$ brew unlink php53
-$ brew install php56 --with-httpd
+$ brew install php@5.6
 ```
 
 ### PHP 7.0 installeren
 
 ```
-$ brew unlink php56
-$ brew install php70 --with-httpd
+$ brew install php@7.0
 ```
 
 ### PHP 7.1 installeren
 
 ```
-$ brew unlink php70
-$ brew install php71 --with-httpd
+$ brew install php@7.1
 ```
 
 ### PHP 7.2 installeren
 
 ```
-$ brew unlink php71
-$ brew install php72 --with-httpd
+$ brew install php@7.2
 ```
 
-### Terug wisselen naar PHP 5.6
+# PHP.ini aanpassen
+
+Om webapplicaties goed te laten werken passen we een aantal zaken aan in de php.ini's.
+De volgende aanpassingen moeten worden doorgevoerd. Zoek daarvoor de originele instelling op, bewaar die door de regel te kopieren en te voorzien van een ; aan het begin van de regel en plaats dan de nieuwe waarde.
+
+Voor display_errors moet je mogelijk een uitzondering maken en die op 'On' laten staan, maar dat is een persoonlijke voorkeur.
 
 ```
-$ brew unlink php72
-$ brew link php56
+output_buffering = Off
+max_execution_time = 180
+max_input_time = 180
+memory_limit = 256M
+display_errors = Off
+post_max_size = 50M
+upload_max_filesize = 50M
+date.timezone = Europe/Amsterdam
+```
+
+Aanpassen php.ini PHP 5.6:
+
+```
+$ open -e /usr/local/etc/php/5.6/php.ini
+```
+
+Aanpassen php.ini PHP 7.0:
+
+```
+$ open -e /usr/local/etc/php/7.0/php.ini
+```
+
+Aanpassen php.ini PHP 7.1:
+
+```
+$ open -e /usr/local/etc/php/7.1/php.ini
+```
+
+Aanpassen php.ini PHP 7.2:
+
+```
+$ open -e /usr/local/etc/php/7.2/php.ini
+```
+
+Herstart Apache na de php.ini aanpassingen:
+
+```
+$ sudo apachectl -k restart
+```
+
+Terug naar de eerste PHP versie
+
+```
+$ brew unlink php@7.2 && brew link --force --overwrite php@5.6
+```
+
+Ik adviseer nu om alle Terminal tabs en windows de sluiten. Daarna open je een nieuwe Terminal en ga je verder met de volgende stap. Doe dit omdat er nog eens vreemd issues kunnen optreden met de PATH instellingen in de bestaande Terminals.
+
+Snelle test of we in de juiste PHP versie zitten:
+
+```
+$ php -v
+PHP 5.6.36 (cli) (built: Apr 26 2018 22:02:57) 
+Copyright (c) 1997-2016 The PHP Group
+Zend Engine v2.6.0, Copyright (c) 1998-2016 Zend Technologies
+    with Zend OPcache v7.0.6-dev, Copyright (c) 1999-2016, by Zend Technologies
 ```
 
 # PHP in Apache setup
@@ -239,24 +276,17 @@ $ brew link php56
 $ open -e /usr/local/etc/httpd/httpd.conf
 ```
 
-Vervang:
+Zoek de regel met de mod_rewrite module:
+
+LoadModule rewrite_module lib/httpd/modules/mod_rewrite.so
+
+Voeg hieronder de volgende regels toe:
 
 ```
-LoadModule php5_module        /usr/local/Cellar/php53/5.3.29_8/libexec/apache2/libphp5.so
-LoadModule php5_module        /usr/local/Cellar/php56/5.6.32_8/libexec/apache2/libphp5.so
-LoadModule php7_module        /usr/local/Cellar/php70/7.0.25_17/libexec/apache2/libphp7.so
-LoadModule php7_module        /usr/local/Cellar/php71/7.1.11_22/libexec/apache2/libphp7.so
-LoadModule php7_module        /usr/local/Cellar/php72/7.2.0RC5_8/libexec/apache2/libphp7.so
-```
-
-Door:
-
-```
-#LoadModule php5_module    /usr/local/opt/php53/libexec/apache2/libphp5.so
-LoadModule php5_module    /usr/local/opt/php56/libexec/apache2/libphp5.so
-#LoadModule php7_module    /usr/local/opt/php70/libexec/apache2/libphp7.so
-#LoadModule php7_module    /usr/local/opt/php71/libexec/apache2/libphp7.so
-#LoadModule php7_module    /usr/local/opt/php72/libexec/apache2/libphp7.so
+LoadModule php5_module /usr/local/opt/php@5.6/lib/httpd/modules/libphp5.so
+#LoadModule php7_module /usr/local/opt/php@7.0/lib/httpd/modules/libphp7.so
+#LoadModule php7_module /usr/local/opt/php@7.1/lib/httpd/modules/libphp7.so
+#LoadModule php7_module /usr/local/opt/php@7.2/lib/httpd/modules/libphp7.so
 ```
 
 Vervang:
@@ -299,95 +329,80 @@ Test de werking van PHP door in je browser te gaan naar http://localhost/info.ph
 Om gemakkelijk tussen PHP versies te kunnen wisselen installeren we een PHP switch script.
 
 ```
-$ curl -L https://gist.github.com/w00fz/142b6b19750ea6979137b963df959d11/raw > /usr/local/bin/sphp
+$ curl -L https://gist.githubusercontent.com/rhukster/f4c04f1bf59e0b74e335ee5d186a98e2/raw > /usr/local/bin/sphp
 $ chmod +x /usr/local/bin/sphp
 ```
 
-### Apache configuratie aanpassen
+# Controleer je lokale pad
 
 ```
-$ open -e /usr/local/etc/httpd/httpd.conf
+$ echo $PATH
+/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 ```
 
-Vervang:
+Als je dit niet ziet, moet het pad handmatig worden aangepast. Afhankelijk van de shell die je gebruiikt moet je aanpassingfen doen in ~/.profile, ~/.bash_profile, of ~/.zshrc. Ik ga er van uit dat je je de standaard bash shell gebruikt, dus voeg voeg deze regel toe aan je .profile (maak dit bestand als die niet bestaat) in de root van je homedirectory:
 
 ```
-#LoadModule php5_module    /usr/local/opt/php53/libexec/apache2/libphp5.so
-LoadModule php5_module    /usr/local/opt/php56/libexec/apache2/libphp5.so
-#LoadModule php7_module    /usr/local/opt/php70/libexec/apache2/libphp7.so
-#LoadModule php7_module    /usr/local/opt/php71/libexec/apache2/libphp7.so
-#LoadModule php7_module    /usr/local/opt/php72/libexec/apache2/libphp7.so
+$ open -e ~/.profile
+export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 ```
 
-Door:
+Stop en herstart dan je Terminal.
+
+### PHP switcher testen
+
+Test het switcher script:
 
 ```
-#Brew PHP LoadModule for `sphp` switcher23.1605
-LoadModule php5_module /usr/local/lib/libphp5.so
-#LoadModule php7_module /usr/local/lib/libphp7.so
-```
-
-Sla het bestand op. Test het switcher script:
-
-```
-$ sphp 70
+$ sphp 7.0
 ```
 
 Ververs de pagina <a href="http://localhost/info.php" target="_blank">http://localhost/info.php</a> in je browser.
 
-# PHP.ini aanpassen
+# De software updatyen
 
-Om webapplicaties goed te laten werken passen we een aantal zaken aan in de php.ini's.
-De volgende aanpassingen moeten worden doorgevoerd. Zoek daarvoor de originele instelling op, bewaar die door de regel te kopieren en te voorzien van een ; aan het begin van de regel en plaats dan de nieuwe waarde.
-
-Voor display_errors moet je mogelijk een uitzondering maken en die op 'On' laten staan, maar dat is een persoonlijke voorkeur.
+Brew makes it super easy to update PHP and the other packages you install. The first step is to update Brew so that it gets a list of available updates:
 
 ```
-output_buffering = Off
-max_execution_time = 180
-max_input_time = 180
-memory_limit = 256M
-display_errors = Off
-post_max_size = 50M
-upload_max_filesize = 50M
-date.timezone = Europe/Amsterdam
+$ brew update
 ```
 
-Aanpassen php.ini PHP 5.3:
+This will spit out a list of available updates, and any deleted formulas. To upgrade the packages simply type:
 
 ```
-$ open -e /usr/local/etc/php/5.3/php.ini
+$ brew upgrade
 ```
 
-Aanpassen php.ini PHP 5.6:
+To update all of your PHP versions you have to switch to them, and then run brew update.
 
 ```
-$ open -e /usr/local/etc/php/5.6/php.ini
+$ sphp 5.6
+Switching to php@5.6
+Switching your shell
+Unlinking /usr/local/Cellar/php@5.6/5.6.36... 0 symlinks removed
+Unlinking /usr/local/Cellar/php@7.0/7.0.30... 0 symlinks removed
+Unlinking /usr/local/Cellar/php@7.1/7.1.17... 0 symlinks removed
+Unlinking /usr/local/Cellar/php/7.2.5... 24 symlinks removed
+Linking /usr/local/Cellar/php@5.6/5.6.36... 25 symlinks created
+
+If you need to have this software first in your PATH instead consider running:
+  echo 'export PATH="/usr/local/opt/php@5.6/bin:$PATH"' >> ~/.bash_profile
+  echo 'export PATH="/usr/local/opt/php@5.6/sbin:$PATH"' >> ~/.bash_profile
+You will need sudo power from now on
+Switching your apache conf
+Restarting apache
+
+PHP 5.6.36 (cli) (built: Apr 26 2018 22:02:57) 
+Copyright (c) 1997-2016 The PHP Group
+Zend Engine v2.6.0, Copyright (c) 1998-2016 Zend Technologies
+    with Zend OPcache v7.0.6-dev, Copyright (c) 1999-2016, by Zend Technologies
+
+All done!
+$ brew update
+Already up-to-date.
 ```
 
-Aanpassen php.ini PHP 7.0:
-
-```
-$ open -e /usr/local/etc/php/7.0/php.ini
-```
-
-Aanpassen php.ini PHP 7.1:
-
-```
-$ open -e /usr/local/etc/php/7.1/php.ini
-```
-
-Aanpassen php.ini PHP 7.2:
-
-```
-$ open -e /usr/local/etc/php/7.2/php.ini
-```
-
-Herstart Apache na de php.ini aanpassingen:
-
-```
-$ sudo apachectl -k restart
-```
+Repeat these steps for PHP 7.0, 7.1 and 7.2.
 
 # MySQL installeren
 
