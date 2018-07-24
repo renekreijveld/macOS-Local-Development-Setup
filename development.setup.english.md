@@ -1102,10 +1102,9 @@ Incoming mail
 ```
 Server Name: localhost
 Port: 143
-User Name: The OSX username
+User Name: YOURUSERNAME
 Connection security: None
 Authentication method: Password, transmitted insecurely
-User Name: YOURUSERNAME
 ```
 
 Outgoing mail
@@ -1113,8 +1112,28 @@ Outgoing mail
 ```
 Server Name: localhost
 Port: 25
-User Name: The OSX username
+User Name: YOURUSERNAME
 Connection security: None
 Authentication method: Password, transmitted insecurely
-User Name: YOURUSERNAME
 ```
+
+### Thunderbird account setup
+
+Your name: Give the mail account a name
+Email address: YOURUSERNAME@localhost
+Password: Your OS X password
+
+You can ignore the warning about double checking the email address.
+
+Click `Continue`
+
+Thunderbird fails to find your settings but that is OK. Fill in the details as described below
+
+Incoming: `IMAP` `localhost` `143` `None` `Normal password`
+Outgoing: `SMTP` `localhost` `25` `None` `Normal password`
+
+Click Done
+
+Accept the security warning that localhost does not use encryption
+
+Click Continue
