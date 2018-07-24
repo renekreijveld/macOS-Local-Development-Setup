@@ -1130,6 +1130,7 @@ Click `Continue`
 Thunderbird fails to find your settings but that is OK. Fill in the details as described below
 
 Incoming: `IMAP` `localhost` `143` `None` `Normal password`
+
 Outgoing: `SMTP` `localhost` `25` `None` `Normal password`
 
 Click Done
