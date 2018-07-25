@@ -416,6 +416,11 @@ Repeat these steps for PHP 7.0, 7.1 and 7.2.
 
 # MySQL installation
 
+Do note, you cannot run multiple versions of MySQL on the same machine because brew will install the database directory 
+in the same location. So choose wisely which version you want to install.
+
+### Install MySQL 8.0
+
 ```
 $ brew update
 $ brew install mysql
@@ -443,6 +448,27 @@ Remove anonymous users? (Press y|Y for Yes, any other key for No) : Y
 Disallow root login remotely? (Press y|Y for Yes, any other key for No) : Y
 Remove test database and access to it? (Press y|Y for Yes, any other key for No) : Y
 Reload privilege tables now? (Press y|Y for Yes, any other key for No) : Y
+```
+
+### Install MySQL 5.7
+
+All files for MySQL 5.7 will be located in the folder `/usr/local/opt/mysql@5.7/bin`
+
+```
+$ brew update
+$ brew install mysql@5.7
+```
+
+### Start MySQL
+
+```
+$ brew services start mysql@5.7
+```
+
+### Secure MySQL
+
+```
+$ /usr/local/opt/mysql@5.7/bin/mysql_secure_installation
 ```
 
 # phpMyAdmin installation
@@ -830,6 +856,9 @@ ps -aef | grep httpd
 ps -aef | grep mysql
 ```
 
+To use MySQL 5.7 use the following command to start MySQL
+`brew services start mysql@5.7`
+
 Save the file.
 
 ```
@@ -853,6 +882,9 @@ ps -aef | grep httpd
 ps -aef | grep mysql
 ```
 
+To use MySQL 5.7 use the following command to stop MySQL
+`brew services stop mysql@5.7`
+
 Save the file.
 
 ```
@@ -875,6 +907,9 @@ sudo apachectl -k restart
 ps -aef | grep httpd
 ps -aef | grep mysql
 ```
+
+To use MySQL 5.7 use the following command to stop MySQL
+`brew services restart mysql@5.7`
 
 Save the file.
 

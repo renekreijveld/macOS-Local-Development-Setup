@@ -406,18 +406,23 @@ Repeat these steps for PHP 7.0, 7.1 and 7.2.
 
 # MySQL installeren
 
+Let op, je kan niet verschillende versies van MySQL op dezelfde machine draaien omdat brew de database folder in
+dezelfde locatie plaatst. Kies daarom verstandig welke versie je wil installeren.
+
+### Installeren MySQL 8.0
+
 ```
 $ brew update
 $ brew install mysql
 ```
 
-### Start MySQL
+### Starten MySQL 8.0
 
 ```
 $ brew services start mysql
 ```
 
-### MySQL beveiligen
+### MySQL beveiligen 8.0
 
 ```
 $ /usr/local/bin/mysql_secure_installation
@@ -433,6 +438,27 @@ Remove anonymous users? y
 Disallow root login remotely? y
 Remove test database and access to it? y
 Reload privilege tables now? y
+```
+
+### Installeren MySQL 5.7
+
+Alle bestanden van MySQL 5.7 bevinden zich in de folder `/usr/local/opt/mysql@5.7/bin`
+
+```
+$ brew update
+$ brew install mysql@5.7
+```
+
+### Starten MySQL 5.7
+
+```
+$ brew services start mysql@5.7
+```
+
+### MySQL beveiligen 5.7
+
+```
+$ /usr/local/opt/mysql@5.7/bin/mysql_secure_installation
 ```
 
 # phpMyAdmin installeren
