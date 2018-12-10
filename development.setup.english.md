@@ -194,12 +194,6 @@ In your browser go to http://localhost, there the My User Web Root should appear
 $ brew install php@5.6
 ```
 
-### Install PHP 7.0
-
-```
-$ brew install php@7.0
-```
-
 ### Install PHP 7.1
 
 ```
@@ -210,6 +204,12 @@ $ brew install php@7.1
 
 ```
 $ brew install php@7.2
+```
+
+### Install PHP 7.3
+
+```
+$ brew install php@7.3
 ```
 
 # Modify PHP.ini
@@ -236,12 +236,6 @@ Modify php.ini PHP 5.6:
 $ open -e /usr/local/etc/php/5.6/php.ini
 ```
 
-Modify php.ini PHP 7.0:
-
-```
-$ open -e /usr/local/etc/php/7.0/php.ini
-```
-
 Modify php.ini PHP 7.1:
 
 ```
@@ -252,6 +246,12 @@ Modify php.ini PHP 7.2:
 
 ```
 $ open -e /usr/local/etc/php/7.2/php.ini
+```
+
+Modify php.ini PHP 7.3:
+
+```
+$ open -e /usr/local/etc/php/7.3/php.ini
 ```
 
 Restart Apache after the php.ini modifications:
@@ -294,9 +294,9 @@ Below this add the following libphp modules:
 
 ```
 LoadModule php5_module /usr/local/opt/php@5.6/lib/httpd/modules/libphp5.so
-#LoadModule php7_module /usr/local/opt/php@7.0/lib/httpd/modules/libphp7.so
 #LoadModule php7_module /usr/local/opt/php@7.1/lib/httpd/modules/libphp7.so
 #LoadModule php7_module /usr/local/opt/php@7.2/lib/httpd/modules/libphp7.so
+#LoadModule php7_module /usr/local/opt/php@7.3/lib/httpd/modules/libphp7.so
 ```
 
 Replace:
@@ -339,7 +339,7 @@ Check if it is working by going in your browser to http://localhost/info.php
 To easily switch between PHP versions we install a PHP switcher script.
 
 ```
-$ curl -L https://gist.githubusercontent.com/rhukster/f4c04f1bf59e0b74e335ee5d186a98e2/raw > /usr/local/bin/sphp
+$ curl -L https://gist.github.com/roland-d/949342f2db21071bcefe6666e3394b4e/raw > /usr/local/bin/sphp
 $ chmod +x /usr/local/bin/sphp
 ```
 
@@ -364,7 +364,7 @@ Then stop and restart the Terminal application.
 Test the switcher script:
 
 ```
-$ sphp 7.0
+$ sphp 7.1
 ```
 
 Refresh the page <a href="http://localhost/info.php" target="_blank">http://localhost/info.php</a> in your browser.
@@ -412,7 +412,7 @@ $ brew update
 Already up-to-date.
 ```
 
-Repeat these steps for PHP 7.0, 7.1 and 7.2.
+Repeat these steps for PHP 7.1, 7.2 and 7.3.
 
 # MySQL installation
 
@@ -607,14 +607,6 @@ $ pecl install apcu-4.0.11
 Answer any question by simply pressing Return to accept the default values.
 
 ```
-$ sphp 7.0
-$ pecl uninstall -r apcu
-$ pecl install apcu
-```
-
-Answer any question by simply pressing Return to accept the default values.
-
-```
 $ sphp 7.1
 $ pecl uninstall -r apcu
 $ pecl install apcu
@@ -629,6 +621,7 @@ $ pecl install apcu
 ```
 
 Answer any question by simply pressing Return to accept the default values.
+
 
 # XDebug installation:
 
@@ -698,49 +691,6 @@ $ xdebug off
 
 ### Xdebug for other PHP versions
 
-### PHP 7.0
-
-```
-$ sphp 7.0
-$ pecl uninstall -r xdebug
-$ pecl install xdebug
-```
-
-You will now need to remove the zend_extension="xdebug.so"" entry that PECL adds to the top of your php.ini. So edit this file and remove the top line:
-
-```
-$ open -e /usr/local/etc/php/7.0/php.ini
-```
-
-Create a new config file for XDebug:
-
-```
-$ open -e /usr/local/etc/php/7.0/conf.d/ext-xdebug.ini
-```
-
-And add the following to it:
-
-```
-[xdebug]
-zend_extension="xdebug.so"
-xdebug.remote_enable=1
-xdebug.remote_autostart=1
-xdebug.remote_host=localhost
-xdebug.remote_handler=dbgp
-xdebug.remote_port=9000
-```
-
-If you work with PhpStorm it is also a good idea to add the following line:
-
-```
-xdebug.file_link_format="phpstorm://open?file=%f&line=%l"
-```
-
-Restart apache:
-
-```
-$ sudo apachectl -k restart
-```
 
 ### PHP 7.1
 
@@ -804,6 +754,52 @@ Create a new config file for XDebug:
 
 ```
 $ open -e /usr/local/etc/php/7.2/conf.d/ext-xdebug.ini
+```
+
+And add the following to it:
+
+```
+[xdebug]
+zend_extension="xdebug.so"
+xdebug.remote_enable=1
+xdebug.remote_autostart=1
+xdebug.remote_host=localhost
+xdebug.remote_handler=dbgp
+xdebug.remote_port=9000
+```
+
+If you work with PhpStorm it is also a good idea to add the following line:
+
+```
+xdebug.file_link_format="phpstorm://open?file=%f&line=%l"
+```
+
+Restart apache:
+
+```
+$ sudo apachectl -k restart
+```
+
+### PHP 7.3
+
+```
+$ sphp 7.3
+$ pecl uninstall -r xdebug
+$ pear config-set preferred_state beta
+$ pecl install xdebug
+$ pear config-set preferred_state stable
+```
+
+You will now need to remove the zend_extension="xdebug.so"" entry that PECL adds to the top of your php.ini. So edit this file and remove the top line:
+
+```
+$ open -e /usr/local/etc/php/7.3/php.ini
+```
+
+Create a new config file for XDebug:
+
+```
+$ open -e /usr/local/etc/php/7.3/conf.d/ext-xdebug.ini
 ```
 
 And add the following to it:
