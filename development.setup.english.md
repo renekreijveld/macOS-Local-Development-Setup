@@ -969,16 +969,22 @@ Install Dovecot
 $ brew install dovecot
 ```
 
-Copy the configuration files
-
-```
-$ cp -pr /usr/local/Cellar/dovecot/2.2.33.2/share/doc/dovecot/example-config/ /usr/local/etc/dovecot/
-```
-
-The version number `2.2.33.2` may be different. Check the Dovecot version number
+Check the Dovecot version number. The version number `2.3.2.1` may be different but replace with the version you find.
 
 ```
 $ brew info dovecot
+```
+
+The information you will get looks like this:
+
+```
+dovecot: stable 2.3.2.1 (bottled)
+```
+
+Copy the configuration files
+
+```
+$ cp -pr /usr/local/Cellar/dovecot/2.3.2.1/share/doc/dovecot/example-config/ /usr/local/etc/dovecot/
 ```
 
 Create the Dovecot local configuration file
@@ -992,6 +998,7 @@ Open the local configuration
 ```
 $ sudo open -e /usr/local/etc/dovecot/local.conf
 ```
+
 Add the following configuration
 
 ```
@@ -1080,10 +1087,17 @@ In case you are using or upgrading to Dovecot 2.3.1 it is necessary to add the f
 default_internal_group = mail
 ```
 
-To find out which Dovecot version you are running, run this command:
+Check if the mail folder exists
 
 ```
-brew info dovecot
+ls -ltr /var/mail/YOURUSERNAME
+```
+
+If you get the message `No such file or directory` you will have to create it manually.
+
+Create the mail folder
+```
+touch /var/mail/YOURUSERNAME
 ```
 
 Set the permission on the mail folder. This is needed because otherwise Dovecot can't delete the messages and the log
@@ -1092,14 +1106,13 @@ shows the error imap(YOURUSERNAME): Error: setegid(privileged) failed: Operation
 https://wiki2.dovecot.org/HowTo/PostfixDovecotLMTP
 
 ```
-$ sudo chown YOURUSERNAME:mail /var/mail
+$ sudo chown YOURUSERNAME:mail /var/mail/YOURUSERNAME
 ```
-
 
 Set the permissions
 
 ```
-$ chmod 0600 /var/mail/*
+$ chmod 0600 /var/mail/YOURUSERNAME
 ```
 
 Update the permissions on your mail spool with
@@ -1124,10 +1137,9 @@ Incoming mail
 ```
 Server Name: localhost
 Port: 143
-User Name: The OSX username
+User Name: YOURUSERNAME
 Connection security: None
 Authentication method: Password, transmitted insecurely
-User Name: YOURUSERNAME
 ```
 
 Outgoing mail
@@ -1135,8 +1147,29 @@ Outgoing mail
 ```
 Server Name: localhost
 Port: 25
-User Name: The OSX username
+User Name: YOURUSERNAME
 Connection security: None
 Authentication method: Password, transmitted insecurely
-User Name: YOURUSERNAME
 ```
+
+### Thunderbird account setup
+
+Your name: Give the mail account a name
+Email address: YOURUSERNAME@localhost
+Password: Your OS X password
+
+You can ignore the warning about double checking the email address.
+
+Click `Continue`
+
+Thunderbird fails to find your settings but that is OK. Fill in the details as described below
+
+Incoming: `IMAP` `localhost` `143` `None` `Normal password`
+
+Outgoing: `SMTP` `localhost` `25` `None` `Normal password`
+
+Click Done
+
+Accept the security warning that localhost does not use encryption
+
+Click Continue
