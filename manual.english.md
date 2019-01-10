@@ -7,7 +7,7 @@ In my personal setup I have to start these manually. I open a terminal and start
 $ startdevelopment
 ```
 
-Apache and MySQL are now ready for use.
+Apache, MariaDB, DNSMasq and Mailhog are now ready for use.
 
 # Create a new database
 
@@ -29,15 +29,15 @@ There is nothing else to configure. The website is immediately ready in your bro
 
 # Stop Development
 
-MariaDB, Apache, DNSMadq and Mailhog can be stopped with the terminal command:
+Apache, MariaDB, DNSMasq and Mailhog can be stopped with the terminal command:
 
 ```
 $ stopdevelopment
 ```
 
-# Development herstarten
+# Restart development
 
-MariaDB, Apache, DNSMadq and Mailhog can be restarted with the terminal command:
+Apache, MariaDB, DNSMasq and Mailhog can be restarted with the terminal command:
 
 ```
 $ restartdevelopment
