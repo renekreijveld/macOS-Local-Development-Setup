@@ -25,7 +25,7 @@ $ mkdir ~/Development/Sites/testwebsite
 
 Then add your html/php/whatever files in the folder ~/Development/Sites/testwebsite.
 
-There is nothing else to configure. The website is immediately ready in your browser at http://testwebsite.dev
+There is nothing else to configure. The website is immediately ready in your browser at http://testwebsite.test
 
 # Stop Development
 
