@@ -4,16 +4,12 @@ This setup works fine on my macOS machines. I am certainly no Apache, PHP and My
 
 # Requirements
 
-- macOS 10.12 or higher
+- macOS Mojave 10.14 or higher
 - <a href="https://developer.apple.com/xcode/" target="_blank">XCode</a> installed
 
 # Used sources
 
-<a href="https://getgrav.org/blog/macos-sierra-apache-multiple-php-versions" target="_blank">macOS 10.13 High Sierra Apache Setup: Multiple PHP Versions</a>
-
-<a href="https://coolestguidesontheplanet.com/get-apache-mysql-php-phpmyadmin-working-osx-10-10-yosemite/#phpmyadmin" target="_blank">Get Apache, MySQL, PHP and phpMyAdmin working on OSX 10.10 Yosemite</a>
-
-<a href="http://www.hatsaplenty.com/2016/07/access-mail-spool-osx-postfix-dovecot/" target="_blank">Access the Mail Spool on OSX with Postfix and Dovecot</a>
+<a href="https://getgrav.org/blog/macos-mojave-apache-multiple-php-versions" target="_blank">macOS 10.14 Mojave Apache Setup: Multiple PHP Versions</a>
 
 # Install XCode Command Line Tools
 
@@ -31,8 +27,8 @@ $ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/maste
 
 ```
 $ brew --version
-Homebrew 1.6.2
-Homebrew/homebrew-core (git revision 15ab; last commit 2018-04-30)
+Homebrew 1.8.6
+Homebrew/homebrew-core (git revision 46e3; last commit 2019-01-04)
 ```
 
 ### Install wget
@@ -40,6 +36,14 @@ Homebrew/homebrew-core (git revision 15ab; last commit 2018-04-30)
 ```
 $ brew install wget
 ```
+
+### Mojave Required Libraries
+
+```
+$ brew install openldap libiconv
+```
+
+## Apache installation
 
 ### Stop existing Apache and install Homebrew version
 
@@ -65,10 +69,27 @@ $ sudo apachectl -k restart
 
 Test Apache by going in your browser to: http://localhost:8080
 
+## Visual Studio Code
+
+To edit configuration files we setup a very good editor for the job: Visual Sudio Code.
+Go to the <a href="https://code.visualstudio.com/" target="_blank">Visual Studio Code site</a> and click Download for Mac.
+
+Once downloaded, drag the application to your preffered Applications location. Next, you want to install the command line tools, so follow the <a href="https://code.visualstudio.com/docs/setup/mac#_launching-from-the-command-line" target="_blank">official step-by-step instructions</a> so that you can use the code command from the Terminal.
+
+## Create a folder for your website projects
+
+In my setup I put my website projects in my home folder submap Development/Sites so we need to create a folder for that.
+
+```
+$ mkdir -p ~/Development/Sites
+```
+
+(input your user name at 'your_user')
+
 ### Modify Apache configuration
 
 ```
-$ open -e /usr/local/etc/httpd/httpd.conf
+$ code /usr/local/etc/httpd/httpd.conf
 ```
 
 Replace:
@@ -111,7 +132,7 @@ With:
 
 (input your user name at 'your_user')
 
-In the same <Directory block:
+In the same <Directory ...> block:
 
 Replace:
 
@@ -174,7 +195,6 @@ Save the file /usr/local/etc/httpd/httpd.conf
 ### Create a standard index.html
 
 ```
-$ mkdir -p ~/Development/Sites
 $ echo "<h1>My User Web Root</h1>" > ~/Development/Sites/index.html
 ```
 
@@ -186,29 +206,14 @@ $ sudo apachectl -k restart
 
 In your browser go to http://localhost, there the My User Web Root should appear.
 
-# Install PHP
+# PHP Installation
 
-### Install PHP 5.6
+Proceed by installing PHP 5.6, 7.1, 7.2 and 7.3:
 
 ```
 $ brew install php@5.6
-```
-
-### Install PHP 7.1
-
-```
 $ brew install php@7.1
-```
-
-### Install PHP 7.2
-
-```
 $ brew install php@7.2
-```
-
-### Install PHP 7.3
-
-```
 $ brew install php@7.3
 ```
 
@@ -223,7 +228,7 @@ For display_errors you might want make an exception and leave that to 'On', but 
 output_buffering = Off
 max_execution_time = 180
 max_input_time = 180
-memory_limit = 256M
+memory_limit = 512M
 display_errors = Off
 post_max_size = 50M
 upload_max_filesize = 50M
@@ -233,25 +238,25 @@ date.timezone = Europe/Amsterdam
 Modify php.ini PHP 5.6:
 
 ```
-$ open -e /usr/local/etc/php/5.6/php.ini
+$ code /usr/local/etc/php/5.6/php.ini
 ```
 
 Modify php.ini PHP 7.1:
 
 ```
-$ open -e /usr/local/etc/php/7.1/php.ini
+$ code /usr/local/etc/php/7.1/php.ini
 ```
 
 Modify php.ini PHP 7.2:
 
 ```
-$ open -e /usr/local/etc/php/7.2/php.ini
+$ code /usr/local/etc/php/7.2/php.ini
 ```
 
 Modify php.ini PHP 7.3:
 
 ```
-$ open -e /usr/local/etc/php/7.3/php.ini
+$ code /usr/local/etc/php/7.3/php.ini
 ```
 
 Restart Apache after the php.ini modifications:
@@ -263,7 +268,7 @@ $ sudo apachectl -k restart
 Switch back yo the first PHP version
 
 ```
-$ brew unlink php@7.2 && brew link --force --overwrite php@5.6
+$ brew unlink php@7.3 && brew link --force --overwrite php@5.6
 ```
 
 At this point, I strongly recommend closing ALL your terminal tabs and windows. This will mean opening a new terminal to continue with the next step. This is strongly recommended because some really strange path issues can arise with existing terminals.
@@ -271,8 +276,7 @@ At this point, I strongly recommend closing ALL your terminal tabs and windows. 
 Quick test that we're in the correct version:
 
 ```
-$ php -v
-PHP 5.6.36 (cli) (built: Apr 26 2018 22:02:57) 
+PHP 5.6.39 (cli) (built: Dec  7 2018 08:27:47) 
 Copyright (c) 1997-2016 The PHP Group
 Zend Engine v2.6.0, Copyright (c) 1998-2016 Zend Technologies
     with Zend OPcache v7.0.6-dev, Copyright (c) 1999-2016, by Zend Technologies
@@ -283,7 +287,7 @@ Zend Engine v2.6.0, Copyright (c) 1998-2016 Zend Technologies
 ### Modify Apache configuration
 
 ```
-$ open -e /usr/local/etc/httpd/httpd.conf
+$ code /usr/local/etc/httpd/httpd.conf
 ```
 
 Find the line that loads the mod_rewrite module:
@@ -326,10 +330,10 @@ $ sudo apachectl -k stop
 $ sudo apachectl start
 ```
 
-Create a file info.php in your ~/Development/Sites folder with these contents:
+Create a file info.php in your ~/Development/Sites folder:
 
-```php
-<?php phpinfo();
+```
+$ echo "<?php phpinfo();" > ~/Sites/info.php
 ```
 
 Check if it is working by going in your browser to http://localhost/info.php
@@ -339,7 +343,7 @@ Check if it is working by going in your browser to http://localhost/info.php
 To easily switch between PHP versions we install a PHP switcher script.
 
 ```
-$ curl -L https://gist.github.com/roland-d/949342f2db21071bcefe6666e3394b4e/raw > /usr/local/bin/sphp
+$ curl -L https://gist.githubusercontent.com/rhukster/f4c04f1bf59e0b74e335ee5d186a98e2/raw > /usr/local/bin/sphp
 $ chmod +x /usr/local/bin/sphp
 ```
 
@@ -353,7 +357,7 @@ $ echo $PATH
 If you don't see this, you might need to add these manually to your path. Depending on your shell your using, you may need to add this line to ~/.profile, ~/.bash_profile, or ~/.zshrc. We will assume you are using the default bash shell, so add this line to a your .profile (create it if it doesn't exist) file at the root of your user directory:
 
 ```
-$ open -e ~/.profile
+$ code ~/.profile
 export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 ```
 
@@ -365,6 +369,32 @@ Test the switcher script:
 
 ```
 $ sphp 7.1
+```
+
+```
+$ sphp 7.1
+Switching to php@7.1
+Switching your shell
+Unlinking /usr/local/Cellar/php@5.6/5.6.39... 25 symlinks removed
+Unlinking /usr/local/Cellar/php@7.1/7.1.25... 0 symlinks removed
+Unlinking /usr/local/Cellar/php@7.2/7.2.13... 0 symlinks removed
+Unlinking /usr/local/Cellar/php/7.3.0... 0 symlinks removed
+Linking /usr/local/Cellar/php@7.1/7.1.25... 25 symlinks created
+
+If you need to have this software first in your PATH instead consider running:
+  echo 'export PATH="/usr/local/opt/php@7.1/bin:$PATH"' >> ~/.bash_profile
+  echo 'export PATH="/usr/local/opt/php@7.1/sbin:$PATH"' >> ~/.bash_profile
+You will need sudo power from now on
+Switching your apache conf
+Restarting apache
+
+PHP 7.1.25 (cli) (built: Dec  7 2018 08:20:45) ( NTS )
+Copyright (c) 1997-2018 The PHP Group
+Zend Engine v3.1.0, Copyright (c) 1998-2018 Zend Technologies
+    with Zend OPcache v7.1.25, Copyright (c) 1999-2018, by Zend Technologies
+    with Xdebug v2.6.1, Copyright (c) 2002-2018, by Derick Rethans
+
+All done!
 ```
 
 Refresh the page <a href="http://localhost/info.php" target="_blank">http://localhost/info.php</a> in your browser.
@@ -383,38 +413,9 @@ This will spit out a list of available updates, and any deleted formulas. To upg
 $ brew upgrade
 ```
 
-To update all of your PHP versions you have to switch to them, and then run brew update.
+To update all of your PHP versions you have to switch to them with the sphp script, and then run brew update.
 
-```
-$ sphp 5.6
-Switching to php@5.6
-Switching your shell
-Unlinking /usr/local/Cellar/php@5.6/5.6.36... 0 symlinks removed
-Unlinking /usr/local/Cellar/php@7.0/7.0.30... 0 symlinks removed
-Unlinking /usr/local/Cellar/php@7.1/7.1.17... 0 symlinks removed
-Unlinking /usr/local/Cellar/php/7.2.5... 24 symlinks removed
-Linking /usr/local/Cellar/php@5.6/5.6.36... 25 symlinks created
-
-If you need to have this software first in your PATH instead consider running:
-  echo 'export PATH="/usr/local/opt/php@5.6/bin:$PATH"' >> ~/.bash_profile
-  echo 'export PATH="/usr/local/opt/php@5.6/sbin:$PATH"' >> ~/.bash_profile
-You will need sudo power from now on
-Switching your apache conf
-Restarting apache
-
-PHP 5.6.36 (cli) (built: Apr 26 2018 22:02:57) 
-Copyright (c) 1997-2016 The PHP Group
-Zend Engine v2.6.0, Copyright (c) 1998-2016 Zend Technologies
-    with Zend OPcache v7.0.6-dev, Copyright (c) 1999-2016, by Zend Technologies
-
-All done!
-$ brew update
-Already up-to-date.
-```
-
-Repeat these steps for PHP 7.1, 7.2 and 7.3.
-
-# MySQL installation
+# MariaDB installation
 
 Do note, you cannot run multiple versions of MySQL on the same machine because brew will install the database directory 
 in the same location. So choose wisely which version you want to install.
@@ -496,7 +497,7 @@ Go in your browser to http://localhost/phpmyadmin. You should now see phpMyAdmin
 ### Modify Apache configuration
 
 ```
-$ open -e /usr/local/etc/httpd/httpd.conf
+$ code /usr/local/etc/httpd/httpd.conf
 ```
 
 Replace:
@@ -526,7 +527,7 @@ Include /usr/local/etc/httpd/extra/httpd-vhosts.conf
 Modify httpd-vhosts.conf:
 
 ```
-$ open -e /usr/local/etc/httpd/extra/httpd-vhosts.conf
+$ code /usr/local/etc/httpd/extra/httpd-vhosts.conf
 ```
 
 Remove all existing lines below the comments block and add the following lines:
@@ -633,13 +634,13 @@ $ pecl install xdebug-2.5.5
 You will now need to remove the zend_extension="xdebug.so"" entry that PECL adds to the top of your php.ini. So edit this file and remove the top line:
 
 ```
-$ open -e /usr/local/etc/php/5.6/php.ini
+$ code /usr/local/etc/php/5.6/php.ini
 ```
 
 Create a new config file for XDebug:
 
 ```
-$ open -e /usr/local/etc/php/5.6/conf.d/ext-xdebug.ini
+$ code /usr/local/etc/php/5.6/conf.d/ext-xdebug.ini
 ```
 
 And add the following to it:
@@ -703,13 +704,13 @@ $ pecl install xdebug
 You will now need to remove the zend_extension="xdebug.so"" entry that PECL adds to the top of your php.ini. So edit this file and remove the top line:
 
 ```
-$ open -e /usr/local/etc/php/7.1/php.ini
+$ code /usr/local/etc/php/7.1/php.ini
 ```
 
 Create a new config file for XDebug:
 
 ```
-$ open -e /usr/local/etc/php/7.1/conf.d/ext-xdebug.ini
+$ code /usr/local/etc/php/7.1/conf.d/ext-xdebug.ini
 ```
 
 And add the following to it:
@@ -747,13 +748,13 @@ $ pecl install xdebug
 You will now need to remove the zend_extension="xdebug.so"" entry that PECL adds to the top of your php.ini. So edit this file and remove the top line:
 
 ```
-$ open -e /usr/local/etc/php/7.2/php.ini
+$ code /usr/local/etc/php/7.2/php.ini
 ```
 
 Create a new config file for XDebug:
 
 ```
-$ open -e /usr/local/etc/php/7.2/conf.d/ext-xdebug.ini
+$ code /usr/local/etc/php/7.2/conf.d/ext-xdebug.ini
 ```
 
 And add the following to it:
@@ -793,13 +794,13 @@ $ pear config-set preferred_state stable
 You will now need to remove the zend_extension="xdebug.so"" entry that PECL adds to the top of your php.ini. So edit this file and remove the top line:
 
 ```
-$ open -e /usr/local/etc/php/7.3/php.ini
+$ code /usr/local/etc/php/7.3/php.ini
 ```
 
 Create a new config file for XDebug:
 
 ```
-$ open -e /usr/local/etc/php/7.3/conf.d/ext-xdebug.ini
+$ code /usr/local/etc/php/7.3/conf.d/ext-xdebug.ini
 ```
 
 And add the following to it:
@@ -833,7 +834,7 @@ For starting, stopping and restarting Apache and MySQL I use these three simple 
 
 ```
 $ touch /usr/local/bin/startdevelopment
-$ open -e /usr/local/bin/startdevelopment
+$ code /usr/local/bin/startdevelopment
 ```
 
 Add the following code:
@@ -859,7 +860,7 @@ Save the file.
 
 ```
 $ touch /usr/local/bin/stopdevelopment
-$ open -e /usr/local/bin/stopdevelopment
+$ code /usr/local/bin/stopdevelopment
 ```
 
 Add the following code:
@@ -885,7 +886,7 @@ Save the file.
 
 ```
 $ touch /usr/local/bin/restartdevelopment
-$ open -e /usr/local/bin/restartdevelopment
+$ code /usr/local/bin/restartdevelopment
 ```
 
 Add the following code:
