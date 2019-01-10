@@ -11,9 +11,7 @@ Apache and MySQL are now ready for use.
 
 # Create a new database
 
-- Create a new database with phpMyAdmin by going in your browser to http://phpmyadmin.dev
-- Click on **Databases** and below Create database enter the name of the new database and click on Create.
-- The database is then ready for use. Username and password are **root**.
+- Create a new database with Sequel Pro
 
 # Create a new website
 
@@ -31,7 +29,7 @@ There is nothing else to configure. The website is immediately ready in your bro
 
 # Stop Development
 
-MySQL and Apache can be stopped with the terminal command:
+MariaDB, Apache, DNSMadq and Mailhog can be stopped with the terminal command:
 
 ```
 $ stopdevelopment
@@ -39,7 +37,7 @@ $ stopdevelopment
 
 # Development herstarten
 
-MySQL and Apache can be restarted with the terminal command:
+MariaDB, Apache, DNSMadq and Mailhog can be restarted with the terminal command:
 
 ```
 $ restartdevelopment
@@ -82,7 +80,7 @@ $ sudo apachectl -k restart
 Edit httpd.conf:
 
 ```
-$ open -e /usr/local/etc/httpd/httpd.conf
+$ code /usr/local/etc/httpd/httpd.conf
 ```
 
 Check if Apache is running:
@@ -93,75 +91,69 @@ $ ps -aef | grep httpd
 
 # PHP
 
-Edit php.ini 5.3:
-
-```
-$ open -e /usr/local/etc/php/5.3/php.ini
-```
-
 Edit php.ini 5.6:
 
 ```
-$ open -e /usr/local/etc/php/5.6/php.ini
-```
-
-Edit php.ini 7.0:
-
-```
-$ open -e /usr/local/etc/php/7.0/php.ini
+$ code /usr/local/etc/php/5.6/php.ini
 ```
 
 Edit php.ini 7.1:
 
 ```
-$ open -e /usr/local/etc/php/7.1/php.ini
+$ code /usr/local/etc/php/7.1/php.ini
 ```
 
-Change to php 5.3:
+Edit php.ini 7.2:
 
 ```
-$ sphp 53
+$ code /usr/local/etc/php/7.2/php.ini
+```
+
+Edit php.ini 7.3:
+
+```
+$ code /usr/local/etc/php/7.3/php.ini
 ```
 
 Change to php 5.6:
 
 ```
-$ sphp 56
-```
-
-Change to php 7.0:
-
-```
-$ sphp 70
+$ sphp 5.6
 ```
 
 Change to php 7.1:
 
 ```
-$ sphp 71
+$ sphp 7.1
 ```
 
 Change to php 7.2:
 
 ```
-$ sphp 72
+$ sphp 7.2
 ```
 
-# MySQL
-
-Start mysql at every (re)boot:
+Change to php 7.3:
 
 ```
-$ brew services start mysql
+$ sphp 7.3
 ```
 
-Stop mysql at every (re)boot:
+# MariaDB
+
+Start MariaDB at every (re)boot:
 
 ```
-$ brew services stop mysql
+$ brew services start mariadb
 ```
 
-Check if MySQL is running:
+Stop MariaDB at every (re)boot:
+
+```
+$ brew services stop mariadb
+```
+
+Check if MariaDB is running:
 
 ```
 $ ps -aef | grep mysql
