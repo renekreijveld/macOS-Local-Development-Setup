@@ -276,6 +276,7 @@ At this point, I strongly recommend closing ALL your terminal tabs and windows. 
 Quick test that we're in the correct version:
 
 ```
+$ php -v
 PHP 5.6.39 (cli) (built: Dec  7 2018 08:27:47) 
 Copyright (c) 1997-2016 The PHP Group
 Zend Engine v2.6.0, Copyright (c) 1998-2016 Zend Technologies
@@ -333,7 +334,7 @@ $ sudo apachectl start
 Create a file info.php in your ~/Development/Sites folder:
 
 ```
-$ echo "<?php phpinfo();" > ~/Sites/info.php
+$ echo "<?php phpinfo();" > ~/Development/Sites/info.php
 ```
 
 Check if it is working by going in your browser to http://localhost/info.php
@@ -415,22 +416,22 @@ $ brew upgrade
 
 To update all of your PHP versions you have to switch to them with the sphp script, and then run brew update.
 
-# MariaDB installation
+# MySQL installation
 
 Do note, you cannot run multiple versions of MySQL on the same machine because brew will install the database directory 
 in the same location. So choose wisely which version you want to install.
 
-### Install MySQL 8.0
+### Install MariaDB
 
 ```
 $ brew update
-$ brew install mysql
+$ brew install mariadb
 ```
 
-### Start MySQL
+### Start MariaDB
 
 ```
-$ brew services start mysql
+$ brew services start mariadb
 ```
 
 ### Secure MySQL
@@ -451,46 +452,28 @@ Remove test database and access to it? (Press y|Y for Yes, any other key for No)
 Reload privilege tables now? (Press y|Y for Yes, any other key for No) : Y
 ```
 
-### Install MySQL 5.7
-
-All files for MySQL 5.7 will be located in the folder `/usr/local/opt/mysql@5.7/bin`
+If you need to stop the MariaDB server, you can use this command:
 
 ```
-$ brew update
-$ brew install mysql@5.7
+$ brew services stop mariadb
 ```
 
-### Start MySQL
+# Sequel Pro Installation
+
+For easy management of the MySQL databases we can user the excellent free tool Sequel Pro.
+Download and install it from <a href="https://www.sequelpro.com/" target="_blank">https://www.sequelpro.com/</a>.
+
+After installation start Sequel Pro. You can connect to MYSQL by inputting the following settings:
 
 ```
-$ brew services start mysql@5.7
+Host: 127.0.0.1
+Username: root
+Password: root
+Database: <leave empty>
+Port: <leave empty>
 ```
 
-### Secure MySQL
-
-```
-$ /usr/local/opt/mysql@5.7/bin/mysql_secure_installation
-```
-
-# phpMyAdmin installation
-
-Download the English phpMyAdmin at http://www.phpmyadmin.net/home_page/downloads.php
-
-Unzip the file and move the folder to the subfolder 'phpmyadmin' below Sites, so to: ~/Development/Sites/phpmyadmin
-
-### Run Setup in the browser
-
-In your browser go to http://localhost/phpmyadmin/setup/
-
-- Click on New Server
-- Tab Basic settings: change nothing
-- Tab Authentication:
-    - at Authentication type choose: config
-    - at Password for config auth enter: root
-    - click Apply, you go back to Overview
-- Click download and save config.inc.php in the folder ~/Development/Sites/phpmyadmin
-
-Go in your browser to http://localhost/phpmyadmin. You should now see phpMyAdmin with the databases in the left column.
+After logging in you can create an empty database by click on 'Choose Database...' at the top left and then choose 'Add Database...'.
 
 # Apache Virtual Hosts
 
@@ -536,6 +519,8 @@ Remove all existing lines below the comments block and add the following lines:
 <VirtualHost *:80>
     DocumentRoot "/Users/your_user/Development/Sites"
     ServerName localhost
+    ErrorLog "/usr/local/var/log/httpd/error_log"
+    CustomLog "/usr/local/var/log/httpd/access_log" common
 </VirtualHost>
 
 <Directory "/Users/your_user/Development/Sites">
@@ -588,6 +573,11 @@ Test this by pinging to an unknown .test name. There should come a reply from 12
 
 ```
 $ ping newwebsite.test
+PING newwebsite.test (127.0.0.1): 56 data bytes
+64 bytes from 127.0.0.1: icmp_seq=0 ttl=64 time=0.039 ms
+64 bytes from 127.0.0.1: icmp_seq=1 ttl=64 time=0.160 ms
+64 bytes from 127.0.0.1: icmp_seq=2 ttl=64 time=0.093 ms
+64 bytes from 127.0.0.1: icmp_seq=3 ttl=64 time=0.144 ms
 ```
 
 Restart apache:
@@ -598,14 +588,58 @@ $ sudo apachectl -k restart
 
 # APC Cache installation:
 
-To have PHP run faster we install Zend OPcache and APCu Cache.
+To have PHP run faster we install APCu Cache. Zend OPcache was already installed with the PHP installation.
+
+```
+$ sphp 5.6
+$ brew install autoconf
+```
+
+When we have installed autoconf we can install APCu via PECL. PECL is a PHP package manager that is now the preferred way to install PHP packages.
 
 ```
 $ pecl channel-update pecl.php.net
 $ pecl install apcu-4.0.11
 ```
 
-Answer any question by simply pressing Return to accept the default values.
+## APCu Configuration
+
+```
+$ code /usr/local/etc/php/5.6/php.ini
+```
+
+Delete the line
+
+```
+extension="apcu.so" 
+```
+
+that was added at the top of php.ini. Save and close php.ini. Then create a new separate .ini file for APCu:
+
+```
+$ code /usr/local/etc/php/5.6/conf.d/ext-apcu.ini
+```
+
+Put the following contents in that file:
+
+```
+[apcu]
+extension="apcu.so"
+apc.enabled=1
+apc.shm_size=64M
+apc.ttl=7200
+apc.enable_cli=1
+```
+
+Save and close the file and restart Apache:
+
+```
+$ sudo apachectl -k restart
+```
+
+## APCu for other PHP versions
+
+### PHP 7.1
 
 ```
 $ sphp 7.1
@@ -616,6 +650,41 @@ $ pecl install apcu
 Answer any question by simply pressing Return to accept the default values.
 
 ```
+$ code /usr/local/etc/php/7.1/php.ini
+```
+
+Delete the line
+
+```
+extension="apcu.so" 
+```
+
+that was added at the top of php.ini. Save and close php.ini. Then create a new separate .ini file for APCu:
+
+```
+$ code /usr/local/etc/php/7.1/conf.d/ext-apcu.ini
+```
+
+Put the following contents in that file:
+
+```
+[apcu]
+extension="apcu.so"
+apc.enabled=1
+apc.shm_size=64M
+apc.ttl=7200
+apc.enable_cli=1
+```
+
+Save and close the file and restart Apache:
+
+```
+$ sudo apachectl -k restart
+```
+
+### PHP 7.2
+
+```
 $ sphp 7.2
 $ pecl uninstall -r apcu
 $ pecl install apcu
@@ -623,6 +692,42 @@ $ pecl install apcu
 
 Answer any question by simply pressing Return to accept the default values.
 
+```
+$ code /usr/local/etc/php/7.2/php.ini
+```
+
+Delete the line
+
+```
+extension="apcu.so" 
+```
+
+that was added at the top of php.ini. Save and close php.ini. Then create a new separate .ini file for APCu:
+
+```
+$ code /usr/local/etc/php/7.2/conf.d/ext-apcu.ini
+```
+
+Put the following contents in that file:
+
+```
+[apcu]
+extension="apcu.so"
+apc.enabled=1
+apc.shm_size=64M
+apc.ttl=7200
+apc.enable_cli=1
+```
+
+Save and close the file and restart Apache:
+
+```
+$ sudo apachectl -k restart
+```
+
+### PHP 7.3
+
+APCu is not compiling with PHP 7.3. This guide will be updated when that is working again.
 
 # XDebug installation:
 
@@ -655,12 +760,6 @@ xdebug.remote_handler=dbgp
 xdebug.remote_port=9000
 ```
 
-If you work with PhpStorm it is also a good idea to add the following line:
-
-```
-xdebug.file_link_format="phpstorm://open?file=%f&line=%l"
-```
-
 Restart apache:
 
 ```
@@ -669,29 +768,7 @@ $ sudo apachectl -k restart
 
 In your browser go to http://localhost/info.php to ensure that XDebug is installed.
 
-
-Install XDebug enable/disable script:
-
-```
-$ curl -L https://gist.githubusercontent.com/rhukster/073a2c1270ccb2c6868e7aced92001cf/raw > /usr/local/bin/xdebug
-$ chmod +x /usr/local/bin/xdebug
-```
-
-Using it is simple, you can get the current state with:
-
-```
-$ xdebug
-```
-
-And then turn it on or off with:
-
-```
-$ xdebug on
-$ xdebug off
-```
-
-### Xdebug for other PHP versions
-
+## Xdebug for other PHP versions
 
 ### PHP 7.1
 
@@ -723,12 +800,6 @@ xdebug.remote_autostart=1
 xdebug.remote_host=localhost
 xdebug.remote_handler=dbgp
 xdebug.remote_port=9000
-```
-
-If you work with PhpStorm it is also a good idea to add the following line:
-
-```
-xdebug.file_link_format="phpstorm://open?file=%f&line=%l"
 ```
 
 Restart apache:
@@ -786,9 +857,7 @@ $ sudo apachectl -k restart
 ```
 $ sphp 7.3
 $ pecl uninstall -r xdebug
-$ pear config-set preferred_state beta
-$ pecl install xdebug
-$ pear config-set preferred_state stable
+$ pecl install xdebug-2.7.0beta1
 ```
 
 You will now need to remove the zend_extension="xdebug.so"" entry that PECL adds to the top of your php.ini. So edit this file and remove the top line:
@@ -815,25 +884,44 @@ xdebug.remote_handler=dbgp
 xdebug.remote_port=9000
 ```
 
-If you work with PhpStorm it is also a good idea to add the following line:
-
-```
-xdebug.file_link_format="phpstorm://open?file=%f&line=%l"
-```
-
 Restart apache:
 
 ```
 $ sudo apachectl -k restart
 ```
 
+# Mailhog
+
+MailHog is a small application which intercepts email sent out of your sites and keeps it locally. You can use a web interface to review the mail. This comes in handy when testing the email features of the sites you are building without risking any email accidentally escaping to the wild.
+
+```
+$ brew install mailhog
+$ brew services start mailhog
+```
+
+Mailhog runs a SMTP mailserver at port 1025. To intercept all outgoing emails from a local Joomla website for example setup tour Joomla mail settings as follows:
+
+```
+Send Mail: yes
+From Email: <sending emailadrress>
+From Name: <sender name>
+Mailer: SMTP
+SMTP Host: 127.0.0.1
+SMTP Port: 1025
+SMTP Security: None
+SMTP Authentication: No
+```
+
+Open your webbrowser at <a href="http://127.0.0.1:8025" target="_blank">http://127.0.0.1:8025</a> and see all outgoing emails collected there. Emails are not sent to the Internet.
+
 # Startdevelopment, Stopdevelopment and Restartdevelopment
 
 Personally I don't want Apache and MySQL te start at every (re)boot automatically.
 For starting, stopping and restarting Apache and MySQL I use these three simple scripts:
 
+## Startdevelopment
+
 ```
-$ touch /usr/local/bin/startdevelopment
 $ code /usr/local/bin/startdevelopment
 ```
 
@@ -842,24 +930,26 @@ Add the following code:
 ```
 #!/bin/bash
 
+# Start dnsmasq
+sudo brew services start dnsmasq
+echo DNSMasq started
+
 # Start apache
 sudo apachectl start
+echo Apache started
 
-# Start mysql
-/usr/local/bin/mysql.server start
+# Start mariadb
+brew services start mariadb
+echo Mariadb started
 
-# Check running processes
-ps -aef | grep httpd
-ps -aef | grep mysql
+# Start mailhog
+brew services start mailhog
+echo Mailhog Started
 ```
 
-To use MySQL 5.7 use the following command to start MySQL
-`brew services start mysql@5.7`
-
-Save the file.
+## Stopdevelopment
 
 ```
-$ touch /usr/local/bin/stopdevelopment
 $ code /usr/local/bin/stopdevelopment
 ```
 
@@ -868,24 +958,26 @@ Add the following code:
 ```
 #!/bin/bash
 
-# Start mysql
-/usr/local/bin/mysql.server stop
+# Stop mailhog
+brew services stop mailhog
+echo Mailhog stopped
 
-# Start apache
+# Stop mysql
+brew services stop mariadb
+echo Mariadb stopped
+
+# Stop apache
 sudo apachectl stop
+echo Apache stopped
 
-# Check running processes
-ps -aef | grep httpd
-ps -aef | grep mysql
+# Stop dnsmasq
+sudo brew services stop dnsmasq
+echo DNSMasq stopped
 ```
 
-To use MySQL 5.7 use the following command to stop MySQL
-`brew services stop mysql@5.7`
-
-Save the file.
+## Restartdevelopment
 
 ```
-$ touch /usr/local/bin/restartdevelopment
 $ code /usr/local/bin/restartdevelopment
 ```
 
@@ -894,279 +986,25 @@ Add the following code:
 ```
 #!/bin/bash
 
-# Restart apache
+# Herstart dnsmasq
+sudo brew services restart dnsmasq
+echo DNSMasq restarted
+
+# Herstart apache
 sudo apachectl -k restart
+echo Apache restarted
 
-# Restart mysql
-/usr/local/bin/mysql.server restart
+# Herstart mariadb
+brew services restart mariadb
+echo Mariadb restarted
 
-# Check running processes
-ps -aef | grep httpd
-ps -aef | grep mysql
+# Herstart mailhog
+brew services restart mailhog
+echo Mailhog restarted
 ```
 
-To use MySQL 5.7 use the following command to stop MySQL
-`brew services restart mysql@5.7`
-
-Save the file.
-
-Modify file rights:
+## Modify file rights:
 
 ```
 $ chmod +x /usr/local/bin/startdevelopment /usr/local/bin/stopdevelopment /usr/local/bin/restartdevelopment
 ```
-
-### Local mailserver
-
-Redirect all mail to one address that you can control.
-
-```
-$ sudo vi /etc/postfix/main.cf
-```
-
-Add the following to the end of the file 
-
-```
-virtual_maps=regexp:/etc/postfix/virtual-redirect
-```
-
-Create the redirect file
-
-```
-$ sudo vi /etc/postfix/virtual-redirect
-```
-
-Add the following into the file
-
-```
-/.+@.+/ username
-```
-
-Replace `username` with your OSX username. You can find this username by running
-
-```
-$ whoami
-```
-
-Map this file to Postfix
-
-```
-$ sudo postmap /etc/postfix/virtual-redirect
-```
-
-Start Postfix
-
-```
-$ sudo postfix start
-```
-
-Install Dovecot
-
-```
-$ brew install dovecot
-```
-
-Check the Dovecot version number. The version number `2.3.2.1` may be different but replace with the version you find.
-
-```
-$ brew info dovecot
-```
-
-The information you will get looks like this:
-
-```
-dovecot: stable 2.3.2.1 (bottled)
-```
-
-Copy the configuration files
-
-```
-$ cp -pr /usr/local/Cellar/dovecot/2.3.2.1/share/doc/dovecot/example-config/ /usr/local/etc/dovecot/
-```
-
-Create the Dovecot local configuration file
-
-```
-touch /usr/local/etc/dovecot/local.conf
-```
-
-Open the local configuration
-
-```
-$ sudo open -e /usr/local/etc/dovecot/local.conf
-```
-
-Add the following configuration
-
-```
-# Listen for localhost
-listen = 127.0.0.1
- 
-# Use IMAP
-protocols = imap
-
-# Set the authentication
-passdb {
-  args = login
-  driver = pam
-}
-
-# Set the mail location. %u will be substituted with your username.
-# The first path is where your other IMAP folders will go,
-# the second is where your mail spool is.
-# See dovecot/conf.d/10-mail.conf for more information.
-mail_location = mbox:/Users/%u/mail:INBOX=/var/mail/%u
- 
-# Set the user and group for accessing mail.
-mail_uid = YOURUSERNAME
-mail_gid = staff
- 
-# Login user is internally used by login processes. This is the most 
-# untrusted user in Dovecot system. It shouldn't have access to anything 
-# at all.
-default_login_user = _dovenull
- 
-# Internal user is used by unprivileged processes. It should be separate 
-# from login user, so that login processes can't disturb other processes.
-default_internal_user = _dovecot
- 
-# Group to enable temporarily for privileged operations. Currently this is
-# used only with INBOX when either its initial creation or dotlocking 
-# fails. Typically this is set to "mail" to give access to /var/mail.
-mail_privileged_group = mail
-
-# Add a log
-log_path = /var/log/dovecot.log
-```
-
-Replace the following settings
-
-```
-YOURUSERNAME with the OSX username
-
-```
-
-Turn off SSL
-
-```
-$ sudo open -e /usr/local/etc/dovecot/conf.d/10-ssl.conf
-```
-
-Replace:
-
-```
-# ssl = yes
-```
-
-With:
-
-```
-ssl = no
-```
-
-Replace:
-
-```
-ssl_cert = </etc/ssl/certs/dovecot.pem
-ssl_key = </etc/ssl/private/dovecot.pem
-```
-
-With:
-
-```
-#ssl_cert = </etc/ssl/certs/dovecot.pem
-#ssl_key = </etc/ssl/private/dovecot.pem
-```
-
-In case you are using or upgrading to Dovecot 2.3.1 it is necessary to add the following line as well:
-
-```
-default_internal_group = mail
-```
-
-Check if the mail folder exists
-
-```
-ls -ltr /var/mail/YOURUSERNAME
-```
-
-If you get the message `No such file or directory` you will have to create it manually.
-
-Create the mail folder
-```
-touch /var/mail/YOURUSERNAME
-```
-
-Set the permission on the mail folder. This is needed because otherwise Dovecot can't delete the messages and the log
-shows the error imap(YOURUSERNAME): Error: setegid(privileged) failed: Operation not permitted. This means the 
-/var/mail folder cannot be accessed by you because it is owned my root. We may need to setup LMTP as described here:
-https://wiki2.dovecot.org/HowTo/PostfixDovecotLMTP
-
-```
-$ sudo chown YOURUSERNAME:mail /var/mail/YOURUSERNAME
-```
-
-Set the permissions
-
-```
-$ chmod 0600 /var/mail/YOURUSERNAME
-```
-
-Update the permissions on your mail spool with
-
-```
-$ chmod +t /var/mail/YOURUSERNAME
-```
-
-Start or Restart Dovecot
-```
-$ sudo brew services start dovecot
-
-or
-
-$ sudo brew services restart dovecot
-```
-
-### Configure the mail client
-
-Incoming mail
-
-```
-Server Name: localhost
-Port: 143
-User Name: YOURUSERNAME
-Connection security: None
-Authentication method: Password, transmitted insecurely
-```
-
-Outgoing mail
-
-```
-Server Name: localhost
-Port: 25
-User Name: YOURUSERNAME
-Connection security: None
-Authentication method: Password, transmitted insecurely
-```
-
-### Thunderbird account setup
-
-Your name: Give the mail account a name
-Email address: YOURUSERNAME@localhost
-Password: Your OS X password
-
-You can ignore the warning about double checking the email address.
-
-Click `Continue`
-
-Thunderbird fails to find your settings but that is OK. Fill in the details as described below
-
-Incoming: `IMAP` `localhost` `143` `None` `Normal password`
-
-Outgoing: `SMTP` `localhost` `25` `None` `Normal password`
-
-Click Done
-
-Accept the security warning that localhost does not use encryption
-
-Click Continue
