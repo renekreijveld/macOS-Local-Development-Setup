@@ -27,7 +27,7 @@ $ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/maste
 
 ```
 $ brew --version
-Homebrew 1.8.6
+Homebrew 2.0.0
 Homebrew/homebrew-core (git revision 46e3; last commit 2019-01-04)
 ```
 
@@ -208,10 +208,17 @@ In your browser go to http://localhost, there the My User Web Root should appear
 
 # PHP Installation
 
-Proceed by installing PHP 5.6, 7.1, 7.2 and 7.3:
+First, add a tap for older PHP versions:
+
+```
+$ brew tap exolnet/homebrew-deprecated
+```
+
+Proceed by installing PHP versions:
 
 ```
 $ brew install php@5.6
+$ brew install php@7.0
 $ brew install php@7.1
 $ brew install php@7.2
 $ brew install php@7.3
@@ -240,6 +247,16 @@ Modify php.ini PHP 5.6:
 ```
 $ code /usr/local/etc/php/5.6/php.ini
 ```
+
+If your system doesn't have a php.ini for PHP 5.6, you can grab a copy here: <a href="https://gist.github.com/renekreijveld/a01e42bc288be56ee81cec5411c72575" target="_blank">php.ini for local development PHP 5.6</a>.
+
+Modify php.ini PHP 7.0:
+
+```
+$ code /usr/local/etc/php/7.0/php.ini
+```
+
+If your system doesn't have a php.ini for PHP 5.6, you can grab a copy here: <a href="https://gist.github.com/renekreijveld/bc3e97760d87b2dcdaa624f1587c24d6" target="_blank">php.ini for local development PHP 7.0</a>.
 
 Modify php.ini PHP 7.1:
 
@@ -639,6 +656,49 @@ $ sudo apachectl -k restart
 
 ## APCu for other PHP versions
 
+### PHP 7.0
+
+```
+$ sphp 7.0
+$ pecl uninstall -r apcu
+$ pecl install apcu
+```
+
+Answer any question by simply pressing Return to accept the default values.
+
+```
+$ code /usr/local/etc/php/7.0/php.ini
+```
+
+Delete the line
+
+```
+extension="apcu.so" 
+```
+
+that was added at the top of php.ini. Save and close php.ini. Then create a new separate .ini file for APCu:
+
+```
+$ code /usr/local/etc/php/7.0/conf.d/ext-apcu.ini
+```
+
+Put the following contents in that file:
+
+```
+[apcu]
+extension="apcu.so"
+apc.enabled=1
+apc.shm_size=64M
+apc.ttl=7200
+apc.enable_cli=1
+```
+
+Save and close the file and restart Apache:
+
+```
+$ sudo apachectl -k restart
+```
+
 ### PHP 7.1
 
 ```
@@ -727,7 +787,47 @@ $ sudo apachectl -k restart
 
 ### PHP 7.3
 
-APCu is not compiling with PHP 7.3. This guide will be updated when that is working again.
+```
+$ sphp 7.3
+$ pecl uninstall -r apcu
+$ pecl install apcu
+```
+
+Answer any question by simply pressing Return to accept the default values.
+
+```
+$ code /usr/local/etc/php/7.3/php.ini
+```
+
+Delete the line
+
+```
+extension="apcu.so" 
+```
+
+that was added at the top of php.ini. Save and close php.ini. Then create a new separate .ini file for APCu:
+
+```
+$ code /usr/local/etc/php/7.3/conf.d/ext-apcu.ini
+```
+
+Put the following contents in that file:
+
+```
+[apcu]
+extension="apcu.so"
+apc.enabled=1
+apc.shm_size=64M
+apc.ttl=7200
+apc.enable_cli=1
+```
+
+Save and close the file and restart Apache:
+
+```
+$ sudo apachectl -k restart
+```
+
 
 # XDebug installation:
 
@@ -769,6 +869,44 @@ $ sudo apachectl -k restart
 In your browser go to http://localhost/info.php to ensure that XDebug is installed.
 
 ## Xdebug for other PHP versions
+
+### PHP 7.0
+
+```
+$ sphp 7.0
+$ pecl uninstall -r xdebug
+$ pecl install xdebug
+```
+
+You will now need to remove the zend_extension="xdebug.so"" entry that PECL adds to the top of your php.ini. So edit this file and remove the top line:
+
+```
+$ code /usr/local/etc/php/7.0/php.ini
+```
+
+Create a new config file for XDebug:
+
+```
+$ code /usr/local/etc/php/7.0/conf.d/ext-xdebug.ini
+```
+
+And add the following to it:
+
+```
+[xdebug]
+zend_extension="xdebug.so"
+xdebug.remote_enable=1
+xdebug.remote_autostart=1
+xdebug.remote_host=localhost
+xdebug.remote_handler=dbgp
+xdebug.remote_port=9000
+```
+
+Restart apache:
+
+```
+$ sudo apachectl -k restart
+```
 
 ### PHP 7.1
 
@@ -930,21 +1068,21 @@ Add the following code:
 ```
 #!/bin/bash
 
-# Start dnsmasq
+# start DNSMasq
 sudo brew services start dnsmasq
-echo DNSMasq started
+echo "DNSMasq started"
 
-# Start apache
-sudo apachectl start
-echo Apache started
-
-# Start mariadb
+# start mariadb
 brew services start mariadb
-echo Mariadb started
+echo "Mariadb started"
 
-# Start mailhog
+# start apache
+sudo apachectl start
+echo "Apache started"
+
+# start mailhog
 brew services start mailhog
-echo Mailhog Started
+echo "Mailhog started"
 ```
 
 ## Stopdevelopment
@@ -958,21 +1096,21 @@ Add the following code:
 ```
 #!/bin/bash
 
-# Stop mailhog
+# stop mailhog
 brew services stop mailhog
-echo Mailhog stopped
+echo "Mailhog stopped"
 
-# Stop mysql
-brew services stop mariadb
-echo Mariadb stopped
-
-# Stop apache
+# stop apache
 sudo apachectl stop
-echo Apache stopped
+echo "Apache stopped"
 
-# Stop dnsmasq
+# stop mariadb
+brew services stop mariadb
+echo "Mariadb stopped"
+
+# stop DNSMasq
 sudo brew services stop dnsmasq
-echo DNSMasq stopped
+echo "DNSMasq stopped"
 ```
 
 ## Restartdevelopment
@@ -986,21 +1124,21 @@ Add the following code:
 ```
 #!/bin/bash
 
-# Herstart dnsmasq
-sudo brew services restart dnsmasq
-echo DNSMasq restarted
-
-# Herstart apache
-sudo apachectl -k restart
-echo Apache restarted
-
-# Herstart mariadb
-brew services restart mariadb
-echo Mariadb restarted
-
-# Herstart mailhog
+# restart mailhog
 brew services restart mailhog
-echo Mailhog restarted
+echo "Mailhog restarted"
+
+# stop apache
+sudo apachectl -k restart
+echo "Apache restarted"
+
+# stop mariadb
+brew services restart mariadb
+echo "Mariadb restarted"
+
+# stop DNSMasq
+sudo brew services restart dnsmasq
+echo "DNSMasq restarted"
 ```
 
 ## Modify file rights:
