@@ -571,7 +571,7 @@ $ brew install dnsmasq
 Setup *.test hosts:
 
 ```
-$ echo 'address=/.test/127.0.0.1' > /usr/local/etc/dnsmasq.conf
+$ echo 'address=/.test/127.0.0.1' >> /usr/local/etc/dnsmasq.conf
 ```
 
 Start Dnsmasq and make sure it starts at every reboot:
