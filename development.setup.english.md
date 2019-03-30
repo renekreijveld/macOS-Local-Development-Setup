@@ -256,7 +256,7 @@ Modify php.ini PHP 7.0:
 $ code /usr/local/etc/php/7.0/php.ini
 ```
 
-If your system doesn't have a php.ini for PHP 5.6, you can grab a copy here: <a href="https://gist.github.com/renekreijveld/bc3e97760d87b2dcdaa624f1587c24d6" target="_blank">php.ini for local development PHP 7.0</a>.
+If your system doesn't have a php.ini for PHP 7.0, you can grab a copy here: <a href="https://gist.github.com/renekreijveld/bc3e97760d87b2dcdaa624f1587c24d6" target="_blank">php.ini for local development PHP 7.0</a>.
 
 Modify php.ini PHP 7.1:
 
