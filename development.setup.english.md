@@ -222,6 +222,7 @@ $ brew install php@7.0
 $ brew install php@7.1
 $ brew install php@7.2
 $ brew install php@7.3
+$ brew install php@7.4
 ```
 
 # Modify PHP.ini
@@ -276,6 +277,12 @@ Modify php.ini PHP 7.3:
 $ code /usr/local/etc/php/7.3/php.ini
 ```
 
+Modify php.ini PHP 7.4:
+
+```
+$ code /usr/local/etc/php/7.4/php.ini
+```
+
 Restart Apache after the php.ini modifications:
 
 ```
@@ -285,7 +292,7 @@ $ sudo apachectl -k restart
 Switch back yo the first PHP version
 
 ```
-$ brew unlink php@7.3 && brew link --force --overwrite php@5.6
+$ brew unlink php@7.4 && brew link --force --overwrite php@5.6
 ```
 
 At this point, I strongly recommend closing ALL your terminal tabs and windows. This will mean opening a new terminal to continue with the next step. This is strongly recommended because some really strange path issues can arise with existing terminals.
@@ -320,6 +327,7 @@ LoadModule php5_module /usr/local/opt/php@5.6/lib/httpd/modules/libphp5.so
 #LoadModule php7_module /usr/local/opt/php@7.1/lib/httpd/modules/libphp7.so
 #LoadModule php7_module /usr/local/opt/php@7.2/lib/httpd/modules/libphp7.so
 #LoadModule php7_module /usr/local/opt/php@7.3/lib/httpd/modules/libphp7.so
+#LoadModule php7_module /usr/local/opt/php@7.4/lib/httpd/modules/libphp7.so
 ```
 
 Replace:
@@ -398,6 +406,7 @@ Unlinking /usr/local/Cellar/php@5.6/5.6.39... 25 symlinks removed
 Unlinking /usr/local/Cellar/php@7.1/7.1.25... 0 symlinks removed
 Unlinking /usr/local/Cellar/php@7.2/7.2.13... 0 symlinks removed
 Unlinking /usr/local/Cellar/php/7.3.0... 0 symlinks removed
+Unlinking /usr/local/Cellar/php/7.4.1... 0 symlinks removed
 Linking /usr/local/Cellar/php@7.1/7.1.25... 25 symlinks created
 
 If you need to have this software first in your PATH instead consider running:
@@ -829,6 +838,48 @@ Save and close the file and restart Apache:
 $ sudo apachectl -k restart
 ```
 
+### PHP 7.4
+
+```
+$ sphp 7.4
+$ pecl uninstall -r apcu
+$ pecl install apcu
+```
+
+Answer any question by simply pressing Return to accept the default values.
+
+```
+$ code /usr/local/etc/php/7.4/php.ini
+```
+
+Delete the line
+
+```
+extension="apcu.so" 
+```
+
+that was added at the top of php.ini. Save and close php.ini. Then create a new separate .ini file for APCu:
+
+```
+$ code /usr/local/etc/php/7.4/conf.d/ext-apcu.ini
+```
+
+Put the following contents in that file:
+
+```
+[apcu]
+extension="apcu.so"
+apc.enabled=1
+apc.shm_size=64M
+apc.ttl=7200
+apc.enable_cli=1
+```
+
+Save and close the file and restart Apache:
+
+```
+$ sudo apachectl -k restart
+```
 
 # XDebug installation:
 
@@ -1009,6 +1060,44 @@ Create a new config file for XDebug:
 
 ```
 $ code /usr/local/etc/php/7.3/conf.d/ext-xdebug.ini
+```
+
+And add the following to it:
+
+```
+[xdebug]
+zend_extension="xdebug.so"
+xdebug.remote_enable=1
+xdebug.remote_autostart=1
+xdebug.remote_host=localhost
+xdebug.remote_handler=dbgp
+xdebug.remote_port=9000
+```
+
+Restart apache:
+
+```
+$ sudo apachectl -k restart
+```
+
+### PHP 7.4
+
+```
+$ sphp 7.4
+$ pecl uninstall -r xdebug
+$ pecl install xdebug
+```
+
+You will now need to remove the zend_extension="xdebug.so"" entry that PECL adds to the top of your php.ini. So edit this file and remove the top line:
+
+```
+$ code /usr/local/etc/php/7.4/php.ini
+```
+
+Create a new config file for XDebug:
+
+```
+$ code /usr/local/etc/php/7.4/conf.d/ext-xdebug.ini
 ```
 
 And add the following to it:
