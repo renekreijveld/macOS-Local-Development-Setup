@@ -1047,7 +1047,7 @@ $ sudo apachectl -k restart
 ```
 $ sphp 7.3
 $ pecl uninstall -r xdebug
-$ pecl install xdebug-2.7.0beta1
+$ pecl install xdebug
 ```
 
 You will now need to remove the zend_extension="xdebug.so"" entry that PECL adds to the top of your php.ini. So edit this file and remove the top line:
