@@ -4,7 +4,7 @@ After my MAMP PRO setup became very unstable I decided to setup my local develop
 
 I used various tips and recources from developer colleaugues.
 
-I now run Apache, PHP (multiple versions: 5.6, 7.0, 7.1, 7.2 and 7.3) and MySQL locally on macOS extended with Zend OPcache, APCu Cache and XDebug.
+I now run Apache, PHP (multiple versions: 5.6, 7.0, 7.1, 7.2, 7.3 and 7.4) and MySQL locally on macOS extended with Zend OPcache, APCu Cache and XDebug.
 
 This is the setup I used.
 
