@@ -115,6 +115,12 @@ Edit php.ini 7.3:
 $ code /usr/local/etc/php/7.3/php.ini
 ```
 
+Edit php.ini 7.4:
+
+```
+$ code /usr/local/etc/php/7.4/php.ini
+```
+
 Change to php 5.6:
 
 ```
@@ -137,6 +143,12 @@ Change to php 7.3:
 
 ```
 $ sphp 7.3
+```
+
+Change to php 7.4:
+
+```
+$ sphp 7.4
 ```
 
 # MariaDB
