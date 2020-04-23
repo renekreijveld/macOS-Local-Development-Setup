@@ -497,22 +497,27 @@ If you need to stop the MariaDB server, you can use this command:
 $ brew services stop mariadb
 ```
 
-# Sequel Pro Installation
+# DBeaver Installation
 
-For easy management of the MySQL databases we can user the excellent free tool Sequel Pro.
-Download and install it from <a href="https://www.sequelpro.com/" target="_blank">https://www.sequelpro.com/</a>.
+For easy management of the MySQL databases we can use the excellent free tool DBeaver.
+You can find more information about DBeaver here: <a href="https://dbeaver.io/download" target="_blank">https://dbeaver.io/download</a>.
+After installing DBeaver you need to install a Java Development Kit (JDK): <a href="https://www.oracle.com/java/technologies/javase-jdk14-downloads.html" target="_blank">https://www.oracle.com/java/technologies/javase-jdk14-downloads.html</a>.
 
-After installation start Sequel Pro. You can connect to MYSQL by inputting the following settings:
+After installation of DBeaver and the JDK start DBeaver.
+On the Connect to database window choose MariaDB, click Next.
 
 ```
-Host: 127.0.0.1
+Server Host: 127.0.0.1
+Port: 3306
+Database: <leave empty>
 Username: root
 Password: root
-Database: <leave empty>
-Port: <leave empty>
 ```
 
-After logging in you can create an empty database by click on 'Choose Database...' at the top left and then choose 'Add Database...'.
+Click Test Connection ...
+A popup window appears for the connection Driver. Click the Download button.
+The connection should work then.
+Click Finish.
 
 # Apache Virtual Hosts
 
@@ -641,19 +646,9 @@ $ pecl channel-update pecl.php.net
 $ pecl install apcu-4.0.11
 ```
 
+Answer any question by simply pressing Return to accept the default values.
+
 ## APCu Configuration
-
-```
-$ code /usr/local/etc/php/5.6/php.ini
-```
-
-Delete the line
-
-```
-extension="apcu.so" 
-```
-
-that was added at the top of php.ini. Save and close php.ini. Then create a new separate .ini file for APCu:
 
 ```
 $ code /usr/local/etc/php/5.6/conf.d/ext-apcu.ini
@@ -682,23 +677,10 @@ $ sudo apachectl -k restart
 
 ```
 $ sphp 7.0
-$ pecl uninstall -r apcu
 $ pecl install apcu
 ```
 
 Answer any question by simply pressing Return to accept the default values.
-
-```
-$ code /usr/local/etc/php/7.0/php.ini
-```
-
-Delete the line
-
-```
-extension="apcu.so" 
-```
-
-that was added at the top of php.ini. Save and close php.ini. Then create a new separate .ini file for APCu:
 
 ```
 $ code /usr/local/etc/php/7.0/conf.d/ext-apcu.ini
@@ -725,7 +707,6 @@ $ sudo apachectl -k restart
 
 ```
 $ sphp 7.1
-$ pecl uninstall -r apcu
 $ pecl install apcu
 ```
 
@@ -768,7 +749,6 @@ $ sudo apachectl -k restart
 
 ```
 $ sphp 7.2
-$ pecl uninstall -r apcu
 $ pecl install apcu
 ```
 
@@ -811,7 +791,6 @@ $ sudo apachectl -k restart
 
 ```
 $ sphp 7.3
-$ pecl uninstall -r apcu
 $ pecl install apcu
 ```
 
@@ -854,7 +833,6 @@ $ sudo apachectl -k restart
 
 ```
 $ sphp 7.4
-$ pecl uninstall -r apcu
 $ pecl install apcu
 ```
 
@@ -900,12 +878,6 @@ $ sphp 5.6
 $ pecl install xdebug-2.5.5
 ```
 
-You will now need to remove the zend_extension="xdebug.so"" entry that PECL adds to the top of your php.ini. So edit this file and remove the top line:
-
-```
-$ code /usr/local/etc/php/5.6/php.ini
-```
-
 Create a new config file for XDebug:
 
 ```
@@ -924,6 +896,12 @@ xdebug.remote_handler=dbgp
 xdebug.remote_port=9000
 ```
 
+If you work with PhpStorm it is also a good idea to add the following line:
+
+```
+xdebug.file_link_format="phpstorm://open?file=%f&line=%l"
+```
+
 Restart apache:
 
 ```
@@ -936,47 +914,12 @@ In your browser go to http://localhost/info.php to ensure that XDebug is install
 
 ### PHP 7.0
 
-```
-$ sphp 7.0
-$ pecl uninstall -r xdebug
-$ pecl install xdebug
-```
-
-You will now need to remove the zend_extension="xdebug.so"" entry that PECL adds to the top of your php.ini. So edit this file and remove the top line:
-
-```
-$ code /usr/local/etc/php/7.0/php.ini
-```
-
-Create a new config file for XDebug:
-
-```
-$ code /usr/local/etc/php/7.0/conf.d/ext-xdebug.ini
-```
-
-And add the following to it:
-
-```
-[xdebug]
-zend_extension="xdebug.so"
-xdebug.remote_enable=1
-xdebug.remote_autostart=1
-xdebug.remote_host=localhost
-xdebug.remote_handler=dbgp
-xdebug.remote_port=9000
-```
-
-Restart apache:
-
-```
-$ sudo apachectl -k restart
-```
+XDebug for PHP 7.0 is no longer available, so we'll skip that.
 
 ### PHP 7.1
 
 ```
 $ sphp 7.1
-$ pecl uninstall -r xdebug
 $ pecl install xdebug
 ```
 
@@ -1004,6 +947,12 @@ xdebug.remote_handler=dbgp
 xdebug.remote_port=9000
 ```
 
+If you work with PhpStorm it is also a good idea to add the following line:
+
+```
+xdebug.file_link_format="phpstorm://open?file=%f&line=%l"
+```
+
 Restart apache:
 
 ```
@@ -1014,7 +963,6 @@ $ sudo apachectl -k restart
 
 ```
 $ sphp 7.2
-$ pecl uninstall -r xdebug
 $ pecl install xdebug
 ```
 
@@ -1058,7 +1006,6 @@ $ sudo apachectl -k restart
 
 ```
 $ sphp 7.3
-$ pecl uninstall -r xdebug
 $ pecl install xdebug
 ```
 
@@ -1086,6 +1033,12 @@ xdebug.remote_handler=dbgp
 xdebug.remote_port=9000
 ```
 
+If you work with PhpStorm it is also a good idea to add the following line:
+
+```
+xdebug.file_link_format="phpstorm://open?file=%f&line=%l"
+```
+
 Restart apache:
 
 ```
@@ -1096,7 +1049,6 @@ $ sudo apachectl -k restart
 
 ```
 $ sphp 7.4
-$ pecl uninstall -r xdebug
 $ pecl install xdebug
 ```
 
@@ -1122,6 +1074,12 @@ xdebug.remote_autostart=1
 xdebug.remote_host=localhost
 xdebug.remote_handler=dbgp
 xdebug.remote_port=9000
+```
+
+If you work with PhpStorm it is also a good idea to add the following line:
+
+```
+xdebug.file_link_format="phpstorm://open?file=%f&line=%l"
 ```
 
 Restart apache:
