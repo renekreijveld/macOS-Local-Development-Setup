@@ -43,6 +43,10 @@ $ brew install wget
 $ brew install openldap libiconv
 ```
 
+### Update openssl
+```$ brew uninstall openssl; brew uninstall openssl; brew install https://github.com/tebelorg/Tump/releases/download/v1.0.0/openssl.rb
+```
+
 ## Apache installation
 
 ### Stop existing Apache and install Homebrew version
