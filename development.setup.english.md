@@ -466,6 +466,14 @@ $ brew install mariadb
 $ brew services start mariadb
 ```
 
+### Set root password to 'root'
+
+```
+$ mysql
+MariaDB [(none)]> SET PASSWORD FOR root@localhost=PASSWORD('root');
+MariaDB [(none)]> exit
+```
+
 ### Secure MySQL
 
 ```
@@ -475,13 +483,12 @@ $ /usr/local/bin/mysql_secure_installation
 Answers:
 
 ```
-Would you like to setup VALIDATE PASSWORD plugin? Press y|Y for Yes, any other key for No: Enter (= no)
-Please set the password for root here. New password: root
-Re-enter new password: root
-Remove anonymous users? (Press y|Y for Yes, any other key for No) : Y
-Disallow root login remotely? (Press y|Y for Yes, any other key for No) : Y
-Remove test database and access to it? (Press y|Y for Yes, any other key for No) : Y
-Reload privilege tables now? (Press y|Y for Yes, any other key for No) : Y
+Switch to unix_socket authentication [Y/n] n
+Change the root password? [Y/n] n
+Remove anonymous users? [Y/n] Y
+Disallow root login remotely? [Y/n] Y
+Remove test database and access to it? [Y/n] Y
+Reload privilege tables now? [Y/n] Y
 ```
 
 If you need to stop the MariaDB server, you can use this command:
