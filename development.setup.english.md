@@ -9,9 +9,9 @@ This setup works fine on my macOS machines. I am certainly no Apache, PHP and My
 
 # Used sources
 
-<a href="https://getgrav.org/blog/macos-catalina-apache-multiple-php-versions" target="_blank">macOS 10.15 Catalina Apache Setup: Multiple PHP Versions</a>
+<a href="https://getgrav.org/blog/macos-bigsur-apache-multiple-php-versions" target="_blank">macOS 11.0 Big Sur Apache Setup: Multiple PHP Versions</a>
 
-# Install XCode Command Line Tools
+# First install XCode Command Line Tools
 
 ```
 $ xcode-select --install
@@ -20,15 +20,16 @@ $ xcode-select --install
 # Homebrew installation
 
 ```
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
 ### Check Homebrew installation
 
 ```
 $ brew --version
-Homebrew 2.0.0
-Homebrew/homebrew-core (git revision 46e3; last commit 2019-01-04)
+Homebrew 3.0.4
+Homebrew/homebrew-core (git revision fa4991; last commit 2021-03-06)
+Homebrew/homebrew-cask (git revision 993c14; last commit 2021-03-06)
 ```
 
 ### Install wget
@@ -37,15 +38,10 @@ Homebrew/homebrew-core (git revision 46e3; last commit 2019-01-04)
 $ brew install wget
 ```
 
-### Mojave Required Libraries
+### Catalina/Big Sur Required Libraries
 
 ```
-$ brew install openldap libiconv
-```
-
-### Update openssl
-```
-$ brew uninstall openssl; brew uninstall openssl; brew install https://github.com/tebelorg/Tump/releases/download/v1.0.0/openssl.rb
+$ brew install openssl
 ```
 
 ## Apache installation
@@ -61,15 +57,15 @@ $ brew install httpd
 You can setup Apache so it starts at every (re)boot of your machine.
 
 ```
-$ sudo brew services start httpd
+$ brew services start httpd
 ```
 
 You can also start, stop or restart Apache manually
 
 ```
-$ sudo apachectl start
-$ sudo apachectl stop
-$ sudo apachectl -k restart
+$ brew services start httpd
+$ brew services stop httpd
+$ brew services restart httpd
 ```
 
 Test Apache by going in your browser to: http://localhost:8080
@@ -77,7 +73,7 @@ Test Apache by going in your browser to: http://localhost:8080
 ## Visual Studio Code
 
 To edit configuration files we setup a very good editor for the job: Visual Sudio Code.
-Go to the <a href="https://code.visualstudio.com/" target="_blank">Visual Studio Code site</a> and click Download for Mac.
+Go to the <a href="https://code.visualstudio.com/" target="_blank">Visual Studio Code site</a> and click Download Mac Universal.
 
 Once downloaded, drag the application to your preffered Applications location. Next, you want to install the command line tools, so follow the <a href="https://code.visualstudio.com/docs/setup/mac#_launching-from-the-command-line" target="_blank">official step-by-step instructions</a> so that you can use the code command from the Terminal.
 
@@ -132,7 +128,7 @@ Replace:
 With:
 
 ```
-<Directory /Users/your_user/Development/Sites> (so WITHOUT quotes)
+<Directory "/Users/your_user/Development/Sites"> (so WITH quotes)
 ```
 
 (input your user name at 'your_user')
@@ -206,33 +202,32 @@ $ echo "<h1>My User Web Root</h1>" > ~/Development/Sites/index.html
 ### Restart Apache
 
 ```
-$ sudo apachectl -k restart
+$ brew services restart httpd
 ```
 
 In your browser go to http://localhost, there the My User Web Root should appear.
 
 # PHP Installation
 
-First, add a tap for older PHP versions:
+First, add a tap from @shivammahtur that has many PHP versions pre-built.
 
 ```
-$ brew tap exolnet/homebrew-deprecated
+$ brew tap shivammathur/php
 ```
 
 Proceed by installing PHP versions:
 
 ```
-$ brew install php@5.6
-$ brew install php@7.0
-$ brew install php@7.1
-$ brew install php@7.2
-$ brew install php@7.3
-$ brew install php@7.4
+$ brew install shivammathur/php/php@5.6
+$ brew install shivammathur/php/php@7.2
+$ brew install shivammathur/php/php@7.3
+$ brew install shivammathur/php/php@7.4
+$ brew install shivammathur/php/php@8.0
 ```
 
 # Modify PHP.ini
 
-To have webapplications work good we need to modify a number of php.ini settings.
+To have webapplications work well we need to modify a number of php.ini settings.
 The following values need to be modified. Search the setting in php.ini, copy the line and add a ; at the beginning of the line. Then enter the new value.
 
 For display_errors you might want make an exception and leave that to 'On', but that is however you prefer.
@@ -243,8 +238,8 @@ max_execution_time = 180
 max_input_time = 180
 memory_limit = 512M
 display_errors = Off
-post_max_size = 50M
-upload_max_filesize = 50M
+post_max_size = 64M
+upload_max_filesize = 64M
 date.timezone = Europe/Amsterdam
 ```
 
@@ -255,20 +250,6 @@ $ code /usr/local/etc/php/5.6/php.ini
 ```
 
 If your system doesn't have a php.ini for PHP 5.6, you can grab a copy here: <a href="https://gist.github.com/renekreijveld/a01e42bc288be56ee81cec5411c72575" target="_blank">php.ini for local development PHP 5.6</a>.
-
-Modify php.ini PHP 7.0:
-
-```
-$ code /usr/local/etc/php/7.0/php.ini
-```
-
-If your system doesn't have a php.ini for PHP 7.0, you can grab a copy here: <a href="https://gist.github.com/renekreijveld/bc3e97760d87b2dcdaa624f1587c24d6" target="_blank">php.ini for local development PHP 7.0</a>.
-
-Modify php.ini PHP 7.1:
-
-```
-$ code /usr/local/etc/php/7.1/php.ini
-```
 
 Modify php.ini PHP 7.2:
 
@@ -288,25 +269,31 @@ Modify php.ini PHP 7.4:
 $ code /usr/local/etc/php/7.4/php.ini
 ```
 
+Modify php.ini PHP 8.0:
+
+```
+$ code /usr/local/etc/php/8.0/php.ini
+```
+
 Restart Apache after the php.ini modifications:
 
 ```
-$ sudo apachectl -k restart
+$ brew services restart httpd
 ```
 
 Switch back yo the first PHP version
 
 ```
-$ brew unlink php@7.4 && brew link --force --overwrite php@5.6
+$ brew unlink php && brew link --overwrite --force php@5.6
 ```
 
-At this point, I strongly recommend closing ALL your terminal tabs and windows. This will mean opening a new terminal to continue with the next step. This is strongly recommended because some really strange path issues can arise with existing terminals.
+At this point, you must close ALL your terminal tabs and windows. This will mean opening a new terminal to continue with the next step. This is strongly recommended because some really strange path issues can arise with existing terminals.
 
 Quick test that we're in the correct version:
 
 ```
 $ php -v
-PHP 5.6.39 (cli) (built: Dec  7 2018 08:27:47) 
+PHP 5.6.40 (cli) (built: Feb 28 2021 14:42:44)
 Copyright (c) 1997-2016 The PHP Group
 Zend Engine v2.6.0, Copyright (c) 1998-2016 Zend Technologies
     with Zend OPcache v7.0.6-dev, Copyright (c) 1999-2016, by Zend Technologies
@@ -328,11 +315,10 @@ Below this add the following libphp modules:
 
 ```
 LoadModule php5_module /usr/local/opt/php@5.6/lib/httpd/modules/libphp5.so
-#LoadModule php7_module /usr/local/opt/php@7.0/lib/httpd/modules/libphp7.so
-#LoadModule php7_module /usr/local/opt/php@7.1/lib/httpd/modules/libphp7.so
 #LoadModule php7_module /usr/local/opt/php@7.2/lib/httpd/modules/libphp7.so
 #LoadModule php7_module /usr/local/opt/php@7.3/lib/httpd/modules/libphp7.so
 #LoadModule php7_module /usr/local/opt/php@7.4/lib/httpd/modules/libphp7.so
+#LoadModule php_module /usr/local/opt/php@8.0/lib/httpd/modules/libphp.so
 ```
 
 Replace:
@@ -355,11 +341,11 @@ With:
 </FilesMatch>
 ```
 
+I've added kick.php which is nice if you work with Akeeba Backup Kickstaert.
 Save the file and restart Apache:
 
 ```
-$ sudo apachectl -k stop
-$ sudo apachectl start
+$ brew services restart httpd
 ```
 
 Create a file info.php in your ~/Development/Sites folder:
@@ -375,7 +361,7 @@ Check if it is working by going in your browser to http://localhost/info.php
 To easily switch between PHP versions we install a PHP switcher script.
 
 ```
-$ curl -L https://gist.githubusercontent.com/rhukster/f4c04f1bf59e0b74e335ee5d186a98e2/raw > /usr/local/bin/sphp
+$ curl -L https://gist.githubusercontent.com/rhukster/f4c04f1bf59e0b74e335ee5d186a98e2/raw/0c36a5067fbd63e6a36700a6aaa119df0836bdfc/sphp.sh > /usr/local/bin/sphp
 $ chmod +x /usr/local/bin/sphp
 ```
 
@@ -404,28 +390,29 @@ $ sphp 7.1
 ```
 
 ```
-$ sphp 7.1
-Switching to php@7.1
+$ sphp 7.4
+Switching to php@7.4
 Switching your shell
-Unlinking /usr/local/Cellar/php@5.6/5.6.39... 25 symlinks removed
-Unlinking /usr/local/Cellar/php@7.1/7.1.25... 0 symlinks removed
-Unlinking /usr/local/Cellar/php@7.2/7.2.13... 0 symlinks removed
-Unlinking /usr/local/Cellar/php/7.3.0... 0 symlinks removed
-Unlinking /usr/local/Cellar/php/7.4.1... 0 symlinks removed
-Linking /usr/local/Cellar/php@7.1/7.1.25... 25 symlinks created
+Unlinking /usr/local/Cellar/php@5.6/5.6.40... 25 symlinks removed.
+Unlinking /usr/local/Cellar/php@7.2/7.2.34... 0 symlinks removed.
+Unlinking /usr/local/Cellar/php@7.3/7.3.27... 0 symlinks removed.
+Unlinking /usr/local/Cellar/php@7.4/7.4.16... 0 symlinks removed.
+Unlinking /usr/local/Cellar/php/8.0.3... 0 symlinks removed.
+Linking /usr/local/Cellar/php@7.4/7.4.16... 25 symlinks created.
 
 If you need to have this software first in your PATH instead consider running:
-  echo 'export PATH="/usr/local/opt/php@7.1/bin:$PATH"' >> ~/.bash_profile
-  echo 'export PATH="/usr/local/opt/php@7.1/sbin:$PATH"' >> ~/.bash_profile
-You will need sudo power from now on
+  echo 'export PATH="/usr/local/opt/php@7.4/bin:$PATH"' >> ~/.profile
+  echo 'export PATH="/usr/local/opt/php@7.4/sbin:$PATH"' >> ~/.profile
 Switching your apache conf
 Restarting apache
+Stopping `httpd`... (might take a while)
+==> Successfully stopped `httpd` (label: homebrew.mxcl.httpd)
+==> Successfully started `httpd` (label: homebrew.mxcl.httpd)
 
-PHP 7.1.25 (cli) (built: Dec  7 2018 08:20:45) ( NTS )
-Copyright (c) 1997-2018 The PHP Group
-Zend Engine v3.1.0, Copyright (c) 1998-2018 Zend Technologies
-    with Zend OPcache v7.1.25, Copyright (c) 1999-2018, by Zend Technologies
-    with Xdebug v2.6.1, Copyright (c) 2002-2018, by Derick Rethans
+PHP 7.4.16 (cli) (built: Mar  5 2021 00:37:36) ( NTS )
+Copyright (c) The PHP Group
+Zend Engine v3.4.0, Copyright (c) Zend Technologies
+    with Zend OPcache v7.4.16, Copyright (c), by Zend Technologies
 
 All done!
 ```
@@ -448,10 +435,9 @@ $ brew upgrade
 
 To update all of your PHP versions you have to switch to them with the sphp script, and then run brew update.
 
-# MySQL installation
+# MariaDB (mysql) installation
 
-Do note, you cannot run multiple versions of MySQL on the same machine because brew will install the database directory 
-in the same location. So choose wisely which version you want to install.
+Do note, you cannot run multiple versions of MySQL on the same machine because brew will install the database directory in the same location. So choose wisely which version you want to install.
 
 ### Install MariaDB
 
@@ -496,28 +482,6 @@ If you need to stop the MariaDB server, you can use this command:
 ```
 $ brew services stop mariadb
 ```
-
-# DBeaver Installation
-
-For easy management of the MySQL databases we can use the excellent free tool DBeaver.
-You can find more information about DBeaver here: <a href="https://dbeaver.io/download" target="_blank">https://dbeaver.io/download</a>.
-After installing DBeaver you need to install a Java Development Kit (JDK): <a href="https://www.oracle.com/java/technologies/javase-jdk14-downloads.html" target="_blank">https://www.oracle.com/java/technologies/javase-jdk14-downloads.html</a>.
-
-After installation of DBeaver and the JDK start DBeaver.
-On the Connect to database window choose MariaDB, click Next.
-
-```
-Server Host: 127.0.0.1
-Port: 3306
-Database: <leave empty>
-Username: root
-Password: root
-```
-
-Click Test Connection ...
-A popup window appears for the connection Driver. Click the Download button.
-The connection should work then.
-Click Finish.
 
 # Apache Virtual Hosts
 
@@ -627,7 +591,7 @@ PING newwebsite.test (127.0.0.1): 56 data bytes
 Restart apache:
 
 ```
-$ sudo apachectl -k restart
+$ brew services restart httpd
 ```
 
 # APC Cache installation:
@@ -668,82 +632,10 @@ apc.enable_cli=1
 Save and close the file and restart Apache:
 
 ```
-$ sudo apachectl -k restart
+$ brew services restart httpd
 ```
 
 ## APCu for other PHP versions
-
-### PHP 7.0
-
-```
-$ sphp 7.0
-$ pecl install apcu
-```
-
-Answer any question by simply pressing Return to accept the default values.
-
-```
-$ code /usr/local/etc/php/7.0/conf.d/ext-apcu.ini
-```
-
-Put the following contents in that file:
-
-```
-[apcu]
-extension="apcu.so"
-apc.enabled=1
-apc.shm_size=64M
-apc.ttl=7200
-apc.enable_cli=1
-```
-
-Save and close the file and restart Apache:
-
-```
-$ sudo apachectl -k restart
-```
-
-### PHP 7.1
-
-```
-$ sphp 7.1
-$ pecl install apcu
-```
-
-Answer any question by simply pressing Return to accept the default values.
-
-```
-$ code /usr/local/etc/php/7.1/php.ini
-```
-
-Delete the line
-
-```
-extension="apcu.so" 
-```
-
-that was added at the top of php.ini. Save and close php.ini. Then create a new separate .ini file for APCu:
-
-```
-$ code /usr/local/etc/php/7.1/conf.d/ext-apcu.ini
-```
-
-Put the following contents in that file:
-
-```
-[apcu]
-extension="apcu.so"
-apc.enabled=1
-apc.shm_size=64M
-apc.ttl=7200
-apc.enable_cli=1
-```
-
-Save and close the file and restart Apache:
-
-```
-$ sudo apachectl -k restart
-```
 
 ### PHP 7.2
 
@@ -761,7 +653,7 @@ $ code /usr/local/etc/php/7.2/php.ini
 Delete the line
 
 ```
-extension="apcu.so" 
+extension="apcu.so"
 ```
 
 that was added at the top of php.ini. Save and close php.ini. Then create a new separate .ini file for APCu:
@@ -784,7 +676,7 @@ apc.enable_cli=1
 Save and close the file and restart Apache:
 
 ```
-$ sudo apachectl -k restart
+$ brew services restart httpd
 ```
 
 ### PHP 7.3
@@ -803,7 +695,7 @@ $ code /usr/local/etc/php/7.3/php.ini
 Delete the line
 
 ```
-extension="apcu.so" 
+extension="apcu.so"
 ```
 
 that was added at the top of php.ini. Save and close php.ini. Then create a new separate .ini file for APCu:
@@ -826,7 +718,7 @@ apc.enable_cli=1
 Save and close the file and restart Apache:
 
 ```
-$ sudo apachectl -k restart
+$ brew services restart httpd
 ```
 
 ### PHP 7.4
@@ -845,7 +737,7 @@ $ code /usr/local/etc/php/7.4/php.ini
 Delete the line
 
 ```
-extension="apcu.so" 
+extension="apcu.so"
 ```
 
 that was added at the top of php.ini. Save and close php.ini. Then create a new separate .ini file for APCu:
@@ -868,7 +760,49 @@ apc.enable_cli=1
 Save and close the file and restart Apache:
 
 ```
-$ sudo apachectl -k restart
+$ brew services restart httpd
+```
+
+### PHP 8.0
+
+```
+$ sphp 8.0
+$ pecl install apcu
+```
+
+Answer any question by simply pressing Return to accept the default values.
+
+```
+$ code /usr/local/etc/php/8.0/php.ini
+```
+
+Delete the line
+
+```
+extension="apcu.so"
+```
+
+that was added at the top of php.ini. Save and close php.ini. Then create a new separate .ini file for APCu:
+
+```
+$ code /usr/local/etc/php/8.0/conf.d/ext-apcu.ini
+```
+
+Put the following contents in that file:
+
+```
+[apcu]
+extension="apcu.so"
+apc.enabled=1
+apc.shm_size=64M
+apc.ttl=7200
+apc.enable_cli=1
+```
+
+Save and close the file and restart Apache:
+
+```
+$ brew services restart httpd
 ```
 
 # XDebug installation:
@@ -888,76 +822,23 @@ And add the following to it:
 
 ```
 [xdebug]
-zend_extension="xdebug.so"
-xdebug.remote_enable=1
-xdebug.remote_autostart=1
-xdebug.remote_host=localhost
-xdebug.remote_handler=dbgp
-xdebug.remote_port=9000
-```
-
-If you work with PhpStorm it is also a good idea to add the following line:
-
-```
-xdebug.file_link_format="phpstorm://open?file=%f&line=%l"
+zend_extension = "xdebug.so"
+xdebug.remote_enable = 1
+xdebug.remote_autostart = 1
+xdebug.remote_host = localhost
+xdebug.remote_handler = dbgp
+xdebug.remote_port = 9000
 ```
 
 Restart apache:
 
 ```
-$ sudo apachectl -k restart
+$ brew services restart httpd
 ```
 
 In your browser go to http://localhost/info.php to ensure that XDebug is installed.
 
 ## Xdebug for other PHP versions
-
-### PHP 7.0
-
-XDebug for PHP 7.0 is no longer available, so we'll skip that.
-
-### PHP 7.1
-
-```
-$ sphp 7.1
-$ pecl install xdebug
-```
-
-You will now need to remove the zend_extension="xdebug.so"" entry that PECL adds to the top of your php.ini. So edit this file and remove the top line:
-
-```
-$ code /usr/local/etc/php/7.1/php.ini
-```
-
-Create a new config file for XDebug:
-
-```
-$ code /usr/local/etc/php/7.1/conf.d/ext-xdebug.ini
-```
-
-And add the following to it:
-
-```
-[xdebug]
-zend_extension="xdebug.so"
-xdebug.remote_enable=1
-xdebug.remote_autostart=1
-xdebug.remote_host=localhost
-xdebug.remote_handler=dbgp
-xdebug.remote_port=9000
-```
-
-If you work with PhpStorm it is also a good idea to add the following line:
-
-```
-xdebug.file_link_format="phpstorm://open?file=%f&line=%l"
-```
-
-Restart apache:
-
-```
-$ sudo apachectl -k restart
-```
 
 ### PHP 7.2
 
@@ -982,24 +863,16 @@ And add the following to it:
 
 ```
 [xdebug]
-zend_extension="xdebug.so"
-xdebug.remote_enable=1
-xdebug.remote_autostart=1
-xdebug.remote_host=localhost
-xdebug.remote_handler=dbgp
-xdebug.remote_port=9000
-```
-
-If you work with PhpStorm it is also a good idea to add the following line:
-
-```
-xdebug.file_link_format="phpstorm://open?file=%f&line=%l"
+zend_extension = "xdebug.so"
+xdebug.mode = debug
+xdebug.start_with_request = yes
+xdebug.client_port = 9000
 ```
 
 Restart apache:
 
 ```
-$ sudo apachectl -k restart
+$ brew services restart httpd
 ```
 
 ### PHP 7.3
@@ -1025,24 +898,16 @@ And add the following to it:
 
 ```
 [xdebug]
-zend_extension="xdebug.so"
-xdebug.remote_enable=1
-xdebug.remote_autostart=1
-xdebug.remote_host=localhost
-xdebug.remote_handler=dbgp
-xdebug.remote_port=9000
-```
-
-If you work with PhpStorm it is also a good idea to add the following line:
-
-```
-xdebug.file_link_format="phpstorm://open?file=%f&line=%l"
+zend_extension = "xdebug.so"
+xdebug.mode = debug
+xdebug.start_with_request = yes
+xdebug.client_port = 9000
 ```
 
 Restart apache:
 
 ```
-$ sudo apachectl -k restart
+$ brew services restart httpd
 ```
 
 ### PHP 7.4
@@ -1068,12 +933,10 @@ And add the following to it:
 
 ```
 [xdebug]
-zend_extension="xdebug.so"
-xdebug.remote_enable=1
-xdebug.remote_autostart=1
-xdebug.remote_host=localhost
-xdebug.remote_handler=dbgp
-xdebug.remote_port=9000
+zend_extension = "xdebug.so"
+xdebug.mode = debug
+xdebug.start_with_request = yes
+xdebug.client_port = 9000
 ```
 
 If you work with PhpStorm it is also a good idea to add the following line:
@@ -1085,7 +948,42 @@ xdebug.file_link_format="phpstorm://open?file=%f&line=%l"
 Restart apache:
 
 ```
-$ sudo apachectl -k restart
+$ brew services restart httpd
+```
+
+### PHP 8.0
+
+```
+$ sphp 8.0
+$ pecl install xdebug
+```
+
+You will now need to remove the zend_extension="xdebug.so"" entry that PECL adds to the top of your php.ini. So edit this file and remove the top line:
+
+```
+$ code /usr/local/etc/php/8.0/php.ini
+```
+
+Create a new config file for XDebug:
+
+```
+$ code /usr/local/etc/php/8.0/conf.d/ext-xdebug.ini
+```
+
+And add the following to it:
+
+```
+[xdebug]
+zend_extension = "xdebug.so"
+xdebug.mode = debug
+xdebug.start_with_request = yes
+xdebug.client_port = 9000
+```
+
+Restart apache:
+
+```
+$ brew services restart httpd
 ```
 
 # Mailhog
@@ -1114,13 +1012,13 @@ Open your webbrowser at <a href="http://127.0.0.1:8025" target="_blank">http://1
 
 # Startdevelopment, Stopdevelopment and Restartdevelopment
 
-Personally I don't want Apache and MySQL te start at every (re)boot automatically.
+Personally I don't want Apache and MariaDB te start at every (re)boot automatically.
 For starting, stopping and restarting Apache and MySQL I use these three simple scripts:
 
-## Startdevelopment
+## startdev - Start development
 
 ```
-$ code /usr/local/bin/startdevelopment
+$ code /usr/local/bin/startdev
 ```
 
 Add the following code:
@@ -1128,27 +1026,23 @@ Add the following code:
 ```
 #!/bin/bash
 
-# start DNSMasq
+# Start Dnsmasq
 sudo brew services start dnsmasq
-echo "DNSMasq started"
 
-# start mariadb
+# Start Apache
+brew services start httpd
+
+# Start MariaDB
 brew services start mariadb
-echo "Mariadb started"
 
-# start apache
-sudo apachectl start
-echo "Apache started"
-
-# start mailhog
+# Start Mailhog
 brew services start mailhog
-echo "Mailhog started"
 ```
 
-## Stopdevelopment
+## stopdev - Stop development
 
 ```
-$ code /usr/local/bin/stopdevelopment
+$ code /usr/local/bin/stopdev
 ```
 
 Add the following code:
@@ -1156,27 +1050,23 @@ Add the following code:
 ```
 #!/bin/bash
 
-# stop mailhog
+# Stop Mailhog
 brew services stop mailhog
-echo "Mailhog stopped"
 
-# stop apache
-sudo apachectl stop
-echo "Apache stopped"
-
-# stop mariadb
+# Stop MariaDB
 brew services stop mariadb
-echo "Mariadb stopped"
 
-# stop DNSMasq
-sudo brew services stop dnsmasq
-echo "DNSMasq stopped"
+# Stop Apache
+brew services stop httpd
+
+# Stop Dnsmasq
+brew services stop dnsmasq
 ```
 
-## Restartdevelopment
+## restartdev - Restart development
 
 ```
-$ code /usr/local/bin/restartdevelopment
+$ code /usr/local/bin/restartdev
 ```
 
 Add the following code:
@@ -1184,25 +1074,22 @@ Add the following code:
 ```
 #!/bin/bash
 
-# restart mailhog
+# Restart Mailhog
 brew services restart mailhog
-echo "Mailhog restarted"
 
-# stop apache
-sudo apachectl -k restart
-echo "Apache restarted"
-
-# stop mariadb
+# Restart MariaDB
 brew services restart mariadb
-echo "Mariadb restarted"
 
-# stop DNSMasq
-sudo brew services restart dnsmasq
-echo "DNSMasq restarted"
+# Restart Apache
+brew services restart httpd
+
+# Restart Dnsmasq
+brew services restart dnsmasq
+
 ```
 
 ## Modify file rights:
 
 ```
-$ chmod +x /usr/local/bin/startdevelopment /usr/local/bin/stopdevelopment /usr/local/bin/restartdevelopment
+$ chmod +x /usr/local/bin/startdev /usr/local/bin/stopdev /usr/local/bin/restartdev
 ```
