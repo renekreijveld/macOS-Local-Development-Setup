@@ -547,6 +547,16 @@ Remove all existing lines below the comments block and add the following lines:
 
 (input your user name at 'your_user')
 
+# Adminer installation
+
+Now that we have PHP and MariaDB running we need a tool to administrate our MariaDB database. Two native macOS applications that are quite good are <a href="https://www.sequelpro.com/" target="_blank">Sequel Pro</a> and <a href="https://dbeaver.io/" target="_blank">DBeaver</a>.
+
+But personally I prefer Adminer, a PHP based tool that runs in the browser. You can download Adminer from the <a href="https://www.adminer.org/#download" target="_blank">Adminer.org website</a>
+
+The most minimalistic version the version for MySQL, English only. Download the file and save it as adminer.php in your Development/Sites folder. You can then open it at <a href="http://localhost/adminer.php" target="_blank">http://localhost/adminer.php</a>.
+
+Then login with username 'root' and password 'root' (without the quotes).
+
 # Dnsmasq installation
 
 We can now very easily add a new virtual host.

@@ -1,17 +1,17 @@
 # General use
 
-After a (re)boot of your Mac, depending on the setup Apache and MySQL are already running.
+After a (re)boot of your Mac, depending on the setup Apache and MariaDB are already running.
 In my personal setup I have to start these manually. I open a terminal and start the services:
 
 ```
-$ startdevelopment
+$ startdev
 ```
 
 Apache, MariaDB, DNSMasq and Mailhog are now ready for use.
 
 # Create a new database
 
-- Create a new database with Sequel Pro
+- Create a new database with Sequel Pro, DBeaver, Adminer or whatever tool you user to administrate your MariaDB databases.
 
 # Create a new website
 
@@ -32,7 +32,7 @@ There is nothing else to configure. The website is immediately ready in your bro
 Apache, MariaDB, DNSMasq and Mailhog can be stopped with the terminal command:
 
 ```
-$ stopdevelopment
+$ stopdevel
 ```
 
 # Restart development
@@ -40,7 +40,8 @@ $ stopdevelopment
 Apache, MariaDB, DNSMasq and Mailhog can be restarted with the terminal command:
 
 ```
-$ restartdevelopment
+$ restartdev
+
 ```
 
 # Reference
@@ -50,31 +51,31 @@ $ restartdevelopment
 Install Apache as service so it automatically starts at every (re)boot
 
 ```
-$ sudo brew services start httpd
+$ brew services start httpd
 ```
 
 Remove Apache service so it is no longer automatically startet at every (re)boot
 
 ```
-$ sudo brew services stop httpd
+$ brew services stop httpd
 ```
 
 Start apache:
 
 ```
-$ sudo apachectl start
+$ brew services start httpd
 ```
 
 Stop apache:
 
 ```
-$ sudo apachectl stop
+$ brew services stop httpd
 ```
 
 Restart apache:
 
 ```
-$ sudo apachectl -k restart
+$ brew services restart httpd
 ```
 
 Edit httpd.conf:
@@ -97,12 +98,6 @@ Edit php.ini 5.6:
 $ code /usr/local/etc/php/5.6/php.ini
 ```
 
-Edit php.ini 7.1:
-
-```
-$ code /usr/local/etc/php/7.1/php.ini
-```
-
 Edit php.ini 7.2:
 
 ```
@@ -121,34 +116,40 @@ Edit php.ini 7.4:
 $ code /usr/local/etc/php/7.4/php.ini
 ```
 
-Change to php 5.6:
+Edit php.ini 8.0
+
+```
+$ code /usr/local/etc/php/8.0/php.ini
+```
+
+Switch to php 5.6:
 
 ```
 $ sphp 5.6
 ```
 
-Change to php 7.1:
-
-```
-$ sphp 7.1
-```
-
-Change to php 7.2:
+Switch to php 7.2:
 
 ```
 $ sphp 7.2
 ```
 
-Change to php 7.3:
+Switch to php 7.3:
 
 ```
 $ sphp 7.3
 ```
 
-Change to php 7.4:
+Switch to php 7.4:
 
 ```
 $ sphp 7.4
+```
+
+Switch to php 8.0:
+
+```
+$ sphp 8.0
 ```
 
 # MariaDB
