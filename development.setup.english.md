@@ -4,7 +4,7 @@ This setup works fine on my macOS machines. I am certainly no Apache, PHP and My
 
 # Requirements
 
-- macOS Mojave 10.14 or higher
+- macOS Catalina 10.15 or higher
 - <a href="https://developer.apple.com/xcode/" target="_blank">XCode</a> installed
 
 # Used sources
