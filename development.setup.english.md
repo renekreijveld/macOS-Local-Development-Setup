@@ -223,6 +223,7 @@ $ brew install shivammathur/php/php@7.2
 $ brew install shivammathur/php/php@7.3
 $ brew install shivammathur/php/php@7.4
 $ brew install shivammathur/php/php@8.0
+$ brew install shivammathur/php/php@8.1
 ```
 
 # Modify PHP.ini
@@ -275,6 +276,12 @@ Modify php.ini PHP 8.0:
 $ code /usr/local/etc/php/8.0/php.ini
 ```
 
+Modify php.ini PHP 8.1:
+
+```
+$ code /usr/local/etc/php/8.1/php.ini
+```
+
 Restart Apache after the php.ini modifications:
 
 ```
@@ -319,6 +326,7 @@ LoadModule php5_module /usr/local/opt/php@5.6/lib/httpd/modules/libphp5.so
 #LoadModule php7_module /usr/local/opt/php@7.3/lib/httpd/modules/libphp7.so
 #LoadModule php7_module /usr/local/opt/php@7.4/lib/httpd/modules/libphp7.so
 #LoadModule php_module /usr/local/opt/php@8.0/lib/httpd/modules/libphp.so
+#LoadModule php_module /usr/local/opt/php@8.1/lib/httpd/modules/libphp.so
 ```
 
 Replace:
@@ -365,6 +373,28 @@ $ curl -L https://gist.githubusercontent.com/rhukster/f4c04f1bf59e0b74e335ee5d18
 $ chmod +x /usr/local/bin/sphp
 ```
 
+## Modify sphp
+
+PHP 8.1 is new and may not yet be included in the script. However, this is not a problem and only two things need to be changed.
+
+```
+$ vi /usr/local/bin/sphp
+```
+
+Search for:
+
+```
+brew_array=("5.6","7.0","7.1","7.2","7.3","7.4","8.0")
+php_array=("php@5.6" "php@7.0" "php@7.1" "php@7.2" "php@7.3" "php@7.4" "php@8.0")
+```
+
+And replace with:
+
+```
+brew_array=("5.6","7.0","7.1","7.2","7.3","7.4","8.0","8.1")
+php_array=("php@5.6" "php@7.0" "php@7.1" "php@7.2" "php@7.3" "php@7.4" "php@8.0" "php@8.1")
+```
+
 # Check your local path
 
 ```
@@ -398,6 +428,7 @@ Unlinking /usr/local/Cellar/php@7.2/7.2.34... 0 symlinks removed.
 Unlinking /usr/local/Cellar/php@7.3/7.3.27... 0 symlinks removed.
 Unlinking /usr/local/Cellar/php@7.4/7.4.16... 0 symlinks removed.
 Unlinking /usr/local/Cellar/php/8.0.3... 0 symlinks removed.
+Unlinking /usr/local/Cellar/php/8.1.0... 0 symlinks removed.
 Linking /usr/local/Cellar/php@7.4/7.4.16... 25 symlinks created.
 
 If you need to have this software first in your PATH instead consider running:
@@ -978,6 +1009,41 @@ Create a new config file for XDebug:
 
 ```
 $ code /usr/local/etc/php/8.0/conf.d/ext-xdebug.ini
+```
+
+And add the following to it:
+
+```
+[xdebug]
+zend_extension = "xdebug.so"
+xdebug.mode = debug
+xdebug.start_with_request = yes
+xdebug.client_port = 9000
+```
+
+Restart apache:
+
+```
+$ brew services restart httpd
+```
+
+### PHP 8.1
+
+```
+$ sphp 8.1
+$ pecl install xdebug
+```
+
+You will now need to remove the zend_extension="xdebug.so"" entry that PECL adds to the top of your php.ini. So edit this file and remove the top line:
+
+```
+$ code /usr/local/etc/php/8.1/php.ini
+```
+
+Create a new config file for XDebug:
+
+```
+$ code /usr/local/etc/php/8.1/conf.d/ext-xdebug.ini
 ```
 
 And add the following to it:
