@@ -369,30 +369,8 @@ Check if it is working by going in your browser to http://localhost/info.php
 To easily switch between PHP versions we install a PHP switcher script.
 
 ```
-$ curl -L https://gist.githubusercontent.com/rhukster/f4c04f1bf59e0b74e335ee5d186a98e2/raw/0c36a5067fbd63e6a36700a6aaa119df0836bdfc/sphp.sh > /usr/local/bin/sphp
+$ curl -L https://gist.githubusercontent.com/rhukster/f4c04f1bf59e0b74e335ee5d186a98e2/raw/adc8c149876bff14a33e3ac351588fdbe8172c07/sphp.sh > /usr/local/bin/sphp
 $ chmod +x /usr/local/bin/sphp
-```
-
-## Modify sphp
-
-PHP 8.1 is new and may not yet be included in the script. However, this is not a problem and only two things need to be changed.
-
-```
-$ vi /usr/local/bin/sphp
-```
-
-Search for:
-
-```
-brew_array=("5.6","7.0","7.1","7.2","7.3","7.4","8.0")
-php_array=("php@5.6" "php@7.0" "php@7.1" "php@7.2" "php@7.3" "php@7.4" "php@8.0")
-```
-
-And replace with:
-
-```
-brew_array=("5.6","7.0","7.1","7.2","7.3","7.4","8.0","8.1")
-php_array=("php@5.6" "php@7.0" "php@7.1" "php@7.2" "php@7.3" "php@7.4" "php@8.0" "php@8.1")
 ```
 
 # Check your local path
