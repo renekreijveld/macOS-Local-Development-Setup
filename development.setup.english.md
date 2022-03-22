@@ -9,7 +9,7 @@ This setup works fine on my macOS machines. I am certainly no Apache, PHP and My
 
 # Used sources
 
-<a href="https://getgrav.org/blog/macos-bigsur-apache-multiple-php-versions" target="_blank">macOS 11.0 Big Sur Apache Setup: Multiple PHP Versions</a>
+<a href="https://getgrav.org/blog/macos-monterey-apache-multiple-php-versions" target="_blank">macOS 12.0 Monterey Apache Setup: Multiple PHP Versions</a>
 
 # First install XCode Command Line Tools
 
