@@ -1,22 +1,22 @@
-# Disclaimer
+## Disclaimer
 
-This setup works fine on my macOS machines. I am certainly no Apache, PHP and MySQL expert so should something go wrong in your setup, check the sources I used.
+This setup works fine on my macOS machines. I am certainly no Apache, PHP and MariaDB expert so should something go wrong in your setup, check the sources I used.
 
-# Requirements
+## Requirements
 
 - macOS Ventura
 
-# Used sources
+## Used sources
 
 <a href="https://getgrav.org/blog/macos-ventura-apache-multiple-php-versions" target="_blank">macOS 13.0 Ventura Apache Setup: Multiple PHP Versions</a>
 
-# First install XCode Command Line Tools
+## Install XCode Command Line Tools
 
 ```
 $ xcode-select --install
 ```
 
-# Homebrew installation
+## Homebrew installation
 
 ```
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -30,7 +30,7 @@ Homebrew 4.0.1
 Homebrew/homebrew-core N/A
 ```
 
-### Install wget and zip
+## Install wget and zip
 
 ```
 brew install wget zip
@@ -64,7 +64,7 @@ Test Apache by going in your browser to: http://localhost:8080
 
 ## Visual Studio Code
 
-To edit configuration files we setup a very good editor for the job: Visual Sudio Code.
+To edit configuration files we setup Visual Sudio Code.
 Go to the <a href="https://code.visualstudio.com/" target="_blank">Visual Studio Code site</a> and click Download Mac Universal.
 
 Once downloaded, drag the application to your preffered Applications location. Next, you want to install the command line tools, so follow the <a href="https://code.visualstudio.com/docs/setup/mac#_launching-from-the-command-line" target="_blank">official step-by-step instructions</a> so that you can use the code command from the Terminal.
@@ -76,8 +76,6 @@ In my setup I put my website projects in my home folder submap Development/Sites
 ```
 $ mkdir -p ~/Development/Sites
 ```
-
-(input your user name at 'your_user')
 
 ### Modify Apache configuration
 
@@ -109,7 +107,7 @@ With:
 DocumentRoot "/Users/your_user/Development/Sites"
 ```
 
-(input your user name at 'your_user')
+Replace your_user with your own macOS username.
 
 Replace:
 
@@ -123,7 +121,7 @@ With:
 <Directory "/Users/your_user/Development/Sites"> (so WITH quotes)
 ```
 
-(input your user name at 'your_user')
+Replace your_user with your own macOS username.
 
 In the same <Directory ...> block:
 
@@ -167,7 +165,7 @@ User your_user
 Group staff
 ```
 
-(input your user name at 'your_user')
+Replace your_user with your own macOS username.
 
 ### Setup servername
 
@@ -199,7 +197,7 @@ brew services restart httpd
 
 In your browser go to http://localhost, there the My User Web Root should appear.
 
-# PHP Installation
+## PHP Installation
 
 First, add a tap from @shivammahtur that has many PHP versions pre-built.
 
@@ -217,10 +215,10 @@ brew install shivammathur/php/php@8.1
 brew install shivammathur/php/php@8.2
 ```
 
-# Modify PHP.ini
+## Modify PHP.ini
 
 To have webapplications work well we need to modify a number of php.ini settings.
-The following values need to be modified. Search the setting in php.ini, copy the line and add a ; at the beginning of the line. Then enter the new value.
+The following values need to be modified for every installed PHP version. Search the setting in php.ini and enter the new value.
 
 For display_errors you might want make an exception and leave that to 'On', but that is however you prefer.
 
@@ -292,9 +290,7 @@ Zend Engine v2.6.0, Copyright (c) 1998-2016 Zend Technologies
     with Zend OPcache v7.0.6-dev, Copyright (c) 1999-2016, by Zend Technologies
 ```
 
-# Apache PHP Setup
-
-### Modify Apache configuration
+## PHP setup in the Apache configuration
 
 ```
 code /opt/homebrew/etc/httpd/httpd.conf
@@ -349,7 +345,7 @@ echo "<?php phpinfo();" > ~/Development/Sites/info.php
 
 Check if it is working by going in your browser to http://localhost/info.php
 
-# Install PHP Switcher script
+## Install PHP Switcher script
 
 To easily switch between PHP versions we install a PHP switcher script.
 
@@ -358,7 +354,7 @@ curl -L https://gist.githubusercontent.com/rhukster/f4c04f1bf59e0b74e335ee5d186a
 chmod +x /opt/homebrew/bin/sphp
 ```
 
-### Testing the PHP Switching
+## Testing the PHP Switching
 
 Test the switcher script:
 
@@ -392,7 +388,7 @@ All done!
 
 Refresh the page <a href="http://localhost/info.php" target="_blank">http://localhost/info.php</a> in your browser.
 
-# Updating software
+## Updating Brew software
 
 Brew makes it super easy to update PHP and the other packages you install. The first step is to update Brew so that it gets a list of available updates:
 
@@ -408,7 +404,7 @@ brew upgrade
 
 To update all of your PHP versions you have to switch to them with the sphp script, and then run brew update.
 
-# MariaDB (mysql) installation
+## MariaDB (mysql) installation
 
 Do note, you cannot run multiple versions of MySQL on the same machine because brew will install the database directory in the same location. So choose wisely which version you want to install.
 
@@ -433,7 +429,7 @@ MariaDB [(none)]> SET PASSWORD FOR root@localhost = PASSWORD('root');
 MariaDB [(none)]> EXIT;
 ```
 
-### Secure MySQL
+### Securing MariaDB
 
 ```
 /opt/homebrew/bin/mysql_secure_installation
@@ -455,70 +451,6 @@ If you need to stop the MariaDB server, you can use this command:
 ```
 brew services stop mariadb
 ```
-
-# Apache Virtual Hosts
-
-### Modify Apache configuration
-
-```
-code /opt/homebrew/etc/httpd/httpd.conf
-```
-
-Replace:
-
-```
-#LoadModule vhost_alias_module lib/httpd/modules/mod_vhost_alias.so
-```
-
-With:
-
-```
-LoadModule vhost_alias_module lib/httpd/modules/mod_vhost_alias.so
-```
-
-Replace:
-
-```
-#Include /opt/homebrew/etc/httpd/extra/httpd-vhosts.conf
-```
-
-With:
-
-```
-Include /opt/homebrew/etc/httpd/extra/httpd-vhosts.conf
-```
-
-Modify httpd-vhosts.conf:
-
-```
-code /opt/homebrew/etc/httpd/extra/httpd-vhosts.conf
-```
-
-Remove all existing lines below the comments block and add the following lines:
-
-```
-<VirtualHost *:80>
-    DocumentRoot "/Users/your_user/Development/Sites"
-    ServerName localhost
-    ErrorLog "/opt/homebrew/var/log/httpd/error_log"
-    CustomLog "/opt/homebrew/var/log/httpd/access_log" common
-</VirtualHost>
-
-<Directory "/Users/your_user/Development/Sites">
-    Allow From All
-    AllowOverride All
-    Options +Indexes
-    Require all granted
-</Directory>
-
-<Virtualhost *:80>
-    VirtualDocumentRoot "/Users/your_user/Development/Sites/%1"
-    ServerAlias *.dev.test
-    UseCanonicalName Off
-</Virtualhost>
-```
-
-(replace your_user with your username)
 
 # Adminer installation
 
@@ -1158,31 +1090,83 @@ to
 
 and save and close the file.
 
-Modify the vhosts configuration:
+## Apache Virtual Hosts
+
+### Modify Apache configuration
+
+```
+code /opt/homebrew/etc/httpd/httpd.conf
+```
+
+Replace:
+
+```
+#LoadModule vhost_alias_module lib/httpd/modules/mod_vhost_alias.so
+```
+
+With:
+
+```
+LoadModule vhost_alias_module lib/httpd/modules/mod_vhost_alias.so
+```
+
+Replace:
+
+```
+#Include /opt/homebrew/etc/httpd/extra/httpd-vhosts.conf
+```
+
+With:
+
+```
+Include /opt/homebrew/etc/httpd/extra/httpd-vhosts.conf
+```
+
+Modify httpd-vhosts.conf:
 
 ```
 code /opt/homebrew/etc/httpd/extra/httpd-vhosts.conf
 ```
 
-Below the VirtualHost *:80 block for localhost add the following block:
+Remove all existing lines below the comments block and add the following lines:
 
 ```
+<Directory "/Users/your_user/Development/Sites">
+    Allow From All
+    AllowOverride All
+    Options +Indexes
+    Require all granted
+</Directory>
+
+<VirtualHost *:80>
+    DocumentRoot "/Users/your_user/Development/Sites"
+    ServerName localhost
+    RewriteEngine On
+    RewriteCond %{HTTPS} off
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}$1 [R=301,L]
+    ErrorLog "/opt/homebrew/var/log/httpd/error_log"
+    CustomLog "/opt/homebrew/var/log/httpd/access_log" common
+</VirtualHost>
+
 <VirtualHost *:443>
-    DocumentRoot "/Users/renekreijveld/Development/Sites"
+    DocumentRoot "/Users/your_user/Development/Sites"
     ServerName localhost
     SSLEngine on
     SSLCertificateFile "/opt/homebrew/etc/httpd/certs/localhost.pem"
     SSLCertificateKeyFile "/opt/homebrew/etc/httpd/certs/localhost-key.pem"
 </VirtualHost>
-```
 
-(replace your_user with your username)
+<Virtualhost *:80>
+    VirtualDocumentRoot "/Users/your_user/Development/Sites/%1"
+    ServerAlias *.dev.test
+    RewriteEngine On
+    RewriteCond %{HTTPS} off
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}$1 [R=301,L]
+    UseCanonicalName Off
+</Virtualhost>
 
-Below the VirtualHost *:80 block for *.dev.test add the following block:
-
-```
 <VirtualHost *:443>
-    VirtualDocumentRoot "/Users/renekreijveld/Development/Sites/%1"
+    VirtualDocumentRoot "/Users/your_user/Development/Sites/%1"
     ServerAlias *.dev.test
     SSLEngine on
     SSLCertificateFile "/opt/homebrew/etc/httpd/certs/_wildcard.dev.test.pem"
@@ -1190,13 +1174,20 @@ Below the VirtualHost *:80 block for *.dev.test add the following block:
 </VirtualHost>
 ```
 
-(replace your_user with your username)
+Replace your_user everywhere with your own macOS username.
+We cannot test this configuration yet, because we need to add the SSL configuration. We will do this later.
 
-# Startdev, Stopdev and Restartdev
+## Restart Apache
+
+```
+brew services restart httpd
+```
+
+## Startdev, Stopdev and Restartdev
 
 For easy starting, stopping and restarting the proicesses for Apache and MySQL and Mailhog I use these three simple scripts. Add these scripts to a folder that is inside your path, for example in /usr/local/bin or in /opt/homebrew/bin :
 
-## startdev - Start development
+### startdev - Start development
 
 ```
 code /usr/local/bin/startdev
@@ -1220,7 +1211,7 @@ brew services start mariadb
 brew services start mailhog
 ```
 
-## stopdev - Stop development
+### stopdev - Stop development
 
 ```
 code /usr/local/bin/stopdev
@@ -1244,7 +1235,7 @@ brew services stop httpd
 sudo brew services stop dnsmasq
 ```
 
-## restartdev - Restart development
+### restartdev - Restart development
 
 ```
 code /usr/local/bin/restartdev
@@ -1268,8 +1259,12 @@ brew services restart mailhog
 sudo brew services restart dnsmasq
 ```
 
-## Modify file rights:
+### Modify file rights:
 
 ```
 chmod +x /usr/local/bin/startdev /usr/local/bin/stopdev /usr/local/bin/restartdev
 ```
+
+# Finished
+
+Your local Apache / PHP / MariaDB / Mailhog setup is now ready for use.
