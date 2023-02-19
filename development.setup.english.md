@@ -452,7 +452,7 @@ If you need to stop the MariaDB server, you can use this command:
 brew services stop mariadb
 ```
 
-# Adminer installation
+## Adminer installation
 
 Now that we have PHP and MariaDB running we need a tool to administrate our MariaDB database. Two native macOS applications that are quite good are <a href="https://www.sequelpro.com/" target="_blank">Sequel Pro</a> and <a href="https://dbeaver.io/" target="_blank">DBeaver</a>.
 
@@ -462,7 +462,7 @@ The most minimalistic version the version for MySQL, English only. Download the 
 
 Then login with username 'root' and password 'root' (without the quotes).
 
-# Dnsmasq installation
+## Dnsmasq installation
 
 We can now very easily add a new virtual host.
 By creating a subfolder in ~/Development/Sites/, for example, 'testsite', this new website is immediately accessible through the domain name 'testsite.test'.
@@ -509,7 +509,7 @@ Restart apache:
 brew services restart httpd
 ```
 
-# APCu Cache installation:
+## APCu Cache installation:
 
 To have PHP run faster we install APCu Cache. Zend OPcache was already installed with the PHP installation.
 
