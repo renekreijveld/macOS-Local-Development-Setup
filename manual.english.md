@@ -25,7 +25,8 @@ $ mkdir ~/Development/Sites/testwebsite
 
 Then add your html/php/whatever files in the folder ~/Development/Sites/testwebsite.
 
-There is nothing else to configure. The website is immediately ready in your browser at http://testwebsite.test
+There is nothing else to configure. The website is immediately ready in your browser at https://testwebsite.dev.test.
+If you go to http://testwebsite.dev.test you will be automatically be redirected to https://testwebsite.dev.test.
 
 # Stop Development
 
@@ -78,66 +79,10 @@ Restart apache:
 $ brew services restart httpd
 ```
 
-Edit httpd.conf:
-
-```
-$ code /usr/local/etc/httpd/httpd.conf
-```
-
-Check if Apache is running:
-
-```
-$ ps -aef | grep httpd
-```
-
-# PHP
-
-Edit php.ini 5.6:
-
-```
-$ code /usr/local/etc/php/5.6/php.ini
-```
-
-Edit php.ini 7.2:
-
-```
-$ code /usr/local/etc/php/7.2/php.ini
-```
-
-Edit php.ini 7.3:
-
-```
-$ code /usr/local/etc/php/7.3/php.ini
-```
-
-Edit php.ini 7.4:
-
-```
-$ code /usr/local/etc/php/7.4/php.ini
-```
-
-Edit php.ini 8.0
-
-```
-$ code /usr/local/etc/php/8.0/php.ini
-```
-
 Switch to php 5.6:
 
 ```
 $ sphp 5.6
-```
-
-Switch to php 7.2:
-
-```
-$ sphp 7.2
-```
-
-Switch to php 7.3:
-
-```
-$ sphp 7.3
 ```
 
 Switch to php 7.4:
@@ -150,6 +95,18 @@ Switch to php 8.0:
 
 ```
 $ sphp 8.0
+```
+
+Switch to php 8.1:
+
+```
+$ sphp 8.1
+```
+
+Switch to php 8.2:
+
+```
+$ sphp 8.2
 ```
 
 # MariaDB
@@ -169,5 +126,5 @@ $ brew services stop mariadb
 Check if MariaDB is running:
 
 ```
-$ ps -aef | grep mysql
+$ ps -aef | grep mariadb
 ```
