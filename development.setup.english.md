@@ -509,7 +509,7 @@ Restart apache:
 brew services restart httpd
 ```
 
-# APC Cache installation:
+# APCu Cache installation:
 
 To have PHP run faster we install APCu Cache. Zend OPcache was already installed with the PHP installation.
 
