@@ -473,7 +473,7 @@ But we need to modify DNS so it resolves to this domain. Therefor we install Dns
 brew install dnsmasq
 ```
 
-Setup *.test hosts:
+Setup *.dev.test hosts:
 
 ```
 echo 'address=/.dev.test/127.0.0.1' >> /opt/homebrew/etc/dnsmasq.conf
