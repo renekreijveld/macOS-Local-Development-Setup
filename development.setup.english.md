@@ -774,7 +774,7 @@ apc.enable_cli=1
 
 Save and close the file.
 
-# XDebug installation:
+## XDebug installation:
 
 ```
 sphp 5.6
@@ -977,7 +977,7 @@ SMTP Authentication: No
 
 Open your webbrowser at <a href="http://127.0.0.1:8025" target="_blank">http://127.0.0.1:8025</a> and see all outgoing emails collected there. Emails are not sent to the Internet.
 
-# Setting up SSL
+## Setting up SSL
 
 To use a local SSL certificate we need to install two tools.
 
@@ -1265,6 +1265,6 @@ sudo brew services restart dnsmasq
 chmod +x /usr/local/bin/startdev /usr/local/bin/stopdev /usr/local/bin/restartdev
 ```
 
-# Finished
+## Finished
 
 Your local Apache / PHP / MariaDB / Mailhog setup is now ready for use.
