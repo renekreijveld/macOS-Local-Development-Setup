@@ -26,9 +26,8 @@ $ xcode-select --install
 
 ```
 brew --version
-Homebrew 3.0.4
-Homebrew/homebrew-core (git revision fa4991; last commit 2021-03-06)
-Homebrew/homebrew-cask (git revision 993c14; last commit 2021-03-06)
+Homebrew 4.0.1
+Homebrew/homebrew-core N/A
 ```
 
 ### Install wget and zip
