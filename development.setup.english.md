@@ -953,7 +953,7 @@ Save and close the file and restart Apache
 brew services restart httpd
 ```
 
-# Mailhog
+## Mailhog
 
 MailHog is a small application which intercepts email sent out of your sites and keeps it locally. You can use a web interface to review the mail. This comes in handy when testing the email features of the sites you are building without risking any email accidentally escaping to the wild.
 
