@@ -924,6 +924,55 @@ SMTP Authentication: No
 
 Open your webbrowser at <a href="http://127.0.0.1:8025" target="_blank">http://127.0.0.1:8025</a> and see all outgoing emails collected there. Emails are not sent to the Internet.
 
+### Setup mhsendmail
+
+For even easier user of Mailhog we install mhsendmail and configure that in php.ini. This way emails sent through PHP will automatically be caught by Mailhog.
+Install go:
+
+```
+brew install go
+```
+
+Install mhsendmail through go:
+
+```
+go install github.com/mailhog/mhsendmail@latest
+```
+
+Move the mhsendmail binary to /usr/local/bin:
+
+```
+mv ./go/bin/mhsendmail /usr/local/bin
+```
+
+Now all we need to do is configure mhsendmail in php.ini. Edit the php.ini's:
+
+```
+code /usr/local/etc/php/5.6/php.ini
+code /usr/local/etc/php/7.4/php.ini
+code /usr/local/etc/php/8.0/php.ini
+code /usr/local/etc/php/8.1/php.ini
+code /usr/local/etc/php/8.2/php.ini
+```
+
+Once you have php.ini loaded in Visual Studio Code find the line with:
+
+```
+;sendmail_path =
+```
+
+and change that to:
+
+```
+sendmail_path = /usr/local/bin/mhsendmail
+```
+
+Save and close php.ini and restart apache:
+
+```
+brew services restart httpd
+```
+
 ## Setting up SSL
 
 To use a local SSL certificate we need to install two tools.
