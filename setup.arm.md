@@ -666,7 +666,11 @@ apc.ttl=7200
 apc.enable_cli=1
 ```
 
-Save and close the file.
+Save and close the file and restart Apache:
+
+```
+brew services restart httpd
+```
 
 ### PHP 8.1
 
