@@ -560,7 +560,11 @@ apc.ttl=7200
 apc.enable_cli=1
 ```
 
-Save and close the file.
+Save and close the file and restart Apache:
+
+```
+brew services restart httpd
+```
 
 ### PHP 7.4
 
@@ -772,7 +776,11 @@ apc.ttl=7200
 apc.enable_cli=1
 ```
 
-Save and close the file.
+Save and close the file and restart Apache:
+
+```
+brew services restart httpd
+```
 
 ## XDebug installation:
 
@@ -811,7 +819,7 @@ xdebug.remote_handler = dbgp
 xdebug.remote_port = 9000
 ```
 
-Restart apache:
+Save and close the file and restart Apache:
 
 ```
 brew services restart httpd
@@ -851,7 +859,11 @@ xdebug.client_port = 9003
 xdebug.idekey = "PHPSTORM"
 ```
 
-Save and close the file.
+Save and close the file and restart Apache:
+
+```
+brew services restart httpd
+```
 
 ### PHP 8.0
 
@@ -883,7 +895,11 @@ xdebug.client_port = 9003
 xdebug.idekey = "PHPSTORM"
 ```
 
-Save and close the file.
+Save and close the file and restart Apache:
+
+```
+brew services restart httpd
+```
 
 ### PHP 8.1
 
@@ -915,7 +931,11 @@ xdebug.client_port = 9003
 xdebug.idekey = "PHPSTORM"
 ```
 
-Save and close the file.
+Save and close the file and restart Apache:
+
+```
+brew services restart httpd
+```
 
 ### PHP 8.2
 
@@ -947,7 +967,7 @@ xdebug.client_port = 9003
 xdebug.idekey = "PHPSTORM"
 ```
 
-Save and close the file and restart Apache
+Save and close the file and restart Apache:
 
 ```
 brew services restart httpd
