@@ -986,7 +986,7 @@ brew install mailhog
 brew services start mailhog
 ```
 
-Mailhog runs a SMTP mailserver at port 1025. To intercept all outgoing emails from a local Joomla website for example setup tour Joomla mail settings as follows:
+Mailhog runs a SMTP mailserver at port 1025. To intercept all outgoing emails from a local Joomla website for example setup your Joomla mail settings as follows:
 
 ```
 Send Mail: yes
