@@ -1083,7 +1083,7 @@ Generate a certificate for localhost:
 mkcert localhost
 ```
 
-Generate a wildcart certificate for *.dev.test:
+Generate a wildcard certificate for *.dev.test:
 
 ```
 mkcert "*.dev.test"
