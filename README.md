@@ -12,5 +12,5 @@ Setting up a new local website was never easier: simply create a new folder in D
 This is the setup I used:
 
 - <a href="https://github.com/renekreijveld/macOS-Local-Development-Setup/blob/master/setup.intel.md" target="_blank">Installation for Macs with Intel processors</a>
-- <a href="https://github.com/renekreijveld/macOS-Local-Development-Setup/blob/master/setup.arm.md" target="_blank">Installation for Macs with Arm (M1/M2) processors</a>
+- <a href="https://github.com/renekreijveld/macOS-Local-Development-Setup/blob/master/setup.arm.md" target="_blank">Installation for Macs with Arm (M1/M2/M3) processors</a>
 - <a href="https://github.com/renekreijveld/macOS-Local-Development-Setup/blob/master/manual.english.md" target="_blank">Manual</a>
