@@ -4,7 +4,7 @@ This setup works fine on my macOS machines. I am certainly no Apache, PHP and Ma
 
 ## Requirements
 
-- macOS Ventura
+- macOS Sonoma
 
 ## Used sources
 
