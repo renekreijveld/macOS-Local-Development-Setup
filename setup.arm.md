@@ -8,7 +8,7 @@ This setup works fine on my macOS machines. I am certainly no Apache, PHP and Ma
 
 ## Used sources
 
-<a href="https://getgrav.org/blog/macos-ventura-apache-multiple-php-versions" target="_blank">macOS 13.0 Ventura Apache Setup: Multiple PHP Versions</a>
+<a href="https://getgrav.org/blog/macos-sonoma-apache-multiple-php-versions" target="_blank">macOS 14.0 Sonoma Apache Setup: Multiple PHP Versions</a>
 
 ## Install XCode Command Line Tools
 
@@ -22,27 +22,84 @@ xcode-select --install
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
+After installation add Homebrew path to your profile.
+For Bash:
+
+```
+(echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> ~/.bash_profile
+eval "$(/opt/homebrew/bin/brew shellenv)"
+```
+
+For Zsh:
+
+```
+(echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> ~/.zprofile
+eval "$(/opt/homebrew/bin/brew shellenv)"
+```
+
 ### Check Homebrew installation
 
 ```
 brew --version
-Homebrew 4.0.1
-Homebrew/homebrew-core N/A
+Homebrew 4.1.24
 ```
 
-## Install wget and zip
+The Homebrew version at the time of this writing was 4.1.24. Your version might be newer.
+
+## Install wget
 
 ```
-brew install wget zip
+brew install wget
+```
+
+## Optional: bash update
+
+When you prefer working in the bash shell, it is advised to upgrade bash through Homebrew.
+
+First, install bash:
+
+```
+brew install bash
+```
+
+The new bash is installed in /opt/homebrew/bin/bash. We need to add it to the list of permitted shells:
+
+```
+echo $(brew --prefix)/bin/bash | sudo tee -a /private/etc/shells
+```
+
+Enter your Mac account password when the system asks for it.
+
+Finally, you will need to update your user’s shell with the chpass command line.
+
+```
+sudo chpass -s /opt/homebrew/bin/bash your_user
+```
+
+Replace your_user your own macOS username.
+
+### Install additional libraries
+
+When installing fresh on Sonoma, there are a few libraries that were missing when completing all the steps below. To make things easier, please simply run this now:
+
+```
+brew install openssl
 ```
 
 ## Apache installation
 
-### Stop existing Apache and install Homebrew version
+### Stop existing Apache
 
 ```
-sudo apachectl stop
+sudo apachectl -k stop
 sudo launchctl unload -w /System/Library/LaunchDaemons/org.apache.httpd.plist 2>/dev/null
+```
+
+Don't worry about the messages you're getting when you're stopping the existing Apache.
+
+### Install Homebrew version
+
+```
 brew install httpd
 ```
 
@@ -61,6 +118,7 @@ brew services restart httpd
 ```
 
 Test Apache by going in your browser to: http://localhost:8080
+You should see a message with the text It works!
 
 ## Visual Studio Code
 
@@ -98,7 +156,7 @@ Listen 80
 Replace:
 
 ```
-DocumentRoot "/usr/local/var/www"
+DocumentRoot "/opt/homebrew/var/www"
 ```
 
 with:
@@ -112,7 +170,7 @@ Replace your_user with your own macOS username.
 Replace:
 
 ```
-<Directory "/usr/local/var/www">
+<Directory "/opt/homebrew/var/www">
 ```
 
 with:
@@ -213,6 +271,8 @@ brew install shivammathur/php/php@7.4
 brew install shivammathur/php/php@8.0
 brew install shivammathur/php/php@8.1
 brew install shivammathur/php/php@8.2
+brew install shivammathur/php/php@8.3
+brew install shivammathur/php/php@8.4
 ```
 
 ## Modify PHP.ini
@@ -308,6 +368,8 @@ LoadModule php5_module /opt/homebrew/opt/php@5.6/lib/httpd/modules/libphp5.so
 #LoadModule php_module /opt/homebrew/opt/php@8.0/lib/httpd/modules/libphp.so
 #LoadModule php_module /opt/homebrew/opt/php@8.1/lib/httpd/modules/libphp.so
 #LoadModule php_module /opt/homebrew/opt/php@8.2/lib/httpd/modules/libphp.so
+#LoadModule php_module /opt/homebrew/opt/php@8.3/lib/httpd/modules/libphp.so
+#LoadModule php_module /opt/homebrew/opt/php@8.4/lib/httpd/modules/libphp.so
 ```
 
 Replace:
@@ -330,7 +392,7 @@ with:
 </FilesMatch>
 ```
 
-I've added kick.php which is nice if you work with Akeeba Backup Kickstaert.
+I've added kick.php which is nice if you work with Akeeba Backup Kickstart.
 Save the file and restart Apache:
 
 ```
@@ -352,6 +414,36 @@ To easily switch between PHP versions we install a PHP switcher script.
 ```
 curl -L https://gist.githubusercontent.com/rhukster/f4c04f1bf59e0b74e335ee5d186a98e2/raw/7227b6e8eab67fbdb5bd1053d7d761eb1507e8ac/sphp.sh > /opt/homebrew/bin/sphp
 chmod +x /opt/homebrew/bin/sphp
+```
+
+We need to modify the sphp script to allow it to work with PHP 8.3 and 8.4.
+
+```
+code /opt/homebrew/bin/sphp
+```
+
+Change the line with:
+
+```
+brew_array=("5.6","7.0","7.1","7.2","7.3","7.4","8.0","8.1","8.2")
+```
+
+to
+
+```
+brew_array=("5.6","7.0","7.1","7.2","7.3","7.4","8.0","8.1","8.2","8.3","8.4")
+```
+
+Change the line with:
+
+```
+php_array=("php@5.6" "php@7.0" "php@7.1" "php@7.2" "php@7.3" "php@7.4" "php@8.0" "php@8.1" "php@8.2")
+```
+
+to
+
+```
+php_array=("php@5.6" "php@7.0" "php@7.1" "php@7.2" "php@7.3" "php@7.4" "php@8.0" "php@8.1" "php@8.2" "php@8.3" "php@8.4")
 ```
 
 ## Testing the PHP Switching
@@ -575,12 +667,12 @@ sphp 7.4
 Before you install apcu there might be a problem with a missing pcre2.h file. To fix that you should create a symbolic link to pcre2.h:
 
 ```
-ln -s /opt/homebrew/Cellar/pcre2/10.42/include/pcre2.h /opt/homebrew/Cellar/php@7.4/7.4.33_1/include/php/ext/pcre/pcre2.h
+ln -s /opt/homebrew/Cellar/pcre2/10.42/include/pcre2.h /opt/homebrew/Cellar/php@7.4/7.4.33_5/include/php/ext/pcre/pcre2.h
 ```
 
 But be carefull here. 10.42 was the current version on my machine of the original /opt/homebrew/Cellar/pcre2/10.42/include/pcre2.h file. Replace 10.42 with the version on your machine.
 
-7.4.33_1 was the current version of my PHP 7.4. Replace 7.4.33_1 with the version on your machine.
+7.4.33_5 was the current version of my PHP 7.4. Replace 7.4.33_5 with the version on your machine.
 
 ```
 pecl install apcu
@@ -623,6 +715,8 @@ brew services restart httpd
 
 ### PHP 8.0
 
+Switch to PHP 8.0.
+
 ```
 sphp 8.0
 ```
@@ -630,12 +724,12 @@ sphp 8.0
 Before you install apcu there might be a problem with a missing pcre2.h file. To fix that you should create a symbolic link to pcre2.h:
 
 ```
-ln -s /opt/homebrew/Cellar/pcre2/10.42/include/pcre2.h /opt/homebrew/Cellar/php@8.0/8.0.28/include/php/ext/pcre/pcre2.h
+ln -s /opt/homebrew/Cellar/pcre2/10.42/include/pcre2.h /opt/homebrew/Cellar/php@8.0/8.0.30_1/include/php/ext/pcre/pcre2.h
 ```
 
 But be carefull here. 10.42 was the current version on my machine of the original /opt/homebrew/Cellar/pcre2/10.42/include/pcre2.h file. Replace 10.42 with the version on your machine.
 
-8.0.28 was the current version of my PHP 8.0. Replace 8.0.28 with the version on your machine.
+8.0.30_1 was the current version of my PHP 8.0. Replace 8.0.30_1 with the version on your machine.
 
 ```
 pecl install apcu
@@ -678,6 +772,8 @@ brew services restart httpd
 
 ### PHP 8.1
 
+Switch to PHP 8.1.
+
 ```
 sphp 8.1
 ```
@@ -685,12 +781,12 @@ sphp 8.1
 Before you install apcu there might be a problem with a missing pcre2.h file. To fix that you should create a symbolic link to pcre2.h:
 
 ```
-ln -s /opt/homebrew/Cellar/pcre2/10.42/include/pcre2.h /opt/homebrew/Cellar/php@8.1/8.1.16/include/php/ext/pcre/pcre2.h
+ln -s /opt/homebrew/Cellar/pcre2/10.42/include/pcre2.h /opt/homebrew/Cellar/php@8.1/8.1.26/include/php/ext/pcre/pcre2.h
 ```
 
 But be carefull here. 10.42 was the current version on my machine of the original /opt/homebrew/Cellar/pcre2/10.42/include/pcre2.h file. Replace 10.42 with the version on your machine.
 
-8.1.16 was the current version of my PHP 8.1. Replace 8.1.16 with the version on your machine.
+8.1.26 was the current version of my PHP 8.1. Replace 8.1.26 with the version on your machine.
 
 ```
 pecl install apcu
@@ -733,6 +829,8 @@ brew services restart httpd
 
 ### PHP 8.2
 
+Switch to PHP 8.2.
+
 ```
 sphp 8.2
 ```
@@ -740,12 +838,12 @@ sphp 8.2
 Before you install apcu there might be a problem with a missing pcre2.h file. To fix that you should create a symbolic link to pcre2.h:
 
 ```
-ln -s /opt/homebrew/Cellar/pcre2/10.42/include/pcre2.h /opt/homebrew/Cellar/php/8.2.3/include/php/ext/pcre/pcre2.h
+ln -s /opt/homebrew/Cellar/pcre2/10.42/include/pcre2.h /opt/homebrew/Cellar/php@8.2/8.2.13/include/php/ext/pcre/pcre2.h
 ```
 
 But be carefull here. 10.42 was the current version on my machine of the original /opt/homebrew/Cellar/pcre2/10.42/include/pcre2.h file. Replace 10.42 with the version on your machine.
 
-8.2.3 was the current version of my PHP 8.2. Replace 8.2.3 with the version on your machine.
+8.2.13 was the current version of my PHP 8.2. Replace 8.2.13 with the version on your machine.
 
 ```
 pecl install apcu
@@ -767,6 +865,120 @@ that was added at the top of php.ini. Save and close php.ini. Then create a new 
 
 ```
 code /opt/homebrew/etc/php/8.2/conf.d/ext-apcu.ini
+```
+
+Put the following contents in that file:
+
+```
+[apcu]
+extension="apcu.so"
+apc.enabled=1
+apc.shm_size=64M
+apc.ttl=7200
+apc.enable_cli=1
+```
+
+Save and close the file and restart Apache:
+
+```
+brew services restart httpd
+```
+
+### PHP 8.3
+
+Switch to PHP 8.3.
+
+```
+sphp 8.3
+```
+
+Before you install apcu there might be a problem with a missing pcre2.h file. To fix that you should create a symbolic link to pcre2.h:
+
+```
+ln -s /opt/homebrew/Cellar/pcre2/10.42/include/pcre2.h /opt/homebrew/Cellar/php/8.3.0/include/php/ext/pcre/pcre2.h
+```
+
+But be carefull here. 10.42 was the current version on my machine of the original /opt/homebrew/Cellar/pcre2/10.42/include/pcre2.h file. Replace 10.42 with the version on your machine.
+
+8.3.0 was the current version of my PHP 8.3. Replace 8.3.0 with the version on your machine.
+
+```
+pecl install apcu
+```
+
+Answer any question by simply pressing Return to accept the default values.
+
+```
+code /opt/homebrew/etc/php/8.3/php.ini
+```
+
+Delete the line
+
+```
+extension="apcu.so"
+```
+
+that was added at the top of php.ini. Save and close php.ini. Then create a new separate .ini file for APCu:
+
+```
+code /opt/homebrew/etc/php/8.3/conf.d/ext-apcu.ini
+```
+
+Put the following contents in that file:
+
+```
+[apcu]
+extension="apcu.so"
+apc.enabled=1
+apc.shm_size=64M
+apc.ttl=7200
+apc.enable_cli=1
+```
+
+Save and close the file and restart Apache:
+
+```
+brew services restart httpd
+```
+
+### PHP 8.4
+
+Switch to PHP 8.4.
+
+```
+sphp 8.4
+```
+
+Before you install apcu there might be a problem with a missing pcre2.h file. To fix that you should create a symbolic link to pcre2.h:
+
+```
+ln -s /opt/homebrew/Cellar/pcre2/10.42/include/pcre2.h /opt/homebrew/Cellar/php@8.4/8.4.0/include/php/ext/pcre/pcre2.h
+```
+
+But be carefull here. 10.42 was the current version on my machine of the original /opt/homebrew/Cellar/pcre2/10.42/include/pcre2.h file. Replace 10.42 with the version on your machine.
+
+8.4.0 was the current version of my PHP 8.4. Replace 8.4.0 with the version on your machine.
+
+```
+pecl install apcu
+```
+
+Answer any question by simply pressing Return to accept the default values.
+
+```
+code /opt/homebrew/etc/php/8.4/php.ini
+```
+
+Delete the line
+
+```
+extension="apcu.so"
+```
+
+that was added at the top of php.ini. Save and close php.ini. Then create a new separate .ini file for APCu:
+
+```
+code /opt/homebrew/etc/php/8.4/conf.d/ext-apcu.ini
 ```
 
 Put the following contents in that file:
@@ -977,6 +1189,46 @@ Save and close the file and restart Apache:
 brew services restart httpd
 ```
 
+### PHP 8.3
+
+```
+sphp 8.3
+pecl install xdebug
+```
+
+You will now need to remove the zend_extension="xdebug.so"" entry that PECL adds to the top of your php.ini. So edit this file and remove the top line:
+
+```
+code /opt/homebrew/etc/php/8.2/php.ini
+```
+
+Create a new config file for XDebug:
+
+```
+code /opt/homebrew/etc/php/8.2/conf.d/ext-xdebug.ini
+```
+
+And add the following to it:
+
+```
+[xdebug]
+zend_extension = "xdebug.so"
+xdebug.mode = debug
+xdebug.start_with_request = yes
+xdebug.client_port = 9003
+xdebug.idekey = "PHPSTORM"
+```
+
+Save and close the file and restart Apache:
+
+```
+brew services restart httpd
+```
+
+### PHP 8.4
+
+For PHP 8.4 there is no XDebug available at the time of writing these instructions.
+
 ## Mailhog
 
 MailHog is a small application which intercepts email sent out of your sites and keeps it locally. You can use a web interface to review the mail. This comes in handy when testing the email features of the sites you are building without risking any email accidentally escaping to the wild.
@@ -1019,7 +1271,7 @@ go install github.com/mailhog/mhsendmail@latest
 Move the mhsendmail binary to /usr/local/bin:
 
 ```
-mv ./go/bin/mhsendmail /usr/local/bin
+sudo mv ./go/bin/mhsendmail /usr/local/bin
 ```
 
 Now all we need to do is configure mhsendmail in php.ini. Edit the php.ini's:
@@ -1030,6 +1282,8 @@ code /opt/homebrew/etc/php/7.4/php.ini
 code /opt/homebrew/etc/php/8.0/php.ini
 code /opt/homebrew/etc/php/8.1/php.ini
 code /opt/homebrew/etc/php/8.2/php.ini
+code /opt/homebrew/etc/php/8.3/php.ini
+code /opt/homebrew/etc/php/8.4/php.ini
 ```
 
 Once you have php.ini loaded in Visual Studio Code find the line with:
@@ -1252,7 +1506,7 @@ For easy starting, stopping and restarting the proicesses for Apache and MySQL a
 ### startdev - Start development
 
 ```
-code /usr/local/bin/startdev
+sudo nano /usr/local/bin/startdev
 ```
 
 Add the following code:
@@ -1273,10 +1527,12 @@ brew services start mariadb
 brew services start mailhog
 ```
 
+Save the file by pressing Ctrl-X followed by Y and Enter.
+
 ### stopdev - Stop development
 
 ```
-code /usr/local/bin/stopdev
+sudo nano /usr/local/bin/stopdev
 ```
 
 Add the following code:
@@ -1297,10 +1553,12 @@ brew services stop httpd
 sudo brew services stop dnsmasq
 ```
 
+Save the file by pressing Ctrl-X followed by Y and Enter.
+
 ### restartdev - Restart development
 
 ```
-code /usr/local/bin/restartdev
+sudo nano /usr/local/bin/restartdev
 ```
 
 Add the following code:
@@ -1324,7 +1582,7 @@ sudo brew services restart dnsmasq
 ### Modify file rights:
 
 ```
-chmod +x /usr/local/bin/startdev /usr/local/bin/stopdev /usr/local/bin/restartdev
+sudo chmod +x /usr/local/bin/startdev /usr/local/bin/stopdev /usr/local/bin/restartdev
 ```
 
 ## Finished
