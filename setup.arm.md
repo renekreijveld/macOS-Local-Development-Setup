@@ -1027,12 +1027,12 @@ And add the following to it:
 
 ```
 [xdebug]
-zend_extension = "xdebug.so"
-xdebug.remote_enable = 1
-xdebug.remote_autostart = 1
-xdebug.remote_host = localhost
-xdebug.remote_handler = dbgp
-xdebug.remote_port = 9000
+zend_extension="xdebug.so"
+xdebug.remote_enable=1
+xdebug.remote_autostart=1
+xdebug.remote_host=localhost
+xdebug.remote_handler=dbgp
+xdebug.remote_port=9000
 ```
 
 Save and close the file and restart Apache:
@@ -1068,11 +1068,12 @@ And add the following to it:
 
 ```
 [xdebug]
-zend_extension = "xdebug.so"
-xdebug.mode = debug
-xdebug.start_with_request = yes
-xdebug.client_port = 9003
-xdebug.idekey = "PHPSTORM"
+zend_extension="xdebug.so"
+xdebug.mode=develop,debug
+xdebug.start_with_request=yes
+xdebug.client_host=127.0.0.1
+xdebug.discover_client_host=1
+xdebug.client_port=9003
 ```
 
 Save and close the file and restart Apache:
@@ -1104,11 +1105,12 @@ And add the following to it:
 
 ```
 [xdebug]
-zend_extension = "xdebug.so"
-xdebug.mode = debug
-xdebug.start_with_request = yes
-xdebug.client_port = 9003
-xdebug.idekey = "PHPSTORM"
+zend_extension="xdebug.so"
+xdebug.mode=develop,debug
+xdebug.start_with_request=yes
+xdebug.client_host=127.0.0.1
+xdebug.discover_client_host=1
+xdebug.client_port=9003
 ```
 
 Save and close the file and restart Apache:
@@ -1140,11 +1142,12 @@ And add the following to it:
 
 ```
 [xdebug]
-zend_extension = "xdebug.so"
-xdebug.mode = debug
-xdebug.start_with_request = yes
-xdebug.client_port = 9003
-xdebug.idekey = "PHPSTORM"
+zend_extension="xdebug.so"
+xdebug.mode=develop,debug
+xdebug.start_with_request=yes
+xdebug.client_host=127.0.0.1
+xdebug.discover_client_host=1
+xdebug.client_port=9003
 ```
 
 Save and close the file and restart Apache:
@@ -1176,11 +1179,12 @@ And add the following to it:
 
 ```
 [xdebug]
-zend_extension = "xdebug.so"
-xdebug.mode = debug
-xdebug.start_with_request = yes
-xdebug.client_port = 9003
-xdebug.idekey = "PHPSTORM"
+zend_extension="xdebug.so"
+xdebug.mode=develop,debug
+xdebug.start_with_request=yes
+xdebug.client_host=127.0.0.1
+xdebug.discover_client_host=1
+xdebug.client_port=9003
 ```
 
 Save and close the file and restart Apache:
@@ -1212,11 +1216,12 @@ And add the following to it:
 
 ```
 [xdebug]
-zend_extension = "xdebug.so"
-xdebug.mode = debug
-xdebug.start_with_request = yes
-xdebug.client_port = 9003
-xdebug.idekey = "PHPSTORM"
+zend_extension="xdebug.so"
+xdebug.mode=develop,debug
+xdebug.start_with_request=yes
+xdebug.client_host=127.0.0.1
+xdebug.discover_client_host=1
+xdebug.client_port=9003
 ```
 
 Save and close the file and restart Apache:
