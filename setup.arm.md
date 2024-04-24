@@ -2,11 +2,11 @@
 
 ## Disclaimer
 
-This setup works fine on my MacOS machines. I am certainly no Apache, PHP and MariaDB expert so should something go wrong in your setup, check the sources I used.
+This setup works fine on my macOS machines. I am certainly no Apache, PHP and MariaDB expert so should something go wrong in your setup, check the sources I used.
 
 ## Requirements
 
-- MacOS Sonoma (tested on MacOS Sonoma 14.4.1).
+- macOS Sonoma (tested on macOS Sonoma 14.4.1).
 
 ## Used sources
 
