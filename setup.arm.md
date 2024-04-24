@@ -1,3 +1,5 @@
+# Setup Apache/PHP/MariaDB development environment on Apple M1/M2/M3 based machines for local PHP development.
+
 ## Disclaimer
 
 This setup works fine on my MacOS machines. I am certainly no Apache, PHP and MariaDB expert so should something go wrong in your setup, check the sources I used.
