@@ -1186,90 +1186,99 @@ Replace your_user everywhere with your own macOS username.
 brew services restart httpd
 ```
 
-## Startdev, Stopdev and Restartdev
+## dev command to start, stop and restart
 
-For easy starting, stopping and restarting the proicesses for Apache and MySQL and Mailhog I use these three simple scripts. Add these scripts to a folder that is inside your path, for example in /usr/local/bin or in /opt/homebrew/bin :
+For easy starting, stopping and restarting the proicesses for Apache and MySQL and Mailhog I use this single script. Add these script to a folder that is inside your path, for example in /usr/local/bin or in /opt/homebrew/bin :
 
-### startdev - Start development
+### dev
 
 ```
-sudo nano /usr/local/bin/startdev
+sudo nano /usr/local/bin/dev
 ```
 
 Add the following code:
 
 ```
-#!/bin/zsh
+#!/bin/sh
 
-# Start Dnsmasq
-sudo brew services start dnsmasq
+usage() {
+  echo "usage: dev <subcommand>"
+  echo
+  echo "Available subcommands are:"
+  echo "   start     Start the development environment."
+  echo "   stop      Stop the development environment."
+  echo "   restart   Restart the development environment."
+}
 
-# Start Apache
-brew services start httpd
+main() {
+  	if [ $# -lt 1 ]; then
+  		usage
+  		exit 1
+  	fi
 
-# Start MariaDB
-brew services start mariadb
+	# sanity checks
+	SUBCOMMAND="$1"; shift
 
-# Start Mailhog
-brew services start mailhog
+  if [ $SUBCOMMAND = "start" ]; then
+    # Start Dnsmasq
+    sudo brew services start dnsmasq
+    
+    # Start Apache
+    brew services start httpd
+    
+    # Start MariaDB
+    brew services start mariadb
+    
+    # Start Mailhog
+    brew services start mailhog
+
+    exit 1
+  fi
+
+  if [ $SUBCOMMAND = "stop" ]; then
+    # Stop Mailhog
+    brew services stop mailhog
+    
+    # Stop MariaDB
+    brew services stop mariadb
+    
+    # Stop Apache
+    brew services stop httpd
+    
+    # Stop Dnsmasq
+    sudo brew services stop dnsmasq
+
+    exit 1
+  fi
+
+
+  if [ $SUBCOMMAND = "restart" ]; then
+    # Restart Apache
+    brew services restart httpd
+
+    # Restart MariaDB
+    brew services restart mariadb
+
+    # Restart Mailhog
+    brew services restart mailhog
+
+    # Restart Dnsmasq
+    sudo brew services restart dnsmasq
+
+    exit 1
+  fi
+
+}
+
+main "$@"
 ```
 
 Save the file by pressing Ctrl-X followed by Y and Enter.
-
-### stopdev - Stop development
-
-```
-sudo nano /usr/local/bin/stopdev
-```
-
-Add the following code:
-
-```
-#!/bin/zsh
-
-# Stop Mailhog
-brew services stop mailhog
-
-# Stop MariaDB
-brew services stop mariadb
-
-# Stop Apache
-brew services stop httpd
-
-# Stop Dnsmasq
-sudo brew services stop dnsmasq
-```
-
-Save the file by pressing Ctrl-X followed by Y and Enter.
-
-### restartdev - Restart development
-
-```
-sudo nano /usr/local/bin/restartdev
-```
-
-Add the following code:
-
-```
-#!/bin/zsh
-
-# Restart Apache
-brew services restart httpd
-
-# Restart MariaDB
-brew services restart mariadb
-
-# Restart Mailhog
-brew services restart mailhog
-
-# Restart Dnsmasq
-sudo brew services restart dnsmasq
-```
 
 ### Modify file rights:
 
 ```
-sudo chmod +x /usr/local/bin/startdev /usr/local/bin/stopdev /usr/local/bin/restartdev
+sudo chmod +x /usr/local/bin/dev
 ```
 
 ## Finished
