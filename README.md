@@ -1,5 +1,9 @@
 # macOS Local Development Setup
 
+# ATTENTION: DEPRICATED!
+
+These setup instructions are depricated! You can now use my new automatic installer at <a href="https://github.com/renekreijveld/macOS_PHP_local_development">Apache/NginX/MariaDB/PHP development stack for macOS</a>
+
 After my MAMP PRO setup became very unstable I decided to setup my local development environment different.
 
 I used various tips and recources from developer colleaugues.
